@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Groovebox\TimelineImages">
+      <UniqueIdentifier>{96D4C890-4866-F3F8-C7AD-8F1B6712398F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\Source">
       <UniqueIdentifier>{D37346AE-7A4D-9BB7-6717-AC4ACC5AC239}</UniqueIdentifier>
     </Filter>
@@ -5245,6 +5248,9 @@
     <ClCompile Include="C:\modules\tracktion_graph\tracktion_graph.cpp">
       <Filter>JUCE Modules\tracktion_graph</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\BinaryData.cpp">
+      <Filter>JUCE Library Code</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
@@ -9348,11 +9354,20 @@
     <ClInclude Include="..\..\..\..\..\TRACKTION_ENGINE_MODULES\modules\tracktion_graph\tracktion_graph.h">
       <Filter>JUCE Modules\tracktion_graph</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\JuceLibraryCode\BinaryData.h">
+      <Filter>JUCE Library Code</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\TimelineControlButtonFiles\pauseButtonImage.png">
+      <Filter>Groovebox\TimelineImages</Filter>
+    </None>
+    <None Include="..\..\TimelineControlButtonFiles\playButtonImage.png">
+      <Filter>Groovebox\TimelineImages</Filter>
+    </None>
     <None Include="C:\JUCE\modules\juce_audio_devices\native\oboe\CMakeLists.txt">
       <Filter>JUCE Modules\juce_audio_devices\native\oboe</Filter>
     </None>

@@ -5,6 +5,9 @@ MainComponent::MainComponent(){
     /* set the window size */
     setSize(window[0], window[1]);
     
+    // set edit to nullptr for the time being
+    edit = nullptr;
+    
     /* initally, program set to TrackView*/
     setupTrackView(true);
 }
@@ -13,7 +16,15 @@ MainComponent::~MainComponent(){
 }
 
 void MainComponent::paint(juce::Graphics &g){
+    g.setColour(background_color);
     g.fillAll(background_color);
+    
+    /* Draw the time line graphics objects */
+    if (WState == WindowStates::Timeline){
+        
+        g.setColour(defaultColor);
+        g.fillRect(0, 0, window[0], 40 + controlImageHeightpx);
+    }
 }
 
 void MainComponent::buttonClicked(juce::Button *button){
@@ -21,7 +32,7 @@ void MainComponent::buttonClicked(juce::Button *button){
 }
 
 void MainComponent::timerCallback() {
-    
+    repaint();
 }
 
 void MainComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate){
@@ -47,59 +58,19 @@ void MainComponent::setupTrackView(bool fst){
         addAndMakeVisible(pause);
         addAndMakeVisible(record);
         
-        
-        /* Draw the triange for the playImage */
-        for(float i = 0; i < 1; i = i + 0.001){
-            for(float j = 0; j < 1; j = j + 0.001){
-                if(i >= 0.2 && i <= 0.8 && (-0.5 * i + 0.9) > j && (j) >= (0.5 * i + 0.1)){
-                    playImage.setPixelAt(500 * i, 500 * j, juce::Colours::red);
-                    playHoverImage.setPixelAt(500 * i, 500 * j, juce::Colours::darkred);
-                }
-                else{
-                    playImage.setPixelAt(500 * i, 500 * j, juce::Colours::white);
-                    playHoverImage.setPixelAt(500 * i, 500 * j, juce::Colours::white);
-                }
+        /* fill the topbar */
+        for(int x = 0; x < window[0]; ++x){
+            for(int y = 0; y < 40 + controlImageHeightpx; ++y){
+                timelineTopBar.setPixelAt(x, y, juce::Colour::fromRGBA(0xFF, 0xFF, 0xFF, 0x1F));
             }
         }
-        
-        /* Draw a circle for the record image */
-        float i2 = 0.0f, j2 = 0.0f, r = 0.35;
-        float r2 = r * r;
-        for(float i = 0; i < 1; i = i + 0.001){
-            for(float j = 0; j < 1; j = j + 0.001){
-                i2 = (i - 0.5) * (i - 0.5);
-                j2 = (j - 0.5) * (j - 0.5);
-                if(i2 + j2 < r2){
-                    recordImage.setPixelAt(500 * i, 500 * j, juce::Colours::red);
-                    recordHoverImage.setPixelAt(500 * i, 500 * j, juce::Colours::darkred);
-                }
-                else{
-                    recordImage.setPixelAt(500 * i, 500 * j, juce::Colours::white);
-                    recordHoverImage.setPixelAt(500 * i, 500 * j, juce::Colours::white);
-                }
-            }
-        }
-        
-        /* Draw two vertical lines for the pause image */
-        bool b1 = false;
-        bool b2 = false;
-        for(float i = 0; i < 1; i = i + 0.001){
-            for(float j = 0; j < 1; j = j + 0.001){
-                b1 = i >= 0.15 && i <= 0.35;
-                b2 = i >= 0.65 && i <= 0.85;
-                if((b1 || b2) && 0.8 > j && j > 0.2){
-                    pauseImage.setPixelAt(500 * i, 500 * j, juce::Colours::red);
-                    pauseHoverImage.setPixelAt(500 * i, 500 * j, juce::Colours::darkred);
-                }
-                else{
-                    pauseImage.setPixelAt(500 * i, 500 * j, juce::Colours::white);
-                    pauseHoverImage.setPixelAt(500 * i, 500 * j, juce::Colours::white);
-
-                }
-            }
-        }
+    }
+        int y_spacing = 20;
+        int x_spacing = 20;
+        int leftmost = windowCenter - (1.5 * controlImageWidthpx) - x_spacing;
         
         juce::Colour zeroAlpha = juce::Colour::fromRGBA(0x00, 0x00, 0x00, 0x00);
+        juce::Colour darken = juce::Colour::fromRGBA(0xFF, 0x00, 0x00, 128);
          
         play.setImages(true,
                        true,
@@ -109,12 +80,12 @@ void MainComponent::setupTrackView(bool fst){
                        zeroAlpha,
                        playHoverImage,
                        100,
-                       zeroAlpha,
+                       darken,
                        playImage,
                        100,
                        zeroAlpha);
     
-        play.setBounds(10, 10, 100, 100);
+        play.setBounds(leftmost, y_spacing, controlImageWidthpx, controlImageHeightpx);
         
         record.setImages(true,
                         true,
@@ -129,7 +100,7 @@ void MainComponent::setupTrackView(bool fst){
                         100,
                         zeroAlpha);
         
-        record.setBounds(10 + 100 + 10, 10, 100, 100);
+        record.setBounds(leftmost + x_spacing + controlImageWidthpx, y_spacing, controlImageWidthpx, controlImageHeightpx);
         
         pause.setImages(true,
                         true,
@@ -144,15 +115,31 @@ void MainComponent::setupTrackView(bool fst){
                         100,
                         zeroAlpha);
         
-        pause.setBounds(10 + 100 + 10 + 100 + 10, 10, 100, 100);
-    }
+        pause.setBounds(leftmost + (2 * x_spacing) + (2 * controlImageWidthpx), y_spacing, controlImageWidthpx, controlImageHeightpx);
 }
 
 void MainComponent::setNumberofTracks(){
     
 }
 
-void MainComponent::load(){
+void MainComponent::fload(){
+    
+}
+
+void MainComponent::fplay(){
+    // Play functions when paused and edit is loaded
+    if (PState == PlayStates::Pause && edit != nullptr) {
+        PState = PlayStates::Play;
+        LOG("Playing");
+        edit->getTransport().play(false);
+    }
+}
+
+void MainComponent::fpause(){
+    
+}
+
+void MainComponent::frecord(){
     
 }
 

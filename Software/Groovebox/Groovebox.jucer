@@ -5,6 +5,12 @@
               defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;" headerPath="usr/include/freetype2"
               cppLanguageStandard="17">
   <MAINGROUP id="JlHjiV" name="Groovebox">
+    <GROUP id="{F5B86101-DF2A-5814-CD73-348E955E8794}" name="TimelineImages">
+      <FILE id="G53CeL" name="pauseButtonImage.png" compile="0" resource="1"
+            file="TimelineControlButtonFiles/pauseButtonImage.png" xcodeResource="0"/>
+      <FILE id="RG14ow" name="playButtonImage.png" compile="0" resource="1"
+            file="TimelineControlButtonFiles/playButtonImage.png" xcodeResource="0"/>
+    </GROUP>
     <GROUP id="{12AEB1D7-76D1-C6D8-E1D3-71381182111E}" name="Source">
       <FILE id="FxYfy6" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="XVJkpd" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>

@@ -1,9 +1,15 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "gbx_comp/test.hpp"
 #include <functional>
 //#include "Utilities.h"
+
+#define DB 1
+#if DB
+#define LOG(x) std::cout<<x
+#else
+#define LOG(x)
+#endif
 
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
@@ -40,14 +46,36 @@ public:
 private:
     //==============================================================================
     
-    /* This contains the states needed to switch between track view, etc. */
+    //-------------------------------------------------------------
+    
+    /* Graphical properties below! */
+    
+    // This sets the background color
+    juce::Colour background_color = juce::Colours::white;
+    
+    // Default color
+    juce::Colour defaultColor = juce::Colours::violet;
+    
+    // This sets the screen size
+    const int window[2] = {1600, 900};
+    
+    const int windowCenter = window[0] / 2;
+    
+    //-------------------------------------------------------------
+    
+    int frameInterval = 16; // 16 millisecond per frame time
+    
+    /* This contains the states needed to switch between timeline, mixer, etc. */
     enum WindowStates {
-        TrackView,
+        Timeline,
+        Mixer,
+        Generator,
+        Effects,
         Settings
     };
     
     /* This is the state of the views */
-    WindowStates WState = WindowStates::TrackView;
+    WindowStates WState = WindowStates::Timeline;
     
     /* This contains the states needed to play and pause */
     enum PlayStates {
@@ -59,19 +87,45 @@ private:
     /* This is the state of the playing */
     PlayStates PState = PlayStates::Pause;
     
+    //=================================================================
+    /**
+     * The variables below are for timeline view
+     */
     /* These are the play and pause buttons */
     juce::ImageButton play;
     juce::ImageButton pause;
     juce::ImageButton record;
     
-    /* Create the images */
-    juce::Image playImage {juce::Image::RGB, 500, 500, true};
-    juce::Image pauseImage {juce::Image::RGB, 500, 500, true};
-    juce::Image recordImage {juce::Image::RGB, 500, 500, true};
+    const int controlImageHeightpx = 150;
+    const int controlImageWidthpx = 300;
     
-    juce::Image playHoverImage {juce::Image::RGB, 500, 500, true};
-    juce::Image pauseHoverImage {juce::Image::RGB, 500, 500, true};
-    juce::Image recordHoverImage {juce::Image::RGB, 500, 500, true};
+    /* absolute path to code, change absolute path when needed */
+    const std::string apath = "~/Downloads/Software/Groovebox";
+    
+    /* path to play button */
+    std::string fplayImageDefault = apath+"/TimelineControlButtonFiles/playButtonImage.png";
+    std::string fpauseImageDefault = apath+"/TimelineControlButtonFiles/pauseButtonImage.png";
+    std::string frecordImageDefault = fplayImageDefault;
+    
+    std::string fplayImageHover = fplayImageDefault;
+    std::string fpauseImageHover = fplayImageDefault;
+    std::string frecordImageHover = fplayImageDefault;
+    
+    /* Create the images */
+    juce::Image playImage = juce::ImageFileFormat::loadFrom(juce::File(fplayImageDefault));
+    juce::Image pauseImage = juce::ImageFileFormat::loadFrom(juce::File(fpauseImageDefault));
+    juce::Image recordImage = ImageFileFormat::loadFrom(juce::File(frecordImageDefault));
+    
+    juce::Image playHoverImage = juce::ImageFileFormat::loadFrom(juce::File(fplayImageHover));
+    juce::Image pauseHoverImage = juce::ImageFileFormat::loadFrom(juce::File(fpauseImageHover));
+    juce::Image recordHoverImage = juce::ImageFileFormat::loadFrom(juce::File(frecordImageHover));
+    
+    /* Create top bar */
+    juce::Image timelineTopBar {juce::Image::RGB, window[0], 40 + controlImageHeightpx, false};
+    
+    juce::Label timelineLoadedLabel {"No edit loaded!"};
+    //=================================================================
+    
     
     /**
      * @brief This is the tracktion engine object.
@@ -85,6 +139,10 @@ private:
      */
     std::unique_ptr<tracktion_engine::Edit> edit;
     
+    /**
+     * @brief This is the file location of edits. Just concat the location to load.
+     */
+    const std::string editPath = apath + "/edits/";
     /**
      * @brief This is the total number of tracks available. The total number of tracks
      is the total number of audio tracks and the total number of MIDI tracks.
@@ -101,18 +159,6 @@ private:
      */
     int numMIDItracks;
     
-    //-------------------------------------------------------------
-    
-    /* Graphical properties below! */
-    
-    // This sets the background color
-    juce::Colour background_color = juce::Colours::grey;
-    
-    // This sets the screen size
-    const int window[2] = {800, 600};
-    
-    //-------------------------------------------------------------
-    
     /* State functions below! */
     
     /**
@@ -123,7 +169,15 @@ private:
     
     void setNumberofTracks();
     
-    void load();
+    // Function to load the edit
+    void fload();
+    
+    // Common functions for playing, recording, pausing, etc.
+    void fplay();
+    
+    void fpause();
+    
+    void frecord();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

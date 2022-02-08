@@ -146,6 +146,18 @@
       <Add option="-Wno-strict-overflow"/>
     </Compiler>
     <Linker/>
+    <Unit filename="../../TimelineControlButtonFiles/pauseButtonImage.png">
+      <Option target="App | Debug"/>
+      <Option target="App | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../TimelineControlButtonFiles/playButtonImage.png">
+      <Option target="App | Debug"/>
+      <Option target="App | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
     <Unit filename="../../Source/Main.cpp">
       <Option target="App | Debug"/>
       <Option target="App | Release"/>
@@ -16505,6 +16517,16 @@
       <Option link="0"/>
     </Unit>
     <Unit filename="../../../../../TRACKTION_ENGINE_MODULES/modules/tracktion_graph/tracktion_graph.h">
+      <Option target="App | Debug"/>
+      <Option target="App | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../JuceLibraryCode/BinaryData.cpp">
+      <Option target="App | Debug"/>
+      <Option target="App | Release"/>
+    </Unit>
+    <Unit filename="../../JuceLibraryCode/BinaryData.h">
       <Option target="App | Debug"/>
       <Option target="App | Release"/>
       <Option compile="0"/>
