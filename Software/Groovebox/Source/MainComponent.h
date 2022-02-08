@@ -100,7 +100,7 @@ private:
     const int controlImageWidthpx = 300;
     
     /* absolute path to code, change absolute path when needed */
-    const std::string apath = "~/Downloads/Software/Groovebox";
+    const std::string apath = "~/Documents/GitHub/Software/Software/Groovebox";
     
     /* path to play button */
     std::string fplayImageDefault = apath+"/TimelineControlButtonFiles/playButtonImage.png";
@@ -170,7 +170,7 @@ private:
     void setNumberofTracks();
     
     // Function to load the edit
-    void fload();
+    void fload(std::string filename);
     
     // Common functions for playing, recording, pausing, etc.
     void fplay();

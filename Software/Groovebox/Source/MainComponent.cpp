@@ -122,8 +122,18 @@ void MainComponent::setNumberofTracks(){
     
 }
 
-void MainComponent::fload(){
+void MainComponent::fload(std::string filename){
+    const juce::String editFilePath = editPath + filename;
+    const File editFile (editFilePath);
     
+    // get the edit if it exists
+    if (editFile.existsAsFile()) {
+        edit = (tracktion_engine::loadEditFromFile(engine, editFile));
+    }
+    // else create a new, empty edit if it doesn't exist
+    else{
+        edit = tracktion_engine::createEmptyEdit(engine, editFile);
+    }
 }
 
 void MainComponent::fplay(){
