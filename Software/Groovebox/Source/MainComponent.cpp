@@ -188,4 +188,3 @@ void MainComponent::fpause(){
 void MainComponent::frecord(){
     
 }
-
