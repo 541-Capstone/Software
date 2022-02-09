@@ -82,12 +82,18 @@ void MainComponent::setupTrackView(bool fst){
         addAndMakeVisible(pause);
         addAndMakeVisible(record);
         
-        /* fill the topbar */
-        for(int x = 0; x < window[0]; ++x){
-            for(int y = 0; y < 40 + controlImageHeightpx; ++y){
-                timelineTopBar.setPixelAt(x, y, juce::Colour::fromRGBA(0xFF, 0xFF, 0xFF, 0x1F));
-            }
-        }
+        // Pass functions for the buttons
+        play.onClick = [this](void)->void{
+            fplay();
+        };
+        
+        pause.onClick = [this](void)->void{
+            fpause();
+        };
+        
+        record.onClick = [this](void)->void{
+            frecord();
+        };
     }
         const int y_spacing = 20;
         const int x_spacing = 20;
@@ -194,6 +200,9 @@ void MainComponent::fplay(){
         PState = PlayStates::Play;
         LOG("Playing");
         edit->getTransport().play(false);
+    }
+    else{
+        LOG("Missing edit!");
     }
 }
 
