@@ -100,6 +100,10 @@ private:
     const int controlImageHeightpx = 150;
     const int controlImageWidthpx = 300;
     
+    /**
+     * TODO: Change the absolute path when implementing on Pi4
+     */
+    
     /* absolute path to code, change absolute path when needed */
     const std::string apath = "~/Documents/GitHub/Software/Software/Groovebox";
     
@@ -113,12 +117,37 @@ private:
     std::string frecordImageHover = fplayImageDefault;
     
     /* Create the images */
+    
+    /**
+     * TODO: Here's a list of the following images
+     * =-=-=-=-=-= Currently Implemented =-=-=-=-=-=
+     * PlayImageDefault
+     * RecordImageDefault
+     *
+     * =-=-=-=-=-= Need Implementation =-=-=-=-=-=
+     * PauseImageDefault
+     *
+     *
+     * The hover and onclick images can inheret same path as default
+     * If doing this, then setImage with darken instead of zeroAlpha as color
+     */
+    
+    // The playImage contains the image for the playbutton at default
     juce::Image playImage = juce::ImageFileFormat::loadFrom(juce::File(fplayImageDefault));
+    
+    // The pauseImage contains the image for the pauseButton at default
     juce::Image pauseImage = juce::ImageFileFormat::loadFrom(juce::File(fpauseImageDefault));
+    
+    // The recordImage contains the image for the recordButton at default
     juce::Image recordImage = ImageFileFormat::loadFrom(juce::File(frecordImageDefault));
     
+    // Contains the image for playButton when hovering
     juce::Image playHoverImage = juce::ImageFileFormat::loadFrom(juce::File(fplayImageHover));
+    
+    // Contains the image for pauseButton when hovering
     juce::Image pauseHoverImage = juce::ImageFileFormat::loadFrom(juce::File(fpauseImageHover));
+    
+    // Contains the image for recordButton when hovering
     juce::Image recordHoverImage = juce::ImageFileFormat::loadFrom(juce::File(frecordImageHover));
     
     /* Create top bar */
@@ -185,6 +214,11 @@ private:
      * @brief Enables buttons based on state
      */
     void enableButtonAtCurrentState();
+    
+    /**
+     * TODO: Create a button/method for allowing user to call fload
+     * Fload loads an edit from the filename. If the file doesn't exist, then it creates a empty edit
+     */
     
     // Function to load the edit
     void fload(std::string filename);
