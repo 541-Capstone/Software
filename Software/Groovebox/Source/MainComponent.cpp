@@ -166,6 +166,12 @@ void MainComponent::fload(std::string filename){
     }
 }
 
+/**
+ * These functions enable and disable functions based on state. When changing state,
+ * call disableAllButtons() then use enableButtonAtCurrentState()!
+ * Physical buttons should be handled separately
+ */
+
 void MainComponent::disableAllButtons(){
     // Disable timeline buttons (play, pause, record at the moment)
     play.setEnabled(false);
