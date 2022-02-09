@@ -181,6 +181,11 @@ private:
      */
     void disableAllButtons();
     
+    /**
+     * @brief Enables buttons based on state
+     */
+    void enableButtonAtCurrentState();
+    
     // Function to load the edit
     void fload(std::string filename);
     

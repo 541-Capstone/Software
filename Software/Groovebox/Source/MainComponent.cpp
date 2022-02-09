@@ -166,10 +166,26 @@ void MainComponent::disableAllButtons(){
     pause.setEnabled(false);
     record.setEnabled(false);
     
-    // Hide the buttons
+    // Hide the timeline buttons
     play.setVisible(false);
     pause.setVisible(false);
     record.setVisible(false);
+}
+
+void MainComponent::enableButtonAtCurrentState(){
+    
+    // if the state is at Timeline, enable and set visible all buttons
+    if (WState == WindowStates::Timeline) {
+        play.setEnabled(true);
+        pause.setEnabled(true);
+        record.setEnabled(true);
+        
+        play.setVisible(true);
+        pause.setVisible(true);
+        record.setVisible(true);
+        
+        return;
+    }
 }
 
 void MainComponent::fplay(){
