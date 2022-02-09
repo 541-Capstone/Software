@@ -64,6 +64,7 @@ private:
     //-------------------------------------------------------------
     
     int frameInterval = 16; // 16 millisecond per frame time
+    double timeCount     = 0.0f;  // counts the time in seconds
     
     /* This contains the states needed to switch between timeline, mixer, etc. */
     enum WindowStates {
@@ -143,6 +144,7 @@ private:
      * @brief This is the file location of edits. Just concat the location to load.
      */
     const std::string editPath = apath + "/edits/";
+    
     /**
      * @brief This is the total number of tracks available. The total number of tracks
      is the total number of audio tracks and the total number of MIDI tracks.
@@ -159,6 +161,11 @@ private:
      */
     int numMIDItracks;
     
+    /**
+     * @brief This is the maximum number of tracks (-1 for no limit)
+     */
+    int maxNumTracks;
+    
     /* State functions below! */
     
     /**
@@ -167,7 +174,12 @@ private:
      */
     void setupTrackView(bool fst);
     
-    void setNumberofTracks();
+    void setNumberofTracks(int n);
+    
+    /**
+     * @brief This disables and hides all buttons
+     */
+    void disableAllButtons();
     
     // Function to load the edit
     void fload(std::string filename);
@@ -178,6 +190,8 @@ private:
     void fpause();
     
     void frecord();
+    
+    int tmp;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
