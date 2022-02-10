@@ -193,11 +193,11 @@ void MainComponent::fplay(){
     // Play functions when paused and edit is loaded
     if (PState == PlayStates::Pause && edit != nullptr) {
         PState = PlayStates::Play;
-        LOG("Playing");
+        LOG("Playing\n");
         edit->getTransport().play(false);
     }
     else{
-        LOG("Missing edit!");
+        LOG("Missing edit!\n");
     }
 }
 
@@ -216,7 +216,5 @@ void MainComponent::drawAudioWaveform(){
     juce::AudioFormatManager formatManager;
     juce::AudioThumbnailCache thumbnailCache {5};
     juce::AudioThumbnail thumbnail {thumbnailSize, formatManager, thumbnailCache};
-    
-    
     
 }
