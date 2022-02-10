@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include <functional>
+#include <math.h>
 //#include "Utilities.h"
 
 #define DB 1
@@ -57,7 +58,8 @@ private:
     juce::Colour defaultColor = juce::Colours::violet;
     
     // This sets the screen size
-    const int window[2] = {1600, 900};
+    const int scale = 2;
+    const int window[2] = {1600 / scale, 900 / scale};
     
     const int windowCenter = window[0] / 2;
     
@@ -97,8 +99,8 @@ private:
     juce::ImageButton pause;
     juce::ImageButton record;
     
-    const int controlImageHeightpx = 150;
-    const int controlImageWidthpx = 300;
+    const int controlImageHeightpx = 150 / scale;
+    const int controlImageWidthpx = 300 / scale;
     
     /**
      * TODO: Change the absolute path when implementing on Pi4
@@ -198,6 +200,8 @@ private:
      */
     int maxNumTracks;
     
+    bool isplaying;
+    
     /* State functions below! */
     
     /**
@@ -236,7 +240,5 @@ private:
     
     void frecord();
     
-    int tmp;
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

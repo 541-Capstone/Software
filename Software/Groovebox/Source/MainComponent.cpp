@@ -7,6 +7,7 @@ MainComponent::MainComponent(){
     
     // set edit to nullptr for the time being
     edit = nullptr;
+    isplaying = false;
     
     // start the timer
     startTimer(frameInterval);
@@ -14,7 +15,8 @@ MainComponent::MainComponent(){
     // set the maximum number of tracks
     setNumberofTracks(-1);
     
-    tmp = 0;
+    // just call fload for now
+    fload();
     
     /* initally, program set to TrackView*/
     setupTrackView(true);
@@ -40,7 +42,8 @@ void MainComponent::buttonClicked(juce::Button *button){
 }
 
 void MainComponent::timerCallback() {
-    timeCount = (timeCount >= 1.0f) ? 0 : timeCount + ((double)frameInterval * 0.001);
+    timeCount += isplaying ? ((double)frameInterval * 0.001) : 0;
+    if (timeCount == floor(timeCount)) std::cout<<timeCount<<'\n';
     repaint();
 }
 
@@ -190,19 +193,35 @@ void MainComponent::enableButtonAtCurrentState(){
 }
 
 void MainComponent::fplay(){
+    if (edit == nullptr) {LOG("Missing edit!\n"); return; }
     // Play functions when paused and edit is loaded
-    if (PState == PlayStates::Pause && edit != nullptr) {
+    if (PState == PlayStates::Pause) {
         PState = PlayStates::Play;
         LOG("Playing\n");
         edit->getTransport().play(false);
+        isplaying = true;
     }
-    else{
-        LOG("Missing edit!\n");
+    else {
+        LOG("Already playing\n");
     }
 }
 
 void MainComponent::fpause(){
-    
+    if (edit == nullptr) {LOG("Missing edit!\n"); return; }
+    isplaying = false;
+    if (PState == PlayStates::Play) {
+        PState = PlayStates::Pause;
+        edit->getTransport().stop(false, false);
+        return;
+    }
+    if(PState == PlayStates::Pause) {
+        if (edit->getTransport().isPlaying()) {
+            edit->getTransport().stop(false, false);
+        }
+        edit->getTransport().setCurrentPosition(0.0f);
+        timeCount = 0.0f;
+        return;
+    }
 }
 
 void MainComponent::frecord(){
