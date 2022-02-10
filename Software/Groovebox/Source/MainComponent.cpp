@@ -213,6 +213,7 @@ void MainComponent::drawAudioWaveform(){
     int thumbnailSize = 512; // px
     std::unique_ptr<juce::FileChooser> chooser;
         
+    juce::AudioFormatManager formatManager;
     juce::AudioThumbnailCache thumbnailCache {5};
     juce::AudioThumbnail thumbnail {thumbnailSize, formatManager, thumbnailCache};
     
