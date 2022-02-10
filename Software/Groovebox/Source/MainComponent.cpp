@@ -71,18 +71,17 @@ void MainComponent::setupTrackView(bool fst){
         addAndMakeVisible(pause);
         addAndMakeVisible(record);
         
+        addAndMakeVisible(load);
+        
         // Pass functions for the buttons
-        play.onClick = [this](void)->void{
-            fplay();
-        };
+        play.onClick = [this](void)->void{ fplay(); };
         
-        pause.onClick = [this](void)->void{
-            fpause();
-        };
+        pause.onClick = [this](void)->void{ fpause(); };
         
-        record.onClick = [this](void)->void{
-            frecord();
-        };
+        record.onClick = [this](void)->void{ frecord(); };
+        
+        // load just makes a new empty edit for now
+        load.onClick = [this](void)->void{ fload(); };
     }
         const int y_spacing = 20;
         const int x_spacing = 20;
@@ -141,7 +140,8 @@ void MainComponent::setNumberofTracks(int n){
     maxNumTracks = n;
 }
 
-void MainComponent::fload(std::string filename){
+void MainComponent::fload(){
+    std::string filename = "\0";
     const juce::String editFilePath = editPath + filename;
     const File editFile (editFilePath);
     
@@ -206,5 +206,16 @@ void MainComponent::fpause(){
 }
 
 void MainComponent::frecord(){
+    
+}
+
+void MainComponent::drawAudioWaveform(){
+    int thumbnailSize = 512; // px
+    std::unique_ptr<juce::FileChooser> chooser;
+        
+    juce::AudioThumbnailCache thumbnailCache {5};
+    juce::AudioThumbnail thumbnail {thumbnailSize, formatManager, thumbnailCache};
+    
+    
     
 }

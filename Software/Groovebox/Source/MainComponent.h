@@ -154,6 +154,9 @@ private:
     juce::Image timelineTopBar {juce::Image::RGB, window[0], 40 + controlImageHeightpx, false};
     
     juce::Label timelineLoadedLabel {"No edit loaded!"};
+    
+    void drawAudioWaveform();
+    
     //=================================================================
     
     
@@ -221,7 +224,7 @@ private:
      */
     
     // Function to load the edit
-    void fload(std::string filename);
+    void fload();
     
     // temporary button for loading (can get rid later for phy buttons !)
     juce::ImageButton load;
