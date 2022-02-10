@@ -2,6 +2,12 @@
 
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Groovebox\State">
+      <UniqueIdentifier>{6E701E9E-3CC6-49AB-C9AD-65D9CCF9F12C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Groovebox\ViewObjects">
+      <UniqueIdentifier>{C356B8A6-E724-5AD2-9828-8530B80DF431}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\TimelineImages">
       <UniqueIdentifier>{96D4C890-4866-F3F8-C7AD-8F1B6712398F}</UniqueIdentifier>
     </Filter>
@@ -1165,6 +1171,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Timeline.cpp">
+      <Filter>Groovebox\State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\viewObjects.cpp">
+      <Filter>Groovebox\ViewObjects</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>Groovebox\Source</Filter>
     </ClCompile>
@@ -5319,6 +5331,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Timeline.h">
+      <Filter>Groovebox\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\viewObjects.h">
+      <Filter>Groovebox\ViewObjects</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\MainComponent.h">
       <Filter>Groovebox\Source</Filter>
     </ClInclude>

@@ -3,6 +3,10 @@
 #include <JuceHeader.h>
 #include <functional>
 #include <math.h>
+
+// State files
+#include "Timeline.h"
+
 //#include "Utilities.h"
 
 #define DB 1
@@ -108,52 +112,6 @@ private:
     
     /* absolute path to code, change absolute path when needed */
     const std::string apath = "~/Documents/GitHub/Software/Software/Groovebox";
-    
-    /* path to play button */
-    std::string fplayImageDefault = apath+"/TimelineControlButtonFiles/playButtonImage.png";
-    std::string fpauseImageDefault = apath+"/TimelineControlButtonFiles/pauseButtonImage.png";
-    std::string frecordImageDefault = fplayImageDefault;
-    
-    std::string fplayImageHover = fplayImageDefault;
-    std::string fpauseImageHover = fplayImageDefault;
-    std::string frecordImageHover = fplayImageDefault;
-    
-    /* Create the images */
-    
-    /**
-     * TODO: Here's a list of the following images
-     * =-=-=-=-=-= Currently Implemented =-=-=-=-=-=
-     * PlayImageDefault
-     * RecordImageDefault
-     *
-     * =-=-=-=-=-= Need Implementation =-=-=-=-=-=
-     * PauseImageDefault
-     *
-     *
-     * The hover and onclick images can inheret same path as default
-     * If doing this, then setImage with darken instead of zeroAlpha as color
-     */
-    
-    // The playImage contains the image for the playbutton at default
-    juce::Image playImage = juce::ImageFileFormat::loadFrom(juce::File(fplayImageDefault));
-    
-    // The pauseImage contains the image for the pauseButton at default
-    juce::Image pauseImage = juce::ImageFileFormat::loadFrom(juce::File(fpauseImageDefault));
-    
-    // The recordImage contains the image for the recordButton at default
-    juce::Image recordImage = ImageFileFormat::loadFrom(juce::File(frecordImageDefault));
-    
-    // Contains the image for playButton when hovering
-    juce::Image playHoverImage = juce::ImageFileFormat::loadFrom(juce::File(fplayImageHover));
-    
-    // Contains the image for pauseButton when hovering
-    juce::Image pauseHoverImage = juce::ImageFileFormat::loadFrom(juce::File(fpauseImageHover));
-    
-    // Contains the image for recordButton when hovering
-    juce::Image recordHoverImage = juce::ImageFileFormat::loadFrom(juce::File(frecordImageHover));
-    
-    /* Create top bar */
-    juce::Image timelineTopBar {juce::Image::RGB, window[0], 40 + controlImageHeightpx, false};
     
     juce::Label timelineLoadedLabel {"No edit loaded!"};
     
