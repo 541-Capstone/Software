@@ -14,7 +14,8 @@ Timeline::Timeline(int x, int y) {
     window[0] = x;
     window[1] = y;
     
-    viewObjects.btns.push_back()
+    juce::ImageButton play {"play"};
+    myObjects.btns.push_back(play);
 }
 
 Timeline::~Timeline(){
