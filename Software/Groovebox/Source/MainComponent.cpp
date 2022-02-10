@@ -40,19 +40,8 @@ void MainComponent::buttonClicked(juce::Button *button){
 }
 
 void MainComponent::timerCallback() {
-    timeCount = timeCount + ((double)frameInterval * 0.001);
+    timeCount = (timeCount >= 1.0f) ? 0 : timeCount + ((double)frameInterval * 0.001);
     repaint();
-    if (timeCount >= 1) {
-        timeCount = 0;
-        tmp++;
-        std::cout<<"second_eclipsed\n";
-    }
-    
-    // Remove later, just testing for now!
-    // Removes all buttons after 10 seconds
-    if(tmp == 10){
-        disableAllButtons();
-    }
 }
 
 void MainComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate){
