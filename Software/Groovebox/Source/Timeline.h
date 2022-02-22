@@ -14,22 +14,27 @@
 
 #include <iostream>
 #include <functional>
+#include <JuceHeader.h>
 #include "viewObjects.h"
 
-class Timeline {
+class Timeline_t {
 public:
     
-    Timeline(int x, int y);
+    Timeline_t(int x, int y, int sc);
     
-    ~Timeline();
+    ~Timeline_t();
     
-    viewObjects getObjects()const;
+    viewObjects* getObjects();
     
-    std::function<void(viewObjects)> setupState()const;
+    std::function<void(juce::Graphics *g)> drawState();
     
 // private member variables go here
 private:
     int window[2] = {0, 0};
+    int windowCenter = 0;
+    int scale = 0;
+    int controlImageHeightpx = 150;
+    int controlImageWidthpx = 300;
     
     viewObjects myObjects;
     
@@ -43,6 +48,13 @@ private:
     std::string fplayImageHover = fplayImageDefault;
     std::string fpauseImageHover = fplayImageDefault;
     std::string frecordImageHover = fplayImageDefault;
+    
+    /* buttons themselves */
+    juce::ImageButton play {"play"};
+    juce::ImageButton pause {"pause"};
+    juce::ImageButton record {"record"};
+    
+    juce::Colour bg_color = juce::Colours::pink;
     
     /* Create the images */
     
@@ -77,6 +89,8 @@ private:
     
     // Contains the image for recordButton when hovering
     juce::Image recordHoverImage = juce::ImageFileFormat::loadFrom(juce::File(frecordImageHover));
+    
+    void setupButtonImages ();
 };
 
 #endif

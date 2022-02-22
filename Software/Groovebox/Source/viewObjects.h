@@ -25,8 +25,8 @@
 struct viewObjects {
     bool inclBtns;
     bool inclLbls;
-    std::vector<juce::ImageButton> btns;
-    std::vector<juce::Label> lbls;
+    std::vector<juce::ImageButton*> btns;
+    std::vector<juce::Label*> lbls;
 };
 
 #endif

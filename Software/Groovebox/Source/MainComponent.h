@@ -198,5 +198,8 @@ private:
     
     void frecord();
     
+    // objects for states
+    Timeline_t tO {window[0], window[1], scale};
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
