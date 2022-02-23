@@ -24,6 +24,10 @@ public:
     /**
      * @brief This is the constructor for Timeline_t
      *
+     * @param x This is the number of pixels (width)
+     * @param y This is the number of pixels (height)
+     * @param sc This is the scale (usually 1)
+     *
      */
     Timeline_t(int x, int y, int sc);
     
