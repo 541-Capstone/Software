@@ -38,16 +38,18 @@ viewObjects* Timeline_t::getObjects() {
 }
 
 bool Timeline_t::assignFunctionToObjects(std::initializer_list<std::function<void()>> list) {
-    for (auto elem : list) {
+    for (auto elem : list)
         funcs.push_back(elem);
-    }
     return true;
 }
 
 bool Timeline_t::assignFuncToBtn(juce::Button *btn, std::function<void ()> func) {
     int i = 0;
     for (auto b : myObjects.btns) {
-        if (b == btn) { funcs[i] = func; return true; }
+        if (b == btn) {
+            funcs[i] = func;
+            return true;
+        }
         i++;
     }
     return false;
@@ -56,7 +58,10 @@ bool Timeline_t::assignFuncToBtn(juce::Button *btn, std::function<void ()> func)
 void Timeline_t::onClick (juce::Button *btn) {
     int i = 0;
     for (auto b : myObjects.btns) {
-        if (b == btn) { funcs[i](); return; }
+        if (b == btn) {
+            funcs[i]();
+            return;
+        }
         i++;
     }
 }
@@ -71,8 +76,14 @@ std::function<void(juce::Graphics*)> Timeline_t::drawState () {
 }
 
 void Timeline_t::setupButtonImages() {
-    juce::Colour zeroAlpha = juce::Colour::fromRGBA(0x00, 0x00, 0x00, 0x00);
-    juce::Colour darken = juce::Colour::fromRGBA(0xFF, 0x00, 0x00, 128);
+    juce::Colour zeroAlpha = juce::Colour::fromRGBA(0x00,
+                                                    0x00,
+                                                    0x00,
+                                                    0x00);
+    juce::Colour darken = juce::Colour::fromRGBA(0xFF,
+                                                 0x00,
+                                                 0x00,
+                                                 128);
     
     const int y_spacing = 20;
     const int x_spacing = 20;
@@ -91,7 +102,10 @@ void Timeline_t::setupButtonImages() {
                    100,
                    zeroAlpha);
 
-    play.setBounds(leftmost, y_spacing, controlImageWidthpx, controlImageHeightpx);
+    play.setBounds(leftmost,
+                   y_spacing,
+                   controlImageWidthpx,
+                   controlImageHeightpx);
     
     record.setImages(true,
                     true,
@@ -106,7 +120,10 @@ void Timeline_t::setupButtonImages() {
                     100,
                     zeroAlpha);
     
-    record.setBounds(leftmost + x_spacing + controlImageWidthpx, y_spacing, controlImageWidthpx, controlImageHeightpx);
+    record.setBounds(leftmost + x_spacing + controlImageWidthpx,
+                     y_spacing,
+                     controlImageWidthpx,
+                     controlImageHeightpx);
     
     pause.setImages(true,
                     true,
@@ -121,6 +138,9 @@ void Timeline_t::setupButtonImages() {
                     100,
                     zeroAlpha);
     
-    pause.setBounds(leftmost + (2 * x_spacing) + (2 * controlImageWidthpx), y_spacing, controlImageWidthpx, controlImageHeightpx);
+    pause.setBounds(leftmost + (2 * x_spacing) + (2 * controlImageWidthpx),
+                    y_spacing,
+                    controlImageWidthpx,
+                    controlImageHeightpx);
     
 }
