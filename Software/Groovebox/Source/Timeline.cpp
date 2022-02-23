@@ -37,7 +37,6 @@ viewObjects* Timeline_t::getObjects() {
     return &myObjects;
 }
 
-/* not working yet */
 bool Timeline_t::assignFunctionToObjects(std::initializer_list<std::function<void()>> list) {
     for (auto elem : list) {
         funcs.push_back(elem);
