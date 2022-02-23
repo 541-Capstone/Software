@@ -43,10 +43,8 @@ void MainComponent::paint(juce::Graphics &g){
 
 /* button listener */
 void MainComponent::buttonClicked(juce::Button *button){
-    std::cout<<"buttonClicked called\n";
     /* check to see for timeline button */
     if (WState == WindowStates::Timeline) {
-        std::cout<<"Timeline buttons\n";
         for (auto btn : tO.getObjects()->btns) {
             if (button == btn) {
                 tO.onClick (btn);
