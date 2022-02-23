@@ -23,28 +23,54 @@ public:
     
     /**
      * @brief This is the constructor for Timeline_t
+     *
      */
     Timeline_t(int x, int y, int sc);
     
+    /**
+     * @brief This is the Timeline_t class destructor
+     *
+     */
     ~Timeline_t();
     
     /**
      * @brief This returns all objects in Timeline_t
+     *
      */
     viewObjects* getObjects();
     
     /**
      * @brief executes the function at that button if possible
+     *
+     * @param *btn This is the button to click
+     *
      */
     void onClick (juce::Button *btn);
     
     /**
+     * @pre Must have same number of functions as buttons
      * @brief This varadic function assigns lambda functions to objects in Timeline_t
+     *
+     * @param list This is a initalizer list of functions.
+     *
      */
     bool assignFunctionToObjects (std::initializer_list<std::function<void()>> list);
     
     /**
+     * @brief This function assigns a single function to a certain button
+     *
+     * @param *btn This is the button pointer
+     * @param func This is the function to assign
+     * @return true Returns true when successful
+     * @return false Returns false when not successful
+     *
+     */
+    bool assignFuncToBtn (juce::Button *btn, std::function<void()> func);
+    
+    /**
      * @brief This returns drawing routine for Timeline_t
+     *
+     * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
     std::function<void(juce::Graphics *g)> drawState();
     
