@@ -46,7 +46,6 @@ bool Timeline_t::assignFunctionToObjects(std::initializer_list<std::function<voi
 }
 
 void Timeline_t::onClick (juce::Button *btn) {
-    std::cout<<"onClick called\n";
     int i = 0;
     for (auto b : myObjects.btns) {
         if (b == btn) { funcs[i](); return; }
