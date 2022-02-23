@@ -41,13 +41,23 @@ void MainComponent::paint(juce::Graphics &g){
     }
 }
 
+/* button listener */
 void MainComponent::buttonClicked(juce::Button *button){
-
+    std::cout<<"buttonClicked called\n";
+    /* check to see for timeline button */
+    if (WState == WindowStates::Timeline) {
+        std::cout<<"Timeline buttons\n";
+        for (auto btn : tO.getObjects()->btns) {
+            if (button == btn) {
+                tO.onClick (btn);
+            }
+        }
+    }
 }
 
 void MainComponent::timerCallback() {
     timeCount += isplaying ? ((double)frameInterval * 0.001) : 0;
-    std::cout<<timeCount<<'\n';
+    //std::cout<<timeCount<<'\n';
     repaint();
 }
 
@@ -84,11 +94,22 @@ void MainComponent::setupTrackView(bool fst){
         viewObjects* tb = tO.getObjects();
         for (auto btn: tb->btns) {
             addAndMakeVisible(*btn);
+            btn->addListener(this);
         }
         
+        std::function<void()> f1 = [this](void)->void{fplay();};
+        
+        std::function<void()> f2 = [this](void)->void{fpause();};
+        
+        std::function<void()> f3 = [this](void)->void{frecord();};
+        
+        tO.assignFunctionToObjects({f1, f2, f3});
+        
+        /*
         tb->btns[0]->onClick = [this](void)->void {fplay();};
         tb->btns[1]->onClick = [this](void)->void {fpause();};
         tb->btns[2]->onClick = [this](void)->void {frecord();};
+         */
         
         // Pass functions for the buttons
         /*

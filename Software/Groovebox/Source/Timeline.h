@@ -15,17 +15,37 @@
 #include <iostream>
 #include <functional>
 #include <JuceHeader.h>
+#include <cstdarg>
 #include "viewObjects.h"
 
 class Timeline_t {
 public:
     
+    /**
+     * @brief This is the constructor for Timeline_t
+     */
     Timeline_t(int x, int y, int sc);
     
     ~Timeline_t();
     
+    /**
+     * @brief This returns all objects in Timeline_t
+     */
     viewObjects* getObjects();
     
+    /**
+     * @brief executes the function at that button if possible
+     */
+    void onClick (juce::Button *btn);
+    
+    /**
+     * @brief This varadic function assigns lambda functions to objects in Timeline_t
+     */
+    bool assignFunctionToObjects (std::initializer_list<std::function<void()>> list);
+    
+    /**
+     * @brief This returns drawing routine for Timeline_t
+     */
     std::function<void(juce::Graphics *g)> drawState();
     
 // private member variables go here
@@ -37,6 +57,7 @@ private:
     int controlImageWidthpx = 300;
     
     viewObjects myObjects;
+    std::vector<std::function<void()>> funcs;
     
     const std::string apath = "~/Documents/GitHub/Software/Software/Groovebox";
     

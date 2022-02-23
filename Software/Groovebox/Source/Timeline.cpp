@@ -21,6 +21,9 @@ Timeline_t::Timeline_t(int x, int y, int sc) {
     
     setupButtonImages ();
     
+    myObjects.inclBtns = true;
+    myObjects.inclLbls = false;
+    
     myObjects.btns.push_back(&play);
     myObjects.btns.push_back(&pause);
     myObjects.btns.push_back(&record);
@@ -32,6 +35,23 @@ Timeline_t::~Timeline_t(){
 
 viewObjects* Timeline_t::getObjects() {
     return &myObjects;
+}
+
+/* not working yet */
+bool Timeline_t::assignFunctionToObjects(std::initializer_list<std::function<void()>> list) {
+    for (auto elem : list) {
+        funcs.push_back(elem);
+    }
+    return true;
+}
+
+void Timeline_t::onClick (juce::Button *btn) {
+    std::cout<<"onClick called\n";
+    int i = 0;
+    for (auto b : myObjects.btns) {
+        if (b == btn) { funcs[i](); return; }
+        i++;
+    }
 }
 
 std::function<void(juce::Graphics*)> Timeline_t::drawState () {

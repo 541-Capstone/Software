@@ -191,6 +191,7 @@ private:
     // temporary button for loading (can get rid later for phy buttons !)
     juce::ImageButton load;
     
+    /* core features should be added in MainComponent for all state objects to use. If a button or other componnent in the state object needs to use a core feature, call viewObjects* the_state_t::getObjects (), and pass function there */
     // Common functions for playing, recording, pausing, etc.
     void fplay();
     
@@ -199,6 +200,8 @@ private:
     void frecord();
     
     // objects for states
+    
+    /* this is the timeline object */
     Timeline_t tO {window[0], window[1], scale};
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

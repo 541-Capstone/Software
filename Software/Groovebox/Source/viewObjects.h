@@ -20,7 +20,8 @@
 
 /**
  * @brief viewObjects contains multiple objects to draw
-          should be passed to paint() in MainComponent
+          should be passed to paint() in MainComponent.
+          Can be expanded on (and should be) to add more components without breaking compatatbility with older code.
  */
 struct viewObjects {
     bool inclBtns;
