@@ -89,7 +89,7 @@ private:
     viewObjects myObjects;
     std::vector<std::function<void()>> funcs;
     
-    const std::string apath = "~/Documents/GitHub/Software/Software/Groovebox";
+    const std::string apath = APATH;
     
     /* path to play button */
     std::string fplayImageDefault = apath+"/TimelineControlButtonFiles/playButtonImage.png";

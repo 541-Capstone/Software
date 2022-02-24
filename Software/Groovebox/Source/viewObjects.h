@@ -13,6 +13,14 @@
 #ifndef viewobjects_h
 #define viewobjects_h
 
+#ifdef __MACH__
+    #define APATH "~/Documents/GitHub/Software/Software/Groovebox"
+#endif
+
+#ifdef _WIN64
+    #define APATH
+#endif
+
 #include <JuceHeader.h>
 #include <vector>
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdio.h>
 #include <JuceHeader.h>
 #include <functional>
 #include <math.h>
@@ -15,6 +16,7 @@
 #else
 #define LOG(x)
 #endif
+
 
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
@@ -111,7 +113,7 @@ private:
      */
     
     /* absolute path to code, change absolute path when needed */
-    const std::string apath = "~/Documents/GitHub/Software/Software/Groovebox";
+    const std::string apath = APATH;
     
     juce::Label timelineLoadedLabel {"No edit loaded!"};
     
