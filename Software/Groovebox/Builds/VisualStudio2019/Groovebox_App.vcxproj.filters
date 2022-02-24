@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Groovebox\GraphicsHelper">
+      <UniqueIdentifier>{A5220030-B0C8-A4A8-D1A3-CF910FEF4E63}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\State">
       <UniqueIdentifier>{6E701E9E-3CC6-49AB-C9AD-65D9CCF9F12C}</UniqueIdentifier>
     </Filter>
@@ -1171,6 +1174,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\graphicsHelper.cpp">
+      <Filter>Groovebox\GraphicsHelper</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Timeline.cpp">
       <Filter>Groovebox\State</Filter>
     </ClCompile>
@@ -5331,6 +5337,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\graphicsHelper.h">
+      <Filter>Groovebox\GraphicsHelper</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Timeline.h">
       <Filter>Groovebox\State</Filter>
     </ClInclude>

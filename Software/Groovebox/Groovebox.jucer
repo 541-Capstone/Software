@@ -5,6 +5,12 @@
               defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;" headerPath="usr/include/freetype2"
               cppLanguageStandard="17">
   <MAINGROUP id="JlHjiV" name="Groovebox">
+    <GROUP id="{DE7C5E92-8E8A-8E61-63D7-5F103DABB76E}" name="GraphicsHelper">
+      <FILE id="ovWOHz" name="graphicsHelper.cpp" compile="1" resource="0"
+            file="Source/graphicsHelper.cpp"/>
+      <FILE id="YRZoc7" name="graphicsHelper.h" compile="0" resource="0"
+            file="Source/graphicsHelper.h"/>
+    </GROUP>
     <GROUP id="{5323C0E3-87CC-405B-D6B9-AD58964F1DEF}" name="State">
       <FILE id="qxgQog" name="Timeline.cpp" compile="1" resource="0" file="Source/Timeline.cpp"/>
       <FILE id="g2K5jn" name="Timeline.h" compile="0" resource="0" file="Source/Timeline.h"/>

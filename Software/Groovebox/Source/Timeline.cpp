@@ -75,6 +75,13 @@ std::function<void(juce::Graphics*)> Timeline_t::drawState () {
     return ffsetupState;
 }
 
+void Timeline_t::drawWaveforms(juce::Graphics &g, std::unique_ptr<tracktion_engine::Edit> &edit) {
+    juce::Array<tracktion_engine::Track*> trackList = edit->getTrackList().objects;
+    for (auto track : trackList) {
+        
+    }
+}
+
 void Timeline_t::setupButtonImages() {
     juce::Colour zeroAlpha = juce::Colour::fromRGBA(0x00,
                                                     0x00,

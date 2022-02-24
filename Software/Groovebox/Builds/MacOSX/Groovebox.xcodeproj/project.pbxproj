@@ -47,6 +47,7 @@
 		E703B7A5C663722D4340F372 /* include_tracktion_engine_model_2.cpp */ = {isa = PBXBuildFile; fileRef = D5D4C8CD13D3704524513A79; };
 		E8DA8D8C365260B04E08049C /* include_juce_audio_devices.mm */ = {isa = PBXBuildFile; fileRef = F1C651A8753C39A9EDFA5175; };
 		EAD8860B92282EFCA878A87A /* BinaryData.cpp */ = {isa = PBXBuildFile; fileRef = BFE625D7D67BBF319801827D; };
+		EB4CAC5425436D17F935120E /* graphicsHelper.cpp */ = {isa = PBXBuildFile; fileRef = 36F65BC0AD30CC03A4F0911C; };
 		FFAB3AAA8D9E9FF7B8697758 /* Foundation.framework */ = {isa = PBXBuildFile; fileRef = 5EC0529209FD9C212D597AB7; };
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 		236D4F5785FC2574D6AD3005 /* include_juce_gui_extra.mm */ /* include_juce_gui_extra.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_extra.mm; path = ../../JuceLibraryCode/include_juce_gui_extra.mm; sourceTree = SOURCE_ROOT; };
 		2E82ACB11130FBB2AFB32679 /* CoreAudio.framework */ /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		357CAEAB7825E5FDB3FD127D /* include_juce_core.mm */ /* include_juce_core.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_core.mm; path = ../../JuceLibraryCode/include_juce_core.mm; sourceTree = SOURCE_ROOT; };
+		36F65BC0AD30CC03A4F0911C /* graphicsHelper.cpp */ /* graphicsHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = graphicsHelper.cpp; path = ../../Source/graphicsHelper.cpp; sourceTree = SOURCE_ROOT; };
 		402332BC3779F797B19C29A3 /* tracktion_graph */ /* tracktion_graph */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tracktion_graph; path = /Users/petertso/TRACKTION_ENGINE_MODULES/modules/tracktion_graph; sourceTree = "<absolute>"; };
 		46220D721EF1AF956AD27635 /* juce_graphics */ /* juce_graphics */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_graphics; path = /Users/petertso/JUCE/modules/juce_graphics; sourceTree = "<absolute>"; };
 		46D4BC75687A07335382617D /* include_juce_gui_basics.mm */ /* include_juce_gui_basics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_gui_basics.mm; path = ../../JuceLibraryCode/include_juce_gui_basics.mm; sourceTree = SOURCE_ROOT; };
@@ -77,6 +79,7 @@
 		5EC0529209FD9C212D597AB7 /* Foundation.framework */ /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		61C242030C248715027BBD50 /* tracktion_engine */ /* tracktion_engine */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tracktion_engine; path = /Users/petertso/TRACKTION_ENGINE_MODULES/modules/tracktion_engine; sourceTree = "<absolute>"; };
 		6A50641C380956146A1DDAEE /* include_juce_events.mm */ /* include_juce_events.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_events.mm; path = ../../JuceLibraryCode/include_juce_events.mm; sourceTree = SOURCE_ROOT; };
+		6CAA522217C3032F3FAE4D54 /* graphicsHelper.h */ /* graphicsHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = graphicsHelper.h; path = ../../Source/graphicsHelper.h; sourceTree = SOURCE_ROOT; };
 		6DE57C39615ABF9623518BFB /* include_tracktion_engine_audio_files.cpp */ /* include_tracktion_engine_audio_files.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_tracktion_engine_audio_files.cpp; path = ../../JuceLibraryCode/include_tracktion_engine_audio_files.cpp; sourceTree = SOURCE_ROOT; };
 		728F09D46B025182982CE009 /* juce_gui_extra */ /* juce_gui_extra */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_gui_extra; path = /Users/petertso/JUCE/modules/juce_gui_extra; sourceTree = "<absolute>"; };
 		75097A348FB983C45E731A78 /* Cocoa.framework */ /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -148,6 +151,15 @@
 				810205218985BD810D821569,
 			);
 			name = Source;
+			sourceTree = "<group>";
+		};
+		5B96B97E1FE9F9FD36868D06 /* GraphicsHelper */ = {
+			isa = PBXGroup;
+			children = (
+				36F65BC0AD30CC03A4F0911C,
+				6CAA522217C3032F3FAE4D54,
+			);
+			name = GraphicsHelper;
 			sourceTree = "<group>";
 		};
 		6D4830E020BC8A95E222823C /* JUCE Library Code */ = {
@@ -243,6 +255,7 @@
 		C43F2AB57A18992A5EC2F87D /* Groovebox */ = {
 			isa = PBXGroup;
 			children = (
+				5B96B97E1FE9F9FD36868D06,
 				D9EADA0902B6F19D1F2B0EBE,
 				F605362B0E69F5C862E04586,
 				8FA708C73B2FCD7B36402EB2,
@@ -376,6 +389,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB4CAC5425436D17F935120E,
 				558ECD024411331E81C5F7B5,
 				1D94BDC46646BBE2E500CB36,
 				E369CF31748B897783F56D07,

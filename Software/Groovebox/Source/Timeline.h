@@ -16,6 +16,7 @@
 #include <functional>
 #include <JuceHeader.h>
 #include <cstdarg>
+#include <string.h>
 #include "viewObjects.h"
 
 class Timeline_t {
@@ -77,6 +78,8 @@ public:
      * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
     std::function<void(juce::Graphics *g)> drawState();
+    
+    void drawWaveforms (juce::Graphics &g, std::unique_ptr<tracktion_engine::Edit> &edit);
     
 // private member variables go here
 private:

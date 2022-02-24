@@ -5,8 +5,7 @@
 #include <functional>
 #include <math.h>
 
-// State files
-#include "Timeline.h"
+#include "graphicsHelper.h"
 
 //#include "Utilities.h"
 
@@ -116,8 +115,6 @@ private:
     const std::string apath = APATH;
     
     juce::Label timelineLoadedLabel {"No edit loaded!"};
-    
-    void drawAudioWaveform();
     
     //=================================================================
     
