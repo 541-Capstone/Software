@@ -23,6 +23,8 @@ Timeline_t::Timeline_t(int x, int y, int sc, int *numtracks) {
     
     this->numtracks = numtracks;
     
+    this->currentTrack = nullptr;
+    
     setupButtonImages ();
     
     myObjects.inclBtns = true;
@@ -73,6 +75,11 @@ void Timeline_t::onClick (juce::Button *btn) {
     }
 }
 
+void Timeline_t::setCurrentTrackPtr
+ (int *currentTrack) {
+    this->currentTrack = currentTrack;
+}
+
 void Timeline_t::resize() {
     juce::Rectangle<int> buttonRect = juce::Rectangle<int>(window[0] * scale, window[1] * scale);
     juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
@@ -103,7 +110,7 @@ void Timeline_t::resize() {
     textBox.performLayout(textRect);
 }
 
-std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawState () {
+std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> Timeline_t::drawState () {
     /*std::function<void(juce::Graphics*)> ffsetupState = [&](juce::Graphics *g)->void {
         g->setColour(bg_color);
         g->fillRect (0, 0, window[0], 40 + controlImageHeightpx);
@@ -113,7 +120,7 @@ std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawSt
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> paintFunc = [&](juce::Graphics* g, tracktion_engine::Edit *edit) -> void {
+    std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> paintFunc = [&](juce::Graphics* g, std::shared_ptr<tracktion_engine::Edit> edit) -> void {
         g->fillAll(bg_color);
 
         // You can add your drawing code here!
@@ -122,12 +129,14 @@ std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawSt
         juce::Array<tracktion_engine::Track*> trackList = edit->getTrackList().objects;
         juce::String trackNames = "";//(int)trackList.size() + "\n";
         for (auto track : trackList) {
-            if (track == audioTrackList[currentTrack]) trackNames += "* ";
+            if (track == (*audioTrackList)[(*currentTrack)]) trackNames += "* ";
             trackNames += track->getName();
             trackNames += '\n';
         }
         trackCountLbl.setText(trackNames, juce::NotificationType::dontSendNotification);
-    }
+    };
+    
+    return paintFunc;
 }
 
 void Timeline_t::setupButtonImages() {

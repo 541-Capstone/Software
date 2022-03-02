@@ -15,8 +15,12 @@ MainComponent::MainComponent(){
     // set the maximum number of tracks
     setNumberOfTracks(-1);
     
-    // just call fload for now
+    // just call loadEdit for now
     loadEdit();
+    
+    // set current track to zero (testing purposes for now)
+    currentTrack = 0;
+    timeline.setCurrentTrackPtr (&currentTrack);
     
     /* initally, program set to TrackView*/
     setupTrackView(true);
@@ -87,14 +91,7 @@ void MainComponent::releaseResources(){
 void MainComponent::setupTrackView(bool fst){
     /* add the buttons */
     if (fst) {
-        /* Add the buttons and make visible */
-        /*
-        addAndMakeVisible(play);
-        addAndMakeVisible(pause);
-        addAndMakeVisible(record);
-        
-        addAndMakeVisible(load);
-         */
+
         viewObjects* viewObjs = timeline.getObjects();
         for (auto btn: viewObjs->btns) {
             addAndMakeVisible(*btn);

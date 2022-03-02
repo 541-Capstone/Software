@@ -77,7 +77,7 @@ public:
      *
      * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
-    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> drawState();
+    std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> drawState();
 
     /**
      * @brief This returns drawing routine for Timeline_t
@@ -85,6 +85,8 @@ public:
      * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
     void resize();
+    
+    void setCurrentTrackPtr (int *currentTrack);
     
 // private member variables go here
 private:
@@ -116,8 +118,14 @@ private:
     /* Colours */
     juce::Colour bg_color = juce::Colour(64, 64, 64);
     
-    /* Number of tracks */
+    /* Number of tracks pointer */
     int *numtracks;
+    
+    /* current track pointer */
+    int *currentTrack;
+    
+    /* audio track list */
+    std::vector<tracktion_engine::Track*> *audioTrackList;
 
     /* broadcast functions*/
     void play();

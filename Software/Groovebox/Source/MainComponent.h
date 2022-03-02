@@ -108,9 +108,6 @@ private:
     
     const int controlImageHeightpx = 150 / scale;
     const int controlImageWidthpx = 300 / scale;
-
-    /* this is the timeline object */
-    Timeline_t timeline{ window[0], window[1], scale };
     
     /**
      * TODO: Change the absolute path when implementing on Pi4
@@ -165,6 +162,10 @@ private:
     int maxNumTracks;
     
     bool isplaying;
+    int currentTrack;
+    
+    /* this is the timeline object */
+    Timeline_t timeline{ window[0], window[1], scale,  &numTracks};
     
     /* State functions below! */
     

@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Groovebox\TrackManager">
+      <UniqueIdentifier>{6D5C4969-00E1-D743-6C03-ACF410F3B97F}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\State">
       <UniqueIdentifier>{6E701E9E-3CC6-49AB-C9AD-65D9CCF9F12C}</UniqueIdentifier>
     </Filter>
@@ -1171,6 +1174,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\TrackManager.cpp">
+      <Filter>Groovebox\TrackManager</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Timeline.cpp">
       <Filter>Groovebox\State</Filter>
     </ClCompile>
@@ -5331,6 +5337,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\TrackManager.h">
+      <Filter>Groovebox\TrackManager</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Timeline.h">
       <Filter>Groovebox\State</Filter>
     </ClInclude>

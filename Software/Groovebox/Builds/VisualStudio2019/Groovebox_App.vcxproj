@@ -139,6 +139,7 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\TrackManager.cpp"/>
     <ClCompile Include="..\..\Source\Timeline.cpp"/>
     <ClCompile Include="..\..\Source\viewObjects.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
@@ -4121,6 +4122,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_tracktion_graph.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\TrackManager.h"/>
     <ClInclude Include="..\..\Source\Timeline.h"/>
     <ClInclude Include="..\..\Source\viewObjects.h"/>
     <ClInclude Include="..\..\Source\MainComponent.h"/>
