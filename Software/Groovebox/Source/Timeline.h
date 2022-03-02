@@ -105,7 +105,7 @@ private:
     juce::ImageButton pause {"pause"};
     juce::ImageButton record {"record"};
     
-    juce::Colour bg_color = juce::Colours::pink;
+    juce::Colour bg_color = juce::Colour(64,64,64);
     
     /* Create the images */
     
@@ -130,7 +130,7 @@ private:
     juce::Image pauseImage = juce::ImageFileFormat::loadFrom(juce::File(fpauseImageDefault));
     
     // The recordImage contains the image for the recordButton at default
-    juce::Image recordImage = ImageFileFormat::loadFrom(juce::File(frecordImageDefault));
+    juce::Image recordImage = juce::ImageFileFormat::loadFrom(juce::File(frecordImageDefault));
     
     // Contains the image for playButton when hovering
     juce::Image playHoverImage = juce::ImageFileFormat::loadFrom(juce::File(fplayImageHover));

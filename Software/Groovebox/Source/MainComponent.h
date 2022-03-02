@@ -58,7 +58,7 @@ private:
     /* Graphical properties below! */
     
     // This sets the background color
-    juce::Colour background_color = juce::Colours::white;
+    juce::Colour background_color = juce::Colour(40,40,40);
     
     // Default color
     juce::Colour defaultColor = juce::Colours::violet;
@@ -101,12 +101,15 @@ private:
      * The variables below are for timeline view
      */
     /* These are the play and pause buttons */
-    juce::ImageButton play;
-    juce::ImageButton pause;
-    juce::ImageButton record;
+    juce::ImageButton playBtn;
+    juce::ImageButton pauseBtn;
+    juce::ImageButton recordBtn;
     
     const int controlImageHeightpx = 150 / scale;
     const int controlImageWidthpx = 300 / scale;
+
+    /* this is the timeline object */
+    Timeline_t timeline{ window[0], window[1], scale };
     
     /**
      * TODO: Change the absolute path when implementing on Pi4
@@ -168,9 +171,9 @@ private:
      * @brief The setupTrackView function sets up the track view buttons
      * @param fst True when it is the first time setting up track view
      */
-    void setupTrackView(bool fst);
+    void setupTrackView(bool firstTime);
     
-    void setNumberofTracks(int n);
+    void setNumberOfTracks(int n);
     
     /**
      * @brief This disables and hides all buttons
@@ -188,23 +191,22 @@ private:
      */
     
     // Function to load the edit
-    void fload();
+    void loadEdit();
     
     // temporary button for loading (can get rid later for phy buttons !)
     juce::ImageButton load;
     
     /* core features should be added in MainComponent for all state objects to use. If a button or other componnent in the state object needs to use a core feature, call viewObjects* the_state_t::getObjects (), and pass function there */
     // Common functions for playing, recording, pausing, etc.
-    void fplay();
     
-    void fpause();
+    //Begins playing the track from the current playhead position
+    void play();
     
-    void frecord();
+    //Pauses the palyhead at its current position
+    void pause();
     
-    // objects for states
-    
-    /* this is the timeline object */
-    Timeline_t tO {window[0], window[1], scale};
+    //Begins recording, and begins playing if not already playing
+    void record();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

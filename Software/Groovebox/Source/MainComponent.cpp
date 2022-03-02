@@ -13,10 +13,10 @@ MainComponent::MainComponent(){
     startTimer(frameInterval);
     
     // set the maximum number of tracks
-    setNumberofTracks(-1);
+    setNumberOfTracks(-1);
     
     // just call fload for now
-    fload();
+    loadEdit();
     
     /* initally, program set to TrackView*/
     setupTrackView(true);
@@ -34,7 +34,7 @@ void MainComponent::paint(juce::Graphics &g){
     /* Draw the time line graphics objects */
     if (WState == WindowStates::Timeline){
         /* get the drawState function from timeline object */
-        auto tg = tO.drawState ();
+        auto tg = timeline.drawState ();
         
         /* draw using drawState and pass &g to it */
         tg (&g);
@@ -45,9 +45,9 @@ void MainComponent::paint(juce::Graphics &g){
 void MainComponent::buttonClicked(juce::Button *button){
     /* check to see for timeline button */
     if (WState == WindowStates::Timeline) {
-        for (auto btn : tO.getObjects()->btns) {
+        for (auto btn : timeline.getObjects()->btns) {
             if (button == btn) {
-                tO.onClick (btn);
+                timeline.onClick (btn);
             }
         }
     }
@@ -89,47 +89,30 @@ void MainComponent::setupTrackView(bool fst){
         
         addAndMakeVisible(load);
          */
-        viewObjects* tb = tO.getObjects();
-        for (auto btn: tb->btns) {
+        viewObjects* viewObjs = timeline.getObjects();
+        for (auto btn: viewObjs->btns) {
             addAndMakeVisible(*btn);
             btn->addListener(this);
         }
+        //TODO: Refactor this
+        std::function<void()> f1 = [this](void)->void{play();};
         
-        std::function<void()> f1 = [this](void)->void{fplay();};
+        std::function<void()> f2 = [this](void)->void{pause();};
         
-        std::function<void()> f2 = [this](void)->void{fpause();};
+        std::function<void()> f3 = [this](void)->void{record();};
         
-        std::function<void()> f3 = [this](void)->void{frecord();};
-        
-        tO.assignFunctionToObjects({f1, f2, f3});
-        
-        /*
-        tb->btns[0]->onClick = [this](void)->void {fplay();};
-        tb->btns[1]->onClick = [this](void)->void {fpause();};
-        tb->btns[2]->onClick = [this](void)->void {frecord();};
-         */
-        
-        // Pass functions for the buttons
-        /*
-        play.onClick = [this](void)->void{ fplay(); };
-        
-        pause.onClick = [this](void)->void{ fpause(); };
-        
-        record.onClick = [this](void)->void{ frecord(); };
-        */
-        // load just makes a new empty edit for now
-        //load.onClick = [this](void)->void{ fload(); };
+        timeline.assignFunctionToObjects({f1, f2, f3});
     }
 }
 
-void MainComponent::setNumberofTracks(int n){
+void MainComponent::setNumberOfTracks(int n){
     maxNumTracks = n;
 }
 
-void MainComponent::fload(){
+void MainComponent::loadEdit(){
     std::string filename = "\0";
     const juce::String editFilePath = editPath + filename;
-    const File editFile (editFilePath);
+    const juce::File editFile (editFilePath);
     
     // get the edit if it exists
     if (editFile.existsAsFile()) {
@@ -149,20 +132,8 @@ void MainComponent::fload(){
 
 void MainComponent::disableAllButtons(){
     // Disable timeline buttons (play, pause, record at the moment)
-    /*
-    play.setEnabled(false);
-    pause.setEnabled(false);
-    record.setEnabled(false);
-     */
     
-    // Hide the timeline buttons
-    /*
-    play.setVisible(false);
-    pause.setVisible(false);
-    record.setVisible(false);
-     */
-    
-    for (auto btn : tO.getObjects()->btns) {
+    for (auto btn : timeline.getObjects()->btns) {
         (*btn).setEnabled(false);
         (*btn).setVisible(false);
     }
@@ -172,7 +143,7 @@ void MainComponent::enableButtonAtCurrentState(){
     
     // if the state is at Timeline, enable and set visible all buttons
     if (WState == WindowStates::Timeline) {
-        for (auto btn : tO.getObjects()->btns) {
+        for (auto btn : timeline.getObjects()->btns) {
             (*btn).setEnabled(true);
             (*btn).setVisible(true);
         }
@@ -181,7 +152,7 @@ void MainComponent::enableButtonAtCurrentState(){
     }
 }
 
-void MainComponent::fplay(){
+void MainComponent::play(){
     if (edit == nullptr) {LOG("Missing edit!\n"); return; }
     // Play functions when paused and edit is loaded
     if (PState == PlayStates::Pause) {
@@ -195,7 +166,7 @@ void MainComponent::fplay(){
     }
 }
 
-void MainComponent::fpause(){
+void MainComponent::pause(){
     if (edit == nullptr) {LOG("Missing edit!\n"); return; }
     isplaying = false;
     if (PState == PlayStates::Play) {
@@ -215,14 +186,13 @@ void MainComponent::fpause(){
     }
 }
 
-void MainComponent::frecord(){
+void MainComponent::record(){
     LOG ("Recording\n");
 }
 
 void MainComponent::drawAudioWaveform(){
     int thumbnailSize = 512; // px
     std::unique_ptr<juce::FileChooser> chooser;
-        
     juce::AudioFormatManager formatManager;
     juce::AudioThumbnailCache thumbnailCache {5};
     juce::AudioThumbnail thumbnail {thumbnailSize, formatManager, thumbnailCache};

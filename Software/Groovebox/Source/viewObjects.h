@@ -18,7 +18,7 @@
 #endif
 
 #ifdef _WIN64
-    #define APATH
+    #define APATH "C:\\Users\\Dima\\Dev\\EECS542\\Software\\Software\\Groovebox"
 #endif
 
 #include <JuceHeader.h>

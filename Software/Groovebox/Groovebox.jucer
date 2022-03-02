@@ -46,9 +46,9 @@
         <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_engine" path="../../tracktion_engine/modules"/>
+        <MODULEPATH id="tracktion_engine" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_osc" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_graph" path="../../tracktion_engine/modules"/>
+        <MODULEPATH id="tracktion_graph" path="../../JUCE/modules"/>
       </MODULEPATHS>
     </CODEBLOCKS_LINUX>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile" extraLinkerFlags="-latomic">
@@ -69,9 +69,9 @@
         <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_engine" path="../../tracktion_engine/modules"/>
+        <MODULEPATH id="tracktion_engine" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_osc" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_graph" path="../../tracktion_engine/modules"/>
+        <MODULEPATH id="tracktion_graph" path="../../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <VS2019 targetFolder="Builds/VisualStudio2019">
@@ -80,21 +80,21 @@
         <CONFIGURATION isDebug="0" name="Release" targetName="Groovebox"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_engine" path="../../tracktion_engine/modules"/>
-        <MODULEPATH id="juce_osc" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_graph" path="../../tracktion_engine/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_audio_devices" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_audio_formats" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_audio_processors" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_audio_utils" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_core" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_data_structures" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_dsp" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_events" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_graphics" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="tracktion_engine" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_osc" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="tracktion_graph" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
       </MODULEPATHS>
     </VS2019>
     <VS2022 targetFolder="Builds/VisualStudio2022">
@@ -103,21 +103,21 @@
         <CONFIGURATION isDebug="0" name="Release" targetName="Groovebox"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_dsp" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_engine" path="../../tracktion_engine/modules"/>
-        <MODULEPATH id="juce_osc" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_graph" path="../../tracktion_engine/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_audio_devices" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_audio_formats" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_audio_processors" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_audio_utils" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_core" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_data_structures" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_dsp" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_events" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_graphics" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="tracktion_engine" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="juce_osc" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
+        <MODULEPATH id="tracktion_graph" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
       </MODULEPATHS>
     </VS2022>
     <XCODE_MAC targetFolder="Builds/MacOSX">
@@ -138,9 +138,9 @@
         <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_engine" path="../../tracktion_engine/modules"/>
+        <MODULEPATH id="tracktion_engine" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_osc" path="../../JUCE/modules"/>
-        <MODULEPATH id="tracktion_graph" path="../../tracktion_engine/modules"/>
+        <MODULEPATH id="tracktion_graph" path="../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
