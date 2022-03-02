@@ -5,8 +5,9 @@
 #include <functional>
 #include <math.h>
 
-// State files
+// Context files
 #include "Timeline.h"
+#include "TrackManager.h"
 
 //#include "Utilities.h"
 
@@ -36,7 +37,7 @@ public:
     ~MainComponent() override;
     //==============================================================================
     void paint (juce::Graphics& g) override;
-
+    void resized() override;
     
     void buttonClicked(juce::Button* button) override;
     
@@ -135,7 +136,7 @@ private:
     /**
      * @brief This is the edit pointer. This will be used to load/used to edit
      */
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    std::shared_ptr<tracktion_engine::Edit> edit;
     
     /**
      * @brief This is the file location of edits. Just concat the location to load.

@@ -17,8 +17,9 @@
 #include <JuceHeader.h>
 #include <cstdarg>
 #include "viewObjects.h"
+#include "TrackManager.h"
 
-class Timeline_t {
+class Timeline_t : juce::ActionBroadcaster {
 public:
     
     /**
@@ -77,6 +78,13 @@ public:
      * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
     std::function<void(juce::Graphics *g)> drawState();
+
+    /**
+     * @brief This returns drawing routine for Timeline_t
+     *
+     * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
+     */
+    void resize();
     
 // private member variables go here
 private:
@@ -85,10 +93,34 @@ private:
     int scale = 0;
     int controlImageHeightpx = 150;
     int controlImageWidthpx = 300;
+    juce::Rectangle<int> paintWindow = juce::Rectangle<int>();
     
+    /* Objects */
+    tracktion_engine::TransportControl* transport;
+    TrackManager* trackManager;
     viewObjects myObjects;
     std::vector<std::function<void()>> funcs;
     
+    /* Buttons */
+    juce::ImageButton playBtn{ "play" };
+    juce::ImageButton pauseBtn{ "pause" };
+    juce::ImageButton recordBtn{ "record" };
+    juce::TextButton addTrackBtn{ "Add Track" };
+    juce::TextButton leftBtn{ "<<<" };
+    juce::TextButton rightBtn{ ">>>" };
+
+    /* Labels */
+    juce::Label statusLbl{ "statusLbl", "Status" };
+    juce::Label trackCountLbl{ "trackCountLbl", "Track count" };
+
+    /* Colours */
+    juce::Colour bg_color = juce::Colour(64, 64, 64);
+
+    /* broadcast functions*/
+    void play();
+    void pause();
+    void record();
+
     const std::string apath = APATH;
     
     /* path to play button */
@@ -99,13 +131,6 @@ private:
     std::string fplayImageHover = fplayImageDefault;
     std::string fpauseImageHover = fplayImageDefault;
     std::string frecordImageHover = fplayImageDefault;
-    
-    /* buttons themselves */
-    juce::ImageButton play {"play"};
-    juce::ImageButton pause {"pause"};
-    juce::ImageButton record {"record"};
-    
-    juce::Colour bg_color = juce::Colour(64,64,64);
     
     /* Create the images */
     

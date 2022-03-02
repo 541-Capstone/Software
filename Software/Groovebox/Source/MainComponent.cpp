@@ -41,8 +41,14 @@ void MainComponent::paint(juce::Graphics &g){
     }
 }
 
+void MainComponent::resized() {
+    //Make this into a for loop to resize each context
+    timeline.resize();
+}
+
 /* button listener */
 void MainComponent::buttonClicked(juce::Button *button){
+    DBG("Button pressed");
     /* check to see for timeline button */
     if (WState == WindowStates::Timeline) {
         for (auto btn : timeline.getObjects()->btns) {
