@@ -30,7 +30,7 @@ public:
      * @param sc This is the scale (usually 1)
      *
      */
-    Timeline_t(int x, int y, int sc);
+    Timeline_t(int x, int y, int sc, int *numtracks);
     
     /**
      * @brief This is the Timeline_t class destructor
@@ -77,7 +77,7 @@ public:
      *
      * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
-    std::function<void(juce::Graphics *g)> drawState();
+    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> drawState();
 
     /**
      * @brief This returns drawing routine for Timeline_t
@@ -115,6 +115,9 @@ private:
 
     /* Colours */
     juce::Colour bg_color = juce::Colour(64, 64, 64);
+    
+    /* Number of tracks */
+    int *numtracks;
 
     /* broadcast functions*/
     void play();

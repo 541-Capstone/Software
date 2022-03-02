@@ -10,7 +10,7 @@
 
 #include "Timeline.h"
 
-Timeline_t::Timeline_t(int x, int y, int sc) {
+Timeline_t::Timeline_t(int x, int y, int sc, int *numtracks) {
     paintWindow.setHeight(y);
     paintWindow.setWidth(x);
     /*window[0] = x;
@@ -20,6 +20,8 @@ Timeline_t::Timeline_t(int x, int y, int sc) {
     scale = sc;
     controlImageHeightpx = controlImageHeightpx / scale;
     controlImageWidthpx = controlImageWidthpx / scale;
+    
+    this->numtracks = numtracks;
     
     setupButtonImages ();
     
@@ -101,7 +103,7 @@ void Timeline_t::resize() {
     textBox.performLayout(textRect);
 }
 
-std::function<void(juce::Graphics*)> Timeline_t::drawState () {
+std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawState () {
     /*std::function<void(juce::Graphics*)> ffsetupState = [&](juce::Graphics *g)->void {
         g->setColour(bg_color);
         g->fillRect (0, 0, window[0], 40 + controlImageHeightpx);
@@ -111,19 +113,17 @@ std::function<void(juce::Graphics*)> Timeline_t::drawState () {
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    std::function<void(juce::Graphics*)> paintFunc = [&](juce::Graphics* g) -> void {
-        g.fillAll(bg_color);
+    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> paintFunc = [&](juce::Graphics* g, tracktion_engine::Edit *edit) -> void {
+        g->fillAll(bg_color);
 
         // You can add your drawing code here!
         statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
-        trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)numTracks, juce::NotificationType::dontSendNotification);
-        juce::Array<tracktion_engine::Track*> trackList = edit.getTrackList().objects;
+        trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(*numtracks), juce::NotificationType::dontSendNotification);
+        juce::Array<tracktion_engine::Track*> trackList = edit->getTrackList().objects;
         juce::String trackNames = "";//(int)trackList.size() + "\n";
-        for (int i = 0; i < trackList.size(); i++) {
-            if (trackList[i] == audioTrackList[currentTrack]) {
-                trackNames += "* ";
-            }
-            trackNames += trackList[i]->getName();
+        for (auto track : trackList) {
+            if (track == audioTrackList[currentTrack]) trackNames += "* ";
+            trackNames += track->getName();
             trackNames += '\n';
         }
         trackCountLbl.setText(trackNames, juce::NotificationType::dontSendNotification);

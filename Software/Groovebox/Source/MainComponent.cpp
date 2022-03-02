@@ -37,7 +37,7 @@ void MainComponent::paint(juce::Graphics &g){
         auto tg = timeline.drawState ();
         
         /* draw using drawState and pass &g to it */
-        tg (&g);
+        tg (&g, edit);
     }
 }
 
