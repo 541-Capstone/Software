@@ -104,9 +104,9 @@ private:
     std::vector<std::function<void()>> funcs;
     
     /* Buttons */
-    juce::ImageButton playBtn{ "play" };
-    juce::ImageButton pauseBtn{ "pause" };
-    juce::ImageButton recordBtn{ "record" };
+    juce::TextButton playBtn{ "play" };
+    juce::TextButton pauseBtn{ "pause" };
+    juce::TextButton recordBtn{ "record" };
     juce::TextButton addTrackBtn{ "Add Track" };
     juce::TextButton leftBtn{ "<<<" };
     juce::TextButton rightBtn{ ">>>" };
@@ -125,7 +125,7 @@ private:
     int *currentTrack;
     
     /* audio track list */
-    std::vector<tracktion_engine::Track*> *audioTrackList;
+    std::vector<tracktion_engine::Track*> *audioTrackList = nullptr;
 
     /* broadcast functions*/
     void play();

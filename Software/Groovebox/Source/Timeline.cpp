@@ -13,9 +13,9 @@
 Timeline_t::Timeline_t(int x, int y, int sc, int *numtracks) {
     paintWindow.setHeight(y);
     paintWindow.setWidth(x);
-    /*window[0] = x;
+    window[0] = x;
     window[1] = y;
-    windowCenter = window[0] / 2;*/
+    windowCenter = window[0] / 2;
     
     scale = sc;
     controlImageHeightpx = controlImageHeightpx / scale;
@@ -25,11 +25,16 @@ Timeline_t::Timeline_t(int x, int y, int sc, int *numtracks) {
     
     this->currentTrack = nullptr;
     
+    /* setup image buttons , not used anymore */
     setupButtonImages ();
     
+    audioTrackList = new std::vector<tracktion_engine::Track*>();
+    
+    /* set that buttons are included in myObjects */
     myObjects.inclBtns = true;
     myObjects.inclLbls = false;
     
+    /* push buttons onto myObjects button vector */
     myObjects.btns.push_back(&playBtn);
     myObjects.btns.push_back(&pauseBtn);
     myObjects.btns.push_back(&recordBtn);
@@ -40,6 +45,7 @@ Timeline_t::Timeline_t(int x, int y, int sc, int *numtracks) {
 
 Timeline_t::~Timeline_t(){
     // do nothing for now!
+    delete audioTrackList;
 }
 
 viewObjects* Timeline_t::getObjects() {
@@ -67,6 +73,10 @@ bool Timeline_t::assignFuncToBtn(juce::Button *btn, std::function<void ()> func)
 void Timeline_t::onClick (juce::Button *btn) {
     int i = 0;
     for (auto b : myObjects.btns) {
+        if (i >= funcs.size () ) {
+            std::cout<<"Function not implmented!\n";
+            return;
+        }
         if (b == btn) {
             funcs[i]();
             return;
@@ -81,13 +91,14 @@ void Timeline_t::setCurrentTrackPtr
 }
 
 void Timeline_t::resize() {
-    juce::Rectangle<int> buttonRect = juce::Rectangle<int>(window[0] * scale, window[1] * scale);
+    int buttonHeight = 100, buttonWidth = 100, i = 0;
+    juce::Rectangle<int> buttonRect = juce::Rectangle<int>(window[0], window[1]);
     juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
 
     juce::FlexBox buttonBox{ juce::FlexBox::Direction::row,
                              juce::FlexBox::Wrap::noWrap,
-                             juce::FlexBox::AlignContent::stretch,
-                             juce::FlexBox::AlignItems::center,
+                             juce::FlexBox::AlignContent::flexStart,
+                             juce::FlexBox::AlignItems::flexStart,
                              juce::FlexBox::JustifyContent::center };
 
     juce::FlexBox textBox{ juce::FlexBox::Direction::column,
@@ -96,12 +107,19 @@ void Timeline_t::resize() {
                            juce::FlexBox::AlignItems::flexStart,
                            juce::FlexBox::JustifyContent::flexEnd
     };
-
+    
+    
+    for (juce::Button *btn : myObjects.btns) {
+        buttonBox.items.add (juce::FlexItem (buttonWidth, buttonHeight, *btn));
+        i++;
+    }
+    /*
     buttonBox.items.add(juce::FlexItem(100, 100, playBtn));
     buttonBox.items.add(juce::FlexItem(100, 100, pauseBtn));
     buttonBox.items.add(juce::FlexItem(100, 100, addTrackBtn));
     buttonBox.items.add(juce::FlexItem(100, 100, leftBtn));
     buttonBox.items.add(juce::FlexItem(100, 100, rightBtn));
+    */
 
     textBox.items.add(juce::FlexItem(150, 10, statusLbl));
     textBox.items.add(juce::FlexItem(textRect.getWidth(), textRect.getHeight(), trackCountLbl));
@@ -122,16 +140,23 @@ std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> Ti
     // update their positions.
     std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> paintFunc = [&](juce::Graphics* g, std::shared_ptr<tracktion_engine::Edit> edit) -> void {
         g->fillAll(bg_color);
+        
+        transport = &edit->getTransport();
+        
 
         // You can add your drawing code here!
         statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
         trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(*numtracks), juce::NotificationType::dontSendNotification);
         juce::Array<tracktion_engine::Track*> trackList = edit->getTrackList().objects;
         juce::String trackNames = "";//(int)trackList.size() + "\n";
-        for (auto track : trackList) {
-            if (track == (*audioTrackList)[(*currentTrack)]) trackNames += "* ";
-            trackNames += track->getName();
-            trackNames += '\n';
+        
+        /* only iter when the there are tracks in audiotracklist */
+        if (audioTrackList->size () > 0){
+            for (auto track : trackList) {
+                if (track == (*audioTrackList)[(*currentTrack)]) trackNames += "* ";
+                trackNames += track->getName();
+                trackNames += '\n';
+            }
         }
         trackCountLbl.setText(trackNames, juce::NotificationType::dontSendNotification);
     };
@@ -140,6 +165,8 @@ std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> Ti
 }
 
 void Timeline_t::setupButtonImages() {
+    return;
+    /*
     juce::Colour zeroAlpha = juce::Colour::fromRGBA(0x00,
                                                     0x00,
                                                     0x00,
@@ -166,6 +193,7 @@ void Timeline_t::setupButtonImages() {
                    100,
                    zeroAlpha);
 
+    
     playBtn.setBounds(leftmost,
                    y_spacing,
                    controlImageWidthpx,
@@ -183,6 +211,7 @@ void Timeline_t::setupButtonImages() {
                     recordImage,
                     100,
                     zeroAlpha);
+    
     
     recordBtn.setBounds(leftmost + x_spacing + controlImageWidthpx,
                      y_spacing,
@@ -202,9 +231,12 @@ void Timeline_t::setupButtonImages() {
                     100,
                     zeroAlpha);
     
+    
     pauseBtn.setBounds(leftmost + (2 * x_spacing) + (2 * controlImageWidthpx),
                     y_spacing,
                     controlImageWidthpx,
                     controlImageHeightpx);
+    
+    */
     
 }

@@ -98,13 +98,13 @@ void MainComponent::setupTrackView(bool fst){
             btn->addListener(this);
         }
         //TODO: Refactor this
-        std::function<void()> f1 = [this](void)->void{play();};
+        std::function<void()> playFun = [this](void)->void{play();};
         
-        std::function<void()> f2 = [this](void)->void{pause();};
+        std::function<void()> pauseFun = [this](void)->void{pause();};
         
-        std::function<void()> f3 = [this](void)->void{record();};
+        std::function<void()> recordFun = [this](void)->void{record();};
         
-        timeline.assignFunctionToObjects({f1, f2, f3});
+        timeline.assignFunctionToObjects({playFun, pauseFun, recordFun});
     }
 }
 
