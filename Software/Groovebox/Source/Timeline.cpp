@@ -128,7 +128,7 @@ void Timeline_t::resize() {
     textBox.performLayout(textRect);
 }
 
-std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> Timeline_t::drawState () {
+std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawState () {
     /*std::function<void(juce::Graphics*)> ffsetupState = [&](juce::Graphics *g)->void {
         g->setColour(bg_color);
         g->fillRect (0, 0, window[0], 40 + controlImageHeightpx);
@@ -138,7 +138,7 @@ std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> Ti
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> paintFunc = [&](juce::Graphics* g, std::shared_ptr<tracktion_engine::Edit> edit) -> void {
+    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> paintFunc = [&](juce::Graphics* g, tracktion_engine::Edit* edit) -> void {
         g->fillAll(bg_color);
         
         transport = &edit->getTransport();

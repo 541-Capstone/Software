@@ -41,7 +41,9 @@ void MainComponent::paint(juce::Graphics &g){
         auto tg = timeline.drawState ();
         
         /* draw using drawState and pass &g to it */
-        tg (&g, edit);
+        /* call edit.get() to get raw pointer from
+           std::unique_ptr */
+        tg (&g, edit.get());
     }
 }
 

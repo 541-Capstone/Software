@@ -77,7 +77,7 @@ public:
      *
      * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
-    std::function<void(juce::Graphics*, std::shared_ptr<tracktion_engine::Edit>)> drawState();
+    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> drawState();
 
     /**
      * @brief This returns drawing routine for Timeline_t

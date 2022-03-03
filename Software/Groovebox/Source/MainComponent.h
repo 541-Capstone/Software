@@ -133,7 +133,7 @@ private:
     /**
      * @brief This is the edit pointer. This will be used to load/used to edit
      */
-    std::shared_ptr<tracktion_engine::Edit> edit;
+    std::unique_ptr<tracktion_engine::Edit> edit;
     
     /**
      * @brief This is the file location of edits. Just concat the location to load.
