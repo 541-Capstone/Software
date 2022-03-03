@@ -68,6 +68,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS_APP := \
+  $(JUCE_OBJDIR)/FileManager_9cd5b872.o \
   $(JUCE_OBJDIR)/TrackManager_37b32b6b.o \
   $(JUCE_OBJDIR)/Timeline_dfee064a.o \
   $(JUCE_OBJDIR)/viewObjects_2d75c1b0.o \
@@ -109,6 +110,11 @@ $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) : $(OBJECTS_APP) $(RESOURCES)
 	-$(V_AT)mkdir -p $(JUCE_LIBDIR)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
 	$(V_AT)$(CXX) -o $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) $(OBJECTS_APP) $(JUCE_LDFLAGS) $(JUCE_LDFLAGS_APP) $(RESOURCES) $(TARGET_ARCH)
+
+$(JUCE_OBJDIR)/FileManager_9cd5b872.o: ../../Source/FileManager.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling FileManager.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/TrackManager_37b32b6b.o: ../../Source/TrackManager.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)

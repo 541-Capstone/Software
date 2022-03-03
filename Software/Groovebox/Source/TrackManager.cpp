@@ -12,7 +12,10 @@ TrackManager::~TrackManager() {
 }
 
 std::vector<te::Track*> TrackManager::getTrackList() {
-
+    std::vector<te::Track*> tracks;
+    for (auto track : *trackList)
+        tracks.push_back(track);
+    return tracks;
 }
 
 void TrackManager::addAudioTrack() {

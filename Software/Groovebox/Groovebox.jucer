@@ -5,6 +5,10 @@
               defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;" headerPath="usr/include/freetype2"
               cppLanguageStandard="17">
   <MAINGROUP id="JlHjiV" name="Groovebox">
+    <GROUP id="{3A2C3336-4627-7350-51F6-78DB7482B39C}" name="FileManager">
+      <FILE id="o28sCP" name="FileManager.cpp" compile="1" resource="0" file="Source/FileManager.cpp"/>
+      <FILE id="T1Jss2" name="FileManager.h" compile="0" resource="0" file="Source/FileManager.h"/>
+    </GROUP>
     <GROUP id="{DE7C5E92-8E8A-8E61-63D7-5F103DABB76E}" name="TrackManager">
       <FILE id="V1XLxB" name="TrackManager.cpp" compile="1" resource="0"
             file="Source/TrackManager.cpp"/>
