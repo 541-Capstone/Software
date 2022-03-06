@@ -21,7 +21,7 @@ FileManager::~FileManager () {
 
 void FileManager::loadAudioAsClip(juce::String filename, tracktion_engine::Track *track) {
     /* get the audio file */
-    const juce::File file (filename);
+    juce::File file (filename);
     
     /* create audio file */
     tracktion_engine::AudioFile audioFile (edit->engine, file);
@@ -35,9 +35,9 @@ void FileManager::loadAudioAsClip(juce::String filename, tracktion_engine::Track
 }
 
 tracktion_engine::Edit* FileManager::getEdit() {
-    return edit.get();
+    return edit;
 }
 
 void FileManager::setEdit(tracktion_engine::Edit *edit) {
-    this->edit = (std::unique_ptr<tracktion_engine::Edit>)edit;
+    this->edit = edit;
 }

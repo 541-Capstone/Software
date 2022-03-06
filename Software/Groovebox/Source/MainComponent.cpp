@@ -22,7 +22,7 @@ MainComponent::MainComponent(){
     filemanager.setEdit(edit.get());
     tracktion_engine::TrackList* tracklist = &edit->getTrackList();
     tracktion_engine::Track* track = (*tracklist)[0];
-    filemanager.loadAudioAsClip("TESTAUDIOPATH", track);
+    filemanager.loadAudioAsClip(TESTAUDIOPATH, track);
     
     
     // set current track to zero (testing purposes for now)
@@ -105,6 +105,9 @@ void MainComponent::setupTrackView(bool fst){
         for (auto btn: viewObjs->btns) {
             addAndMakeVisible(*btn);
             btn->addListener(this);
+        }
+        for (auto lbl: viewObjs->lbls) {
+            addAndMakeVisible(*lbl);
         }
         //TODO: Refactor this
         std::function<void()> playFun = [this](void)->void{play();};

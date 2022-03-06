@@ -32,8 +32,7 @@ public:
     void setEdit (tracktion_engine::Edit *edit);
 
 private:
-    std::unique_ptr<tracktion_engine::Edit> edit;
-    
+    tracktion_engine::Edit *edit;
 };
 
 #endif

@@ -29,7 +29,7 @@ Timeline_t::Timeline_t(int x, int y, int sc, int *numtracks) {
     
     /* set that buttons are included in myObjects */
     myObjects.inclBtns = true;
-    myObjects.inclLbls = false;
+    myObjects.inclLbls = true;
     
     /* push buttons onto myObjects button vector */
     myObjects.btns.push_back(&playBtn);
@@ -38,6 +38,10 @@ Timeline_t::Timeline_t(int x, int y, int sc, int *numtracks) {
     myObjects.btns.push_back(&addTrackBtn);
     myObjects.btns.push_back(&leftBtn);
     myObjects.btns.push_back(&rightBtn);
+    
+    /* push labels onto myObjects label vector */
+    myObjects.lbls.push_back(&statusLbl);
+    myObjects.lbls.push_back(&trackCountLbl);
 }
 
 Timeline_t::~Timeline_t(){
@@ -122,6 +126,7 @@ void Timeline_t::resize() {
     textBox.items.add(juce::FlexItem(textRect.getWidth(), textRect.getHeight(), trackCountLbl));
 
     buttonBox.performLayout(buttonRect);
+    textRect.setY(100);
     textBox.performLayout(textRect);
 }
 
@@ -135,7 +140,7 @@ std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawSt
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> paintFunc = [&](juce::Graphics* g, tracktion_engine::Edit* edit) -> void {
+    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> paintFunc = [this](juce::Graphics* g, tracktion_engine::Edit* edit) -> void {
         g->fillAll(bg_color);
         
         transport = &edit->getTransport();
@@ -147,9 +152,12 @@ std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawSt
         juce::String trackNames = "";//(int)trackList.size() + "\n";
         
         /* only iter when the there are tracks in audiotracklist */
-        if (audioTrackList->size () > 0){
+        trackNames += "TrackList: \n";
+        if (trackList.size () > 0){
             for (auto track : trackList) {
+                /*
                 if (track == (*audioTrackList)[(*currentTrack)]) trackNames += "* ";
+                 */
                 trackNames += track->getName();
                 trackNames += '\n';
             }
