@@ -27,7 +27,7 @@ void FileManager::loadAudioAsClip(juce::String filename, tracktion_engine::Track
     tracktion_engine::AudioFile audioFile (edit->engine, file);
     
     /* cast Track* to ClipTrack* */
-    tracktion_engine::ClipTrack* cliptrack = (tracktion_engine::ClipTrack *)track;
+    tracktion_engine::ClipTrack* cliptrack = (tracktion_engine::ClipTrack*)track;
     
     /* insert audio file as clip */
     cliptrack->insertWaveClip(file.getFileNameWithoutExtension(), file, { {0.0, audioFile.getLength()}, 0.0 }, false);

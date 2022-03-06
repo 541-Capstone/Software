@@ -21,8 +21,7 @@ MainComponent::MainComponent(){
     // call fileManager
     filemanager.setEdit(edit.get());
     tracktion_engine::TrackList* tracklist = &edit->getTrackList();
-    tracktion_engine::Track* track = (*tracklist)[0];
-    filemanager.loadAudioAsClip(TESTAUDIOPATH, track);
+    filemanager.loadAudioAsClip(TESTAUDIOPATH, tracklist->at(0));
     
     
     // set current track to zero (testing purposes for now)
