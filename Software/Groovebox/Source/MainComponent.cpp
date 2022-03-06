@@ -101,14 +101,20 @@ void MainComponent::setupTrackView(bool fst){
     /* add the buttons */
     if (fst) {
 
+        /* get the viewable objects from timeline */
         viewObjects* viewObjs = timeline.getObjects();
+        
+        /* make the buttons visible and add listeners */
         for (auto btn: viewObjs->btns) {
             addAndMakeVisible(*btn);
             btn->addListener(this);
         }
+        
+        /* make the labels visible */
         for (auto lbl: viewObjs->lbls) {
             addAndMakeVisible(*lbl);
         }
+        
         //TODO: Refactor this
         std::function<void()> playFun = [this](void)->void{play();};
         
