@@ -18,6 +18,7 @@
 #include <cstdarg>
 #include "viewObjects.h"
 #include "TrackManager.h"
+#include "FileManager.h"
 
 class Timeline_t : juce::ActionBroadcaster {
 public:

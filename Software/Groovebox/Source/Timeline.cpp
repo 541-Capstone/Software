@@ -140,7 +140,6 @@ std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawSt
         
         transport = &edit->getTransport();
         
-
         // You can add your drawing code here!
         statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
         trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(*numtracks), juce::NotificationType::dontSendNotification);

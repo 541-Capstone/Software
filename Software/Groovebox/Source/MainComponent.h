@@ -8,6 +8,7 @@
 // Context files
 #include "Timeline.h"
 #include "TrackManager.h"
+#include "FileManager.h"
 
 //#include "Utilities.h"
 
@@ -166,6 +167,7 @@ private:
     
     /* this is the timeline object */
     Timeline_t timeline{ window[0], window[1], scale,  &numTracks};
+    FileManager filemanager;
     
     /* State functions below! */
     

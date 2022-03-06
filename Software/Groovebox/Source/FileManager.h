@@ -17,6 +17,8 @@
 #include <JuceHeader.h>
 #include <functional>
 
+#define TESTAUDIOPATH "~/Documents/test.m4a"
+
 class FileManager {
 public:
     FileManager ();
@@ -26,6 +28,8 @@ public:
     void loadAudioAsClip (juce::String filename, tracktion_engine::Track *track);
     
     tracktion_engine::Edit* getEdit();
+    
+    void setEdit (tracktion_engine::Edit *edit);
 
 private:
     std::unique_ptr<tracktion_engine::Edit> edit;

@@ -18,6 +18,13 @@ MainComponent::MainComponent(){
     // just call loadEdit for now
     loadEdit();
     
+    // call fileManager
+    filemanager.setEdit(edit.get());
+    tracktion_engine::TrackList* tracklist = &edit->getTrackList();
+    tracktion_engine::Track* track = (*tracklist)[0];
+    filemanager.loadAudioAsClip("TESTAUDIOPATH", track);
+    
+    
     // set current track to zero (testing purposes for now)
     currentTrack = 0;
     timeline.setCurrentTrackPtr (&currentTrack);
