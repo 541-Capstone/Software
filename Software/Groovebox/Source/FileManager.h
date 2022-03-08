@@ -17,7 +17,14 @@
 #include <JuceHeader.h>
 #include <functional>
 
+
+#ifdef __MACH__
 #define TESTAUDIOPATH "~/Documents/test.m4a"
+#endif
+
+#ifdef _WIN64
+#define TESTAUDIOPATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\lemons.wav"
+#endif
 
 class FileManager {
 public:

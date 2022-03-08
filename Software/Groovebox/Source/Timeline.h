@@ -29,9 +29,11 @@ public:
      * @param x This is the number of pixels (width)
      * @param y This is the number of pixels (height)
      * @param sc This is the scale (usually 1)
+     * @param numTracks pointer to the number of tracks currently in the session
+     * @param currentTrack Pointer to the index of the current track
      *
      */
-    Timeline_t(int x, int y, int sc, int *numtracks);
+    Timeline_t(int x, int y, int sc, int *numTracks);
     
     /**
      * @brief This is the Timeline_t class destructor
@@ -78,7 +80,7 @@ public:
      *
      * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
-    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> drawState();
+    std::function<void(juce::Graphics*, te::Edit*)> drawState();
 
     /**
      * @brief This returns drawing routine for Timeline_t
@@ -88,10 +90,11 @@ public:
     void resize();
     
     void setCurrentTrackPtr (int *currentTrack);
+
+    void setAudioTrackList(std::vector<te::Track*> *newTracks);
     
 // private member variables go here
 private:
-    int window[2] = {0, 0};
     int windowCenter = 0;
     int scale = 0;
     int controlImageHeightpx = 150;
@@ -99,9 +102,9 @@ private:
     juce::Rectangle<int> paintWindow = juce::Rectangle<int>();
     
     /* Objects */
-    tracktion_engine::TransportControl* transport;
+    te::TransportControl* transport;
     TrackManager* trackManager;
-    viewObjects myObjects;
+    viewObjects timelineObjects;
     std::vector<std::function<void()>> funcs;
     
     /* Buttons */
@@ -121,13 +124,13 @@ private:
     juce::Colour alt_color = juce::Colour(0, 0, 0);
     
     /* Number of tracks pointer */
-    int *numtracks;
+    int *numTracks;
     
     /* current track pointer */
     int *currentTrack;
     
     /* audio track list */
-    std::vector<tracktion_engine::Track*> *audioTrackList = nullptr;
+    std::vector<te::Track*> *audioTrackList = nullptr;
 
     /* broadcast functions*/
     void play();

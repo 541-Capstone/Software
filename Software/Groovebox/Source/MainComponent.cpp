@@ -12,20 +12,26 @@ MainComponent::MainComponent(){
     // start the timer
     startTimer(frameInterval);
     
-    // set the maximum number of tracks
-    setNumberOfTracks(-1);
+    // set the maximum number of Audio tracks
+    setMaxTracks(-1);
     
     // just call loadEdit for now
     loadEdit();
     
     // call fileManager
-    filemanager.setEdit(edit.get());
-    filemanager.loadAudioAsClip(TESTAUDIOPATH, tracktion_engine::getAudioTracks (*edit)[0]);
+    fileManager.setEdit(edit.get());
+    fileManager.loadAudioAsClip(TESTAUDIOPATH, tracktion_engine::getAudioTracks (*edit)[0]);
+
+    // Add new track to audioTracks
+
     
     // set current track to zero (testing purposes for now)
-    currentTrack = 0;
-    timeline.setCurrentTrackPtr (&currentTrack);
-    
+    currentTrack = edit->getTrackList().objects[edit->getTrackList().objects.size() - 1];
+    addAudioTrack(currentTrack);
+    currentTrackIndex = 0;
+    timeline.setCurrentTrackPtr (&currentTrackIndex);
+    numAudioTracks = 1;
+    timeline.setAudioTrackList  (&audioTracks);
     /* initally, program set to TrackView*/
     setupTrackView(true);
     
@@ -118,12 +124,18 @@ void MainComponent::setupTrackView(bool fst){
         std::function<void()> pauseFun = [this](void)->void{pause();};
         
         std::function<void()> recordFun = [this](void)->void{record();};
+
+        std::function<void()> addTrackFun = [this](void)->void {createAudioTrack(); };
+
+        std::function<void()> prevTrackFun = [this](void)->void {prevTrack(); };
+
+        std::function<void()> nextTrackFun = [this](void)->void {nextTrack(); };
         
-        timeline.assignFunctionToObjects({playFun, pauseFun, recordFun});
+        timeline.assignFunctionToObjects({playFun, pauseFun, recordFun, addTrackFun, prevTrackFun, nextTrackFun});
     }
 }
 
-void MainComponent::setNumberOfTracks(int n){
+void MainComponent::setMaxTracks(int n){
     maxNumTracks = n;
 }
 
@@ -206,6 +218,39 @@ void MainComponent::pause(){
 
 void MainComponent::record(){
     LOG ("Recording\n");
+}
+
+void MainComponent::createAudioTrack() {
+    edit->ensureNumberOfAudioTracks(numAudioTracks + 1);
+    auto newTrack = te::getAudioTracks(*edit)[numAudioTracks];
+    numTracks++;
+    numAudioTracks++;
+    audioTracks.push_back(newTrack);
+    LOG("Added track " + (juce::String)numAudioTracks + 
+        "\nNumber of tracks in edit: " + (juce::String) edit->getTrackList().size() + "\n");
+}
+
+void MainComponent::addAudioTrack(te::Track *audioTrack) {
+    //edit->ensureNumberOfAudioTracks(numAudioTracks + 1);
+    numTracks++;
+    numAudioTracks++;
+    audioTracks.push_back(audioTrack);
+    LOG("Added track " + (juce::String)numAudioTracks + 
+        "\nNumber of tracks in edit: " + (juce::String)edit->getTrackList().size() + "\n");
+}
+
+void MainComponent::nextTrack() {
+    if (currentTrackIndex < audioTracks.size() - 1) {
+        currentTrackIndex++;
+        LOG("Paged up. Current track:" + (juce::String)currentTrackIndex + "\n");
+    }
+}
+
+void MainComponent::prevTrack() {
+    if (currentTrackIndex > 0) {
+        currentTrackIndex--;
+        LOG("Paged down. Current track:" + (juce::String)currentTrackIndex + "\n");
+    }
 }
 
 void MainComponent::drawAudioWaveform(){

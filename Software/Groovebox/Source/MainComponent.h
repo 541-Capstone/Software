@@ -13,10 +13,10 @@
 //#include "Utilities.h"
 
 #define DB 1
-#if DB
+#if __MACH__
 #define LOG(x) std::cout<<x
 #else
-#define LOG(x)
+#define LOG(x) DBG(x)
 #endif
 
 
@@ -161,13 +161,21 @@ private:
      * @brief This is the maximum number of tracks (-1 for no limit)
      */
     int maxNumTracks;
+
+    /**
+     * @brief This is the vector for storing audio track pointers. Should be handed over to states
+     * @TODO Replace with a TrackManager object
+     */
+    std::vector<te::Track*> audioTracks;
+
+    te::Track* currentTrack;
     
     bool isplaying;
-    int currentTrack;
+    int currentTrackIndex;
     
     /* this is the timeline object */
     Timeline_t timeline{ window[0], window[1], scale,  &numTracks};
-    FileManager filemanager;
+    FileManager fileManager;
     tracktion_engine::SelectionManager selectionmanager {engine};
     
     /* State functions below! */
@@ -178,7 +186,7 @@ private:
      */
     void setupTrackView(bool firstTime);
     
-    void setNumberOfTracks(int n);
+    void setMaxTracks(int n);
     
     /**
      * @brief This disables and hides all buttons
@@ -212,6 +220,18 @@ private:
     
     //Begins recording, and begins playing if not already playing
     void record();
+
+    //Sets the current audio Track to the next in line if possible
+    void nextTrack();
+
+    //Sets the current audio Track to the previous in line if possible
+    void prevTrack();
+
+    //Creates a new audio track at the end of the list if possible
+    void createAudioTrack();
+
+    //Add an existing audio track at the end of the list if possible
+    void addAudioTrack(te::Track* audioTrack);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

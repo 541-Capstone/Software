@@ -27,11 +27,11 @@ void FileManager::loadAudioAsClip(juce::String filename, tracktion_engine::Track
     tracktion_engine::AudioFile audioFile {edit->engine, file};
     
     /* cast Track* to AudioTrack* */
-    tracktion_engine::AudioTrack *audiotrack = (tracktion_engine::AudioTrack*)track;
+    tracktion_engine::AudioTrack *audioTrack = (tracktion_engine::AudioTrack*)track;
     /* insert audio file as clip */
-    auto clip = audiotrack->insertWaveClip(file.getFileNameWithoutExtension(), file, { {0.0, audioFile.getLength()}, 0.0 }, false);
+    auto clip = audioTrack->insertWaveClip(file.getFileNameWithoutExtension(), file, { {0.0, audioFile.getLength()}, 0.0 }, false);
     
-    audiotrack->setName(file.getFileNameWithoutExtension());
+    audioTrack->setName(file.getFileNameWithoutExtension());
     
     std::cout<<"Clip added: "<<clip->getName()<<'\n';
     

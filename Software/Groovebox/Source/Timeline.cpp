@@ -10,47 +10,44 @@
 
 #include "Timeline.h"
 
-Timeline_t::Timeline_t(int x, int y, int sc, int *numtracks) {
+Timeline_t::Timeline_t(int x, int y, int sc, int *numTracks) {
     paintWindow.setHeight(y);
     paintWindow.setWidth(x);
-    window[0] = x;
-    window[1] = y;
-    windowCenter = window[0] / 2;
     
     scale = sc;
     controlImageHeightpx = controlImageHeightpx / scale;
     controlImageWidthpx = controlImageWidthpx / scale;
     
-    this->numtracks = numtracks;
+    this->numTracks = numTracks;
     
     this->currentTrack = nullptr;
     
-    audioTrackList = new std::vector<tracktion_engine::Track*>();
+    audioTrackList = nullptr;/*new std::vector<te::Track*>();*/
     
-    /* set that buttons are included in myObjects */
-    myObjects.inclBtns = true;
-    myObjects.inclLbls = true;
+    /* set that buttons are included in timelineObjects */
+    timelineObjects.inclBtns = true;
+    timelineObjects.inclLbls = true;
     
-    /* push buttons onto myObjects button vector */
-    myObjects.btns.push_back(&playBtn);
-    myObjects.btns.push_back(&pauseBtn);
-    myObjects.btns.push_back(&recordBtn);
-    myObjects.btns.push_back(&addTrackBtn);
-    myObjects.btns.push_back(&leftBtn);
-    myObjects.btns.push_back(&rightBtn);
+    /* push buttons onto timelineObjects button vector */
+    timelineObjects.btns.push_back(&playBtn);
+    timelineObjects.btns.push_back(&pauseBtn);
+    timelineObjects.btns.push_back(&recordBtn);
+    timelineObjects.btns.push_back(&addTrackBtn);
+    timelineObjects.btns.push_back(&leftBtn);
+    timelineObjects.btns.push_back(&rightBtn);
     
-    /* push labels onto myObjects label vector */
-    myObjects.lbls.push_back(&statusLbl);
-    myObjects.lbls.push_back(&trackCountLbl);
+    /* push labels onto timelineObjects label vector */
+    timelineObjects.lbls.push_back(&statusLbl);
+    timelineObjects.lbls.push_back(&trackCountLbl);
 }
 
 Timeline_t::~Timeline_t(){
     // do nothing for now!
-    delete audioTrackList;
+    //delete audioTrackList;
 }
 
 viewObjects* Timeline_t::getObjects() {
-    return &myObjects;
+    return &timelineObjects;
 }
 
 bool Timeline_t::assignFunctionToObjects(std::initializer_list<std::function<void()>> list) {
@@ -61,7 +58,7 @@ bool Timeline_t::assignFunctionToObjects(std::initializer_list<std::function<voi
 
 bool Timeline_t::assignFuncToBtn(juce::Button *btn, std::function<void ()> func) {
     int i = 0;
-    for (auto b : myObjects.btns) {
+    for (auto b : timelineObjects.btns) {
         if (b == btn) {
             funcs[i] = func;
             return true;
@@ -73,9 +70,9 @@ bool Timeline_t::assignFuncToBtn(juce::Button *btn, std::function<void ()> func)
 
 void Timeline_t::onClick (juce::Button *btn) {
     int i = 0;
-    for (auto b : myObjects.btns) {
+    for (auto b : timelineObjects.btns) {
         if (i >= funcs.size () ) {
-            std::cout<<"Function not implmented!\n";
+           DBG("Function not implmented!");
             return;
         }
         if (b == btn) {
@@ -91,9 +88,13 @@ void Timeline_t::setCurrentTrackPtr
     this->currentTrack = currentTrack;
 }
 
+void Timeline_t::setAudioTrackList(std::vector<te::Track*> *newTracks) {
+    audioTrackList = newTracks;
+}
+
 void Timeline_t::resize() {
     int buttonHeight = 100, buttonWidth = 100, i = 0;
-    juce::Rectangle<int> buttonRect = juce::Rectangle<int>(window[0], window[1]);
+    juce::Rectangle<int> buttonRect = juce::Rectangle<int>(paintWindow);
     juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
 
     juce::FlexBox buttonBox{ juce::FlexBox::Direction::row,
@@ -110,17 +111,10 @@ void Timeline_t::resize() {
     };
     
     
-    for (juce::Button *btn : myObjects.btns) {
+    for (juce::Button *btn : timelineObjects.btns) {
         buttonBox.items.add (juce::FlexItem (buttonWidth, buttonHeight, *btn));
         i++;
     }
-    /*
-    buttonBox.items.add(juce::FlexItem(100, 100, playBtn));
-    buttonBox.items.add(juce::FlexItem(100, 100, pauseBtn));
-    buttonBox.items.add(juce::FlexItem(100, 100, addTrackBtn));
-    buttonBox.items.add(juce::FlexItem(100, 100, leftBtn));
-    buttonBox.items.add(juce::FlexItem(100, 100, rightBtn));
-    */
 
     textBox.items.add(juce::FlexItem(150, 10, statusLbl));
     textBox.items.add(juce::FlexItem(textRect.getWidth(), textRect.getHeight(), trackCountLbl));
@@ -130,34 +124,32 @@ void Timeline_t::resize() {
     textBox.performLayout(textRect);
 }
 
-std::function<void(juce::Graphics*, tracktion_engine::Edit*)> Timeline_t::drawState () {
-    /*std::function<void(juce::Graphics*)> ffsetupState = [&](juce::Graphics *g)->void {
-        g->setColour(bg_color);
-        g->fillRect (0, 0, window[0], 40 + controlImageHeightpx);
-    };
-    
-    return ffsetupState;*/
+std::function<void(juce::Graphics*, te::Edit*)> Timeline_t::drawState () {
     // This is called when the MainContentComponent is resized.
     // If you add any child components, this is where you should
     // update their positions.
-    std::function<void(juce::Graphics*, tracktion_engine::Edit*)> paintFunc = [this](juce::Graphics* g, tracktion_engine::Edit* edit) -> void {
+    std::function<void(juce::Graphics*, te::Edit*)> paintFunc = [this](juce::Graphics* g, te::Edit* edit) -> void {
         g->fillAll(bg_color);
         
         transport = &edit->getTransport();
         
         // You can add your drawing code here!
         statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
-        trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(*numtracks), juce::NotificationType::dontSendNotification);
-        juce::Array<tracktion_engine::Track*> trackList = edit->getTrackList().objects;
-        juce::String trackNames = "";//(int)trackList.size() + "\n";
+        trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(*numTracks), juce::NotificationType::dontSendNotification);
+        juce::Array<te::Track*> trackList = edit->getTrackList().objects;
+        juce::String trackNames = "";
         
         /* only iter when the there are tracks in audiotracklist */
         trackNames += "TrackList: \n";
         if (trackList.size () > 0){
             for (auto track : trackList) {
-                /*
-                if (track == (*audioTrackList)[(*currentTrack)]) trackNames += "* ";
-                 */
+                
+                if (audioTrackList != nullptr && audioTrackList->size() > *currentTrack) {
+                    if (track == (*audioTrackList)[(*currentTrack)]) {
+                        trackNames += "* ";
+                    }
+                }
+                 
                 trackNames += track->getName();
                 trackNames += '\n';
             }
