@@ -72,7 +72,7 @@ void Timeline_t::onClick (juce::Button *btn) {
     int i = 0;
     for (auto b : timelineObjects.btns) {
         if (i >= funcs.size () ) {
-           DBG("Function not implmented!");
+           LOG("Function not implmented!");
             return;
         }
         if (b == btn) {

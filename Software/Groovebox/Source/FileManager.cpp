@@ -11,7 +11,6 @@
 #include "FileManager.h"
 
 FileManager::FileManager () {
-    
 }
 
 /* do nothing for now !*/
@@ -33,7 +32,7 @@ void FileManager::loadAudioAsClip(juce::String filename, tracktion_engine::Track
     
     audioTrack->setName(file.getFileNameWithoutExtension());
     
-    std::cout<<"Clip added: "<<clip->getName()<<'\n';
+    LOG("Clip added: " + clip->getName());
     
 }
 

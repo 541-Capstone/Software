@@ -5,19 +5,11 @@
 #include <functional>
 #include <math.h>
 
-// Context files
+// Groovebox files
+#include "Utilities.h"
 #include "Timeline.h"
 #include "TrackManager.h"
 #include "FileManager.h"
-
-//#include "Utilities.h"
-
-#define DB 1
-#if __MACH__
-#define LOG(x) std::cout<<x
-#else
-#define LOG(x) DBG(x)
-#endif
 
 
 /* The universal state should reside in the MainComponent.
@@ -170,7 +162,7 @@ private:
 
     te::Track* currentTrack;
     
-    bool isplaying;
+    bool isPlaying;
     int currentTrackIndex;
     
     /* this is the timeline object */
@@ -231,7 +223,7 @@ private:
     void createAudioTrack();
 
     //Add an existing audio track at the end of the list if possible
-    void addAudioTrack(te::Track* audioTrack);
+    void addAudioTrack(te::AudioTrack* audioTrack);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

@@ -7,7 +7,7 @@ MainComponent::MainComponent(){
     
     // set edit to nullptr for the time being
     edit = nullptr;
-    isplaying = false;
+    isPlaying = false;
     
     // start the timer
     startTimer(frameInterval);
@@ -27,7 +27,7 @@ MainComponent::MainComponent(){
     
     // set current track to zero (testing purposes for now)
     currentTrack = edit->getTrackList().objects[edit->getTrackList().objects.size() - 1];
-    addAudioTrack(currentTrack);
+    addAudioTrack((te::AudioTrack*)currentTrack);
     currentTrackIndex = 0;
     timeline.setCurrentTrackPtr (&currentTrackIndex);
     numAudioTracks = 1;
@@ -64,7 +64,6 @@ void MainComponent::resized() {
 
 /* button listener */
 void MainComponent::buttonClicked(juce::Button *button){
-    DBG("Button pressed");
     /* check to see for timeline button */
     if (WState == WindowStates::Timeline) {
         for (auto btn : timeline.getObjects()->btns) {
@@ -76,7 +75,7 @@ void MainComponent::buttonClicked(juce::Button *button){
 }
 
 void MainComponent::timerCallback() {
-    timeCount += isplaying ? ((double)frameInterval * 0.001) : 0;
+    timeCount += isPlaying ? ((double)frameInterval * 0.001) : 0;
     //std::cout<<timeCount<<'\n';
     repaint();
 }
@@ -189,7 +188,7 @@ void MainComponent::play(){
         PState = PlayStates::Play;
         LOG("Playing\n");
         edit->getTransport().play(false);
-        isplaying = true;
+        isPlaying = true;
     }
     else {
         LOG("Already playing\n");
@@ -198,7 +197,7 @@ void MainComponent::play(){
 
 void MainComponent::pause(){
     if (edit == nullptr) {LOG("Missing edit!\n"); return; }
-    isplaying = false;
+    isPlaying = false;
     if (PState == PlayStates::Play) {
         LOG ("Pause 1\n");
         PState = PlayStates::Pause;
@@ -222,21 +221,17 @@ void MainComponent::record(){
 
 void MainComponent::createAudioTrack() {
     edit->ensureNumberOfAudioTracks(numAudioTracks + 1);
-    auto newTrack = te::getAudioTracks(*edit)[numAudioTracks];
-    numTracks++;
-    numAudioTracks++;
-    audioTracks.push_back(newTrack);
-    LOG("Added track " + (juce::String)numAudioTracks + 
-        "\nNumber of tracks in edit: " + (juce::String) edit->getTrackList().size() + "\n");
+    te::AudioTrack* newTrack = te::getAudioTracks(*edit)[numAudioTracks];
+    addAudioTrack(newTrack);
 }
 
-void MainComponent::addAudioTrack(te::Track *audioTrack) {
-    //edit->ensureNumberOfAudioTracks(numAudioTracks + 1);
+void MainComponent::addAudioTrack(te::AudioTrack *audioTrack) {
     numTracks++;
     numAudioTracks++;
     audioTracks.push_back(audioTrack);
-    LOG("Added track " + (juce::String)numAudioTracks + 
-        "\nNumber of tracks in edit: " + (juce::String)edit->getTrackList().size() + "\n");
+    LOG("Added track " + (juce::String)numAudioTracks +
+        "\nNumber of clips in track: " + (juce::String)audioTrack->getClips().size() + 
+        "\nNumber of tracks in edit: " + (juce::String)edit->getTrackList().size());
 }
 
 void MainComponent::nextTrack() {

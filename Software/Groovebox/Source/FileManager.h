@@ -17,6 +17,8 @@
 #include <JuceHeader.h>
 #include <functional>
 
+#include "Utilities.h"
+
 
 #ifdef __MACH__
 #define TESTAUDIOPATH "~/Documents/test.m4a"
