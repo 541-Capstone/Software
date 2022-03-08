@@ -25,7 +25,7 @@
 #endif
 
 #ifdef _WIN64
-#define TESTAUDIOPATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\lemons.wav"
+#define TESTAUDIOPATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\lemons-improved.wav"
 #endif
 
 class FileManager {

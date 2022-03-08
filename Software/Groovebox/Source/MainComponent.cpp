@@ -8,6 +8,7 @@ MainComponent::MainComponent(){
     // set edit to nullptr for the time being
     edit = nullptr;
     isPlaying = false;
+    numAudioTracks = 0;
     
     // start the timer
     startTimer(frameInterval);
@@ -17,6 +18,8 @@ MainComponent::MainComponent(){
     
     // just call loadEdit for now
     loadEdit();
+
+    //Set sample rate 
     
     // call fileManager
     fileManager.setEdit(edit.get());
@@ -30,7 +33,6 @@ MainComponent::MainComponent(){
     addAudioTrack((te::AudioTrack*)currentTrack);
     currentTrackIndex = 0;
     timeline.setCurrentTrackPtr (&currentTrackIndex);
-    numAudioTracks = 1;
     timeline.setAudioTrackList  (&audioTracks);
     /* initally, program set to TrackView*/
     setupTrackView(true);
