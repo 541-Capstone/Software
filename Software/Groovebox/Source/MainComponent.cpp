@@ -224,6 +224,8 @@ void MainComponent::record(){
 void MainComponent::createAudioTrack() {
     edit->ensureNumberOfAudioTracks(numAudioTracks + 1);
     te::AudioTrack* newTrack = te::getAudioTracks(*edit)[numAudioTracks];
+    //TODO: Remove this line!
+    Helpers::insertClipFromFile(newTrack, &edit->getTransport(), TESTAUDIOPATH);
     addAudioTrack(newTrack);
 }
 

@@ -19,14 +19,16 @@ void Helpers::insertClipFromFile(te::AudioTrack* track, te::TransportControl* tr
         return;
     }
 
-    te::ClipPosition position{ {0.0, audioFile.getLength()}, transport->getCurrentPosition() };
+    double playheadPosition = transport->getCurrentPosition();
+
+    te::ClipPosition position{ {playheadPosition, audioFile.getLength() + playheadPosition}, 0.0 };
 
     te::WaveAudioClip::Ptr clip = track->insertWaveClip(file.getFileNameWithoutExtension(), file, position, false);
     if (clip != nullptr) {
         clip->setAutoPitch(false);
         clip->setAutoTempo(false);
         clip->setTimeStretchMode(te::TimeStretcher::defaultMode);
-        const double start{ transport->getCurrentPosition() };
+        const double start{ playheadPosition };
         clip->setStart(start, true, true);
     }
 }
