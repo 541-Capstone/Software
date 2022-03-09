@@ -19,5 +19,5 @@ std::vector<te::Track*> TrackManager::getTrackList() {
 }
 
 void TrackManager::addAudioTrack() {
-
+    
 }
