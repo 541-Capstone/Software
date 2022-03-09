@@ -50,18 +50,22 @@ void MainComponent::paint(juce::Graphics &g){
     /* Draw the time line graphics objects */
     if (WState == WindowStates::Timeline){
         /* get the drawState function from timeline object */
-        auto tg = timeline.drawState ();
+        auto tg = timeline.paint();
         
         /* draw using drawState and pass &g to it */
         /* call edit.get() to get raw pointer from
            std::unique_ptr */
         tg (&g, edit.get());
     }
+    midiService.paint();
+
 }
 
 void MainComponent::resized() {
     //Make this into a for loop to resize each context
     timeline.resize();
+    juce::Rectangle<int> midiRect = getLocalBounds().removeFromBottom(300);
+    midiService.resize(midiRect);
 }
 
 /* button listener */

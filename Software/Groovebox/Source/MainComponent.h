@@ -10,6 +10,7 @@
 #include "Timeline.h"
 #include "TrackManager.h"
 #include "FileManager.h"
+#include "MidiService.h"
 
 
 /* The universal state should reside in the MainComponent.
@@ -60,8 +61,6 @@ private:
     // This sets the screen size
     const int scale = 2;
     const int window[2] = {1600 / scale, 900 / scale};
-    
-    const int windowCenter = window[0] / 2;
     
     //-------------------------------------------------------------
     
@@ -169,6 +168,8 @@ private:
     Timeline_t timeline{ window[0], window[1], scale,  &numTracks};
     FileManager fileManager;
     tracktion_engine::SelectionManager selectionmanager {engine};
+
+    MidiService midiService;
     
     /* State functions below! */
     

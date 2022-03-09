@@ -5223,6 +5223,9 @@
     <ClCompile Include="..\..\Source\Utilities.cpp">
       <Filter>Groovebox\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\MidiService.cpp">
+      <Filter>Groovebox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\FileManager.h">
@@ -9286,6 +9289,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Utilities.h">
       <Filter>Groovebox\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MidiService.h">
+      <Filter>Groovebox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

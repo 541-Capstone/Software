@@ -124,10 +124,7 @@ void Timeline_t::resize() {
     textBox.performLayout(textRect);
 }
 
-std::function<void(juce::Graphics*, te::Edit*)> Timeline_t::drawState () {
-    // This is called when the MainContentComponent is resized.
-    // If you add any child components, this is where you should
-    // update their positions.
+std::function<void(juce::Graphics*, te::Edit*)> Timeline_t::paint () {
     std::function<void(juce::Graphics*, te::Edit*)> paintFunc = [this](juce::Graphics* g, te::Edit* edit) -> void {
         g->fillAll(bg_color);
         

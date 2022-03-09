@@ -11,36 +11,61 @@
 #include <JuceHeader.h>
 #include <functional>
 
+#include "Utilities.h"
+
 class MidiService : public juce::Component,
-	private juce::Timer,
-	private juce::MidiKeyboardState::Listener,
 	private juce::MidiInputCallback,
-	private juce::AsyncUpdater
+	private juce::MidiKeyboardState::Listener
 {
 public:
 	MidiService();
 
 	~MidiService();
 
+	void addMessageToList(const juce::MidiMessage& message, const juce::String& source);
+
+	std::function<void(juce::Graphics*, te::Edit*)> paint();
+
+	void resize(juce::Rectangle<int> rect);
+
 private:
-	juce::MidiDeviceInfo deviceInfo;
-	std::unique_ptr<juce::MidiInput> inDevice;
-	std::unique_ptr<juce::MidiOutput> outDevice;
 
 	//===============================================================================================
 	// Variables from Juce MidiDemo
 	//===============================================================================================
-	juce::Label incomingMidiLabel{ "Incoming Midi Label", "Received MIDI messages:" };
-	juce::Label outgoingMidiLabel{ "Outgoing Midi Label", "Play the keyboard to send MIDI messages..." };
+	juce::AudioDeviceManager deviceManager;
+	juce::ComboBox midiInputList;
+	juce::Label midiInputListLabel;
+	int lastInputIndex = 0;
+	bool isAddingFromMidiInput = false;
+
 	juce::MidiKeyboardState keyboardState;
-	juce::MidiKeyboardComponent midiKeyboard;
-	juce::TextEditor midiMonitor{ "MIDI Monitor" };
+	juce::MidiKeyboardComponent keyboardComponent{ keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard };
 
-	juce::CriticalSection midiMonitorLock;
-	juce::Array<juce::MidiMessage> incomingMessages;
+	void setMidiInput(int index);
+	void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
+	void postMessageToList(const juce::MidiMessage& message, const juce::String& source);
 
-	//===============================================================================================
-	// Functions from Juce MidiDemo
-	//===============================================================================================
-	void addLabelAndSetStyle(juce::Label& label);
+	juce::String getMidiMessageDescription(const juce::MidiMessage& m);
+
+	void handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
+	void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
+
 };
+
+class IncomingMessageCallback : public juce::CallbackMessage
+{
+public:
+	IncomingMessageCallback(MidiService* o, const juce::MidiMessage& m, const juce::String& s)
+		: owner(o), message(m), source(s)
+	{}
+
+	void messageCallback() override;
+
+
+	juce::Component::SafePointer<MidiService> owner;
+	//automatically becomes null if the component is deleted. [must be component type]
+	juce::MidiMessage message;
+	juce::String source;
+};
+

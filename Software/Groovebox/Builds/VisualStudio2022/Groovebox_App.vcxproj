@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\FileManager.cpp" />
+    <ClCompile Include="..\..\Source\MidiService.cpp" />
     <ClCompile Include="..\..\Source\TrackManager.cpp" />
     <ClCompile Include="..\..\Source\Timeline.cpp" />
     <ClCompile Include="..\..\Source\Utilities.cpp" />
@@ -4124,6 +4125,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\FileManager.h" />
+    <ClInclude Include="..\..\Source\MidiService.h" />
     <ClInclude Include="..\..\Source\TrackManager.h" />
     <ClInclude Include="..\..\Source\Timeline.h" />
     <ClInclude Include="..\..\Source\Utilities.h" />
