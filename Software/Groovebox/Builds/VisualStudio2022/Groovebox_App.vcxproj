@@ -135,7 +135,7 @@
     <ClCompile Include="..\..\Source\FileManager.cpp" />
     <ClCompile Include="..\..\Source\TrackManager.cpp" />
     <ClCompile Include="..\..\Source\Timeline.cpp" />
-    <ClCompile Include="..\..\Source\Utilites.cpp" />
+    <ClCompile Include="..\..\Source\Utilities.cpp" />
     <ClCompile Include="..\..\Source\viewObjects.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\MainComponent.cpp" />

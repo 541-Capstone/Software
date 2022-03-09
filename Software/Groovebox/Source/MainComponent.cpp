@@ -23,7 +23,7 @@ MainComponent::MainComponent(){
     
     // call fileManager
     fileManager.setEdit(edit.get());
-    fileManager.loadAudioAsClip(TESTAUDIOPATH, tracktion_engine::getAudioTracks (*edit)[0]);
+    Helpers::insertClipFromFile(tracktion_engine::getAudioTracks(*edit)[0], &edit->getTransport(), TESTAUDIOPATH);
 
     // Add new track to audioTracks
 

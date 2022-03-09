@@ -20,5 +20,5 @@ namespace te = tracktion_engine;
 //==============================================================================
 namespace Helpers
 {
-
+	void insertClipFromFile(te::AudioTrack* track, te::TransportControl* transport, juce::String filePath);
 }

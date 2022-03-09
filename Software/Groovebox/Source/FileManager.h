@@ -34,14 +34,12 @@ public:
     
     ~FileManager ();
     
-    void loadAudioAsClip (juce::String filename, tracktion_engine::Track *track);
+    te::Edit* getEdit();
     
-    tracktion_engine::Edit* getEdit();
-    
-    void setEdit (tracktion_engine::Edit *edit);
+    void setEdit (te::Edit *edit);
 
 private:
-    tracktion_engine::Edit *edit;
+    te::Edit *edit;
 };
 
 #endif

@@ -5220,7 +5220,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_tracktion_graph.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Utilites.cpp">
+    <ClCompile Include="..\..\Source\Utilities.cpp">
       <Filter>Groovebox\Source</Filter>
     </ClCompile>
   </ItemGroup>
