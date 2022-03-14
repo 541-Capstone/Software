@@ -20,8 +20,10 @@
 #include "TrackManager.h"
 #include "FileManager.h"
 #include "Utilities.h"
+#include "Waveforms.h"
+#include "Cursors.h"
 
-class Timeline_t : juce::ActionBroadcaster {
+class Timeline_t : juce::ActionBroadcaster, public juce::Component {
 public:
     
     /**
@@ -76,23 +78,20 @@ public:
      */
     bool assignFuncToBtn (juce::Button *btn, std::function<void()> func);
     
-    /**
-     * @brief This returns drawing routine for Timeline_t
-     *
-     * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
-     */
-    std::function<void(juce::Graphics*, te::Edit*)> paint();
+    void paint(juce::Graphics &g) override;
 
     /**
      * @brief This returns drawing routine for Timeline_t
      *
      * @return std::function<void(juce::Graphics *g)> This is a function that takes in the juce::Graphics *g pointer. Use this function in MainComponent.
      */
-    void resize();
+    void resized() override;
     
     void setCurrentTrackPtr (int *currentTrack);
 
     void setAudioTrackList(std::vector<te::Track*> *newTracks);
+    
+    void setEdit(te::Edit *edit);
     
 // private member variables go here
 private:
@@ -107,6 +106,7 @@ private:
     TrackManager* trackManager;
     viewObjects timelineObjects;
     std::vector<std::function<void()>> funcs;
+    te::Edit *edit;
     
     /* Buttons */
     juce::TextButton playBtn{ "play" };
@@ -143,6 +143,9 @@ private:
 
     /* this is the absolute path of Groovebox */
     const std::string apath = APATH;
+    
+    /* For waveforms */
+    juce::Rectangle<int> waveform_window = juce::Rectangle<int>();
     
     void setupButtonImages ();
 };

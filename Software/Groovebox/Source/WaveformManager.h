@@ -26,6 +26,7 @@ public:
     void loadFromTrackOrURL (bool load);
     void showAudioResource (juce::URL resource);
     void showAudioResource (te::AudioTrack *track);
+    void showAudioResource (te::Edit *p_edit);
     
 private:
     juce::AudioFormatManager formatManager;
@@ -41,5 +42,10 @@ private:
     void changeListenerCallback (juce::ChangeBroadcaster *source) override;
     bool loadURLIntoTransport (const juce::URL &audioURL);
     void updateFollowTransportState ();
+    
+    int trackWindowHeight = 128;
+    int trackWindowWidth = this->getWidth();
+    double timeScale = 0.1;
+    
 };
 #endif

@@ -17,6 +17,8 @@ AudioVisualizer::AudioVisualizer (juce::AudioFormatManager& formatManager, juce:
     scrollbar.setRangeLimits(visibleRange);
     scrollbar.setAutoHide(false);
     scrollbar.addListener(this);
+    scrollbar.setEnabled(false);
+    scrollbar.setVisible(false);
     
     clipBounds = getLocalBounds();
     
@@ -63,8 +65,8 @@ void AudioVisualizer::paint(juce::Graphics &g) {
     if (thumbnail.getTotalLength() > 0) {
         auto thumbArea = getLocalBounds ();
         thumbArea.removeFromTop(scrollbar.getHeight() + 4);
-        if (loadFrom && track != nullptr) {
-            thumbnail.drawChannels(g, thumbArea.reduced(2), visibleRange.getStart(), visibleRange.getEnd(), 1.0f);
+        if (loadFrom) {
+            thumbnail.drawChannels(g, clipBounds, visibleRange.getStart(), visibleRange.getEnd(), 1.0f);
         }
         else {
             thumbnail.drawChannels(g, thumbArea.reduced(2), visibleRange.getStart(), visibleRange.getEnd(), 1.0f);
@@ -111,4 +113,3 @@ void AudioVisualizer::loadFromTrackOrURL(bool load) {
 void AudioVisualizer::setThumbnailBounds(juce::Rectangle<int> bounds) {
     clipBounds = bounds;
 }
-

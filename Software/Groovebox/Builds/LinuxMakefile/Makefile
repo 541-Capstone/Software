@@ -69,7 +69,9 @@ endif
 
 OBJECTS_APP := \
   $(JUCE_OBJDIR)/AudioVisualizer_1a49b7b5.o \
+  $(JUCE_OBJDIR)/Cursors_a7d171be.o \
   $(JUCE_OBJDIR)/WaveformManager_64430a11.o \
+  $(JUCE_OBJDIR)/Waveforms_c2792737.o \
   $(JUCE_OBJDIR)/MidiService_473bf4b5.o \
   $(JUCE_OBJDIR)/Utilities_707bb76b.o \
   $(JUCE_OBJDIR)/FileManager_9cd5b872.o \
@@ -120,9 +122,19 @@ $(JUCE_OBJDIR)/AudioVisualizer_1a49b7b5.o: ../../Source/AudioVisualizer.cpp
 	@echo "Compiling AudioVisualizer.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
+$(JUCE_OBJDIR)/Cursors_a7d171be.o: ../../Source/Cursors.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling Cursors.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
 $(JUCE_OBJDIR)/WaveformManager_64430a11.o: ../../Source/WaveformManager.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling WaveformManager.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/Waveforms_c2792737.o: ../../Source/Waveforms.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling Waveforms.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/MidiService_473bf4b5.o: ../../Source/MidiService.cpp

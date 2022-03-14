@@ -1189,7 +1189,13 @@
     <ClCompile Include="..\..\Source\AudioVisualizer.cpp">
       <Filter>Groovebox\AudioVisualizer</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Cursors.cpp">
+      <Filter>Groovebox\AudioVisualizer</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\WaveformManager.cpp">
+      <Filter>Groovebox\AudioVisualizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Waveforms.cpp">
       <Filter>Groovebox\AudioVisualizer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\MidiService.cpp">
@@ -5367,7 +5373,13 @@
     <ClInclude Include="..\..\Source\AudioVisualizer.h">
       <Filter>Groovebox\AudioVisualizer</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Cursors.h">
+      <Filter>Groovebox\AudioVisualizer</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\WaveformManager.h">
+      <Filter>Groovebox\AudioVisualizer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Waveforms.h">
       <Filter>Groovebox\AudioVisualizer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\MidiService.h">

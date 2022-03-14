@@ -37,9 +37,22 @@ MainComponent::MainComponent(){
     /* initally, program set to TrackView*/
     setupTrackView(true);
     
-    waveformManager.setBounds(100, 100, 512, 128);
-    addAndMakeVisible(waveformManager);
-    waveformManager.showAudioResource(tracktion_engine::getAudioTracks(*edit)[0]);
+    //waveformManager.setBounds(100, 100, 512, 128);
+    //addAndMakeVisible(waveformManager);
+    //waveformManager.showAudioResource(tracktion_engine::getAudioTracks(*edit)[0]);
+    //waveformManager.showAudioResource(edit.get());
+    
+    waveforms.setEdit(edit.get());
+    waveforms.setBounds(100, 100, 512, 128);
+    addAndMakeVisible(waveforms);
+    waveforms.showEdit();
+    cursor.setEdit(edit.get());
+    cursor.setBounds(100, 100, 512, 128);
+    cursor.defineCursorByRect(waveforms.getBounds());
+    addAndMakeVisible(cursor);
+     
+    addAndMakeVisible(timeline);
+    timeline.setEdit(edit.get());
 }
 
 MainComponent::~MainComponent(){
@@ -52,14 +65,9 @@ void MainComponent::paint(juce::Graphics &g){
     
     /* Draw the time line graphics objects */
     if (WState == WindowStates::Timeline){
-        /* get the drawState function from timeline object */
-        auto tg = timeline.paint();
-        
-        /* draw using drawState and pass &g to it */
-        /* call edit.get() to get raw pointer from
-           std::unique_ptr */
-        tg (&g, edit.get());
-        
+        timeline.setVisible(true);
+        timeline.setEnabled(true);
+        timeline.paint(g);
     }
     midiService.paint();
 
@@ -67,7 +75,7 @@ void MainComponent::paint(juce::Graphics &g){
 
 void MainComponent::resized() {
     //Make this into a for loop to resize each context
-    timeline.resize();
+    timeline.resized();
     juce::Rectangle<int> midiRect = getLocalBounds().removeFromBottom(300);
     midiService.resize(midiRect);
 }
@@ -241,6 +249,9 @@ void MainComponent::addAudioTrack(te::AudioTrack *audioTrack) {
     numTracks++;
     numAudioTracks++;
     audioTracks.push_back(audioTrack);
+    //waveformManager.showAudioResource(edit.get());
+    waveforms.showEdit();
+    cursor.defineCursorByRect(waveforms.getBounds());
     LOG("Added track " + (juce::String)numAudioTracks +
         "\nNumber of clips in track: " + (juce::String)audioTrack->getClips().size() + 
         "\nNumber of tracks in edit: " + (juce::String)edit->getTrackList().size());

@@ -108,3 +108,36 @@ void WaveformManager::showAudioResource(te::AudioTrack *track) {
         }
     }
 }
+
+void WaveformManager::showAudioResource(te::Edit *p_edit) {
+    auto audioTracks = te::getAudioTracks(*p_edit);
+    int numTracks = audioTracks.size();
+    juce::Rectangle<int> trackWindow = juce::Rectangle<int>();
+    trackWindow.setBounds(0, 0, trackWindowWidth, trackWindowHeight);
+    this->setBounds(this->getX(), this->getY(), this->getWidth(), trackWindow.getHeight() * numTracks);
+    thumbnail->loadFromTrackOrURL(true);
+    for (auto track: audioTracks) {
+        auto clips = track->getClips();
+        double clip_length = 0.0f;
+        double clip_offset = 0.0f;
+        juce::Rectangle<int>clipWindow = juce::Rectangle<int>();
+        clipWindow.setY(trackWindow.getY());
+        clipWindow.setHeight(trackWindow.getHeight());
+        for (auto clip: clips) {
+            te::SourceFileReference *ref = &clip->getSourceFileReference();
+            juce::URL url_file(ref->getFile());
+            
+            clip_length = clip->getPosition().getEnd();
+            clip_offset = clip->getPosition().offset;
+            clipWindow.setWidth((int)(clip_length/timeScale));
+            clipWindow.setX(0 + (int)(clip_offset/timeScale));
+            
+            thumbnail->setThumbnailBounds(clipWindow);
+            if (loadURLIntoTransport(url_file)) {
+                thumbnail->setURL(url_file);
+            }
+        }
+        
+        trackWindow.setY(trackWindow.getY() + trackWindow.getHeight());
+    }
+}

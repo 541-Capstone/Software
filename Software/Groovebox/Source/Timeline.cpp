@@ -13,6 +13,7 @@
 Timeline_t::Timeline_t(int x, int y, int sc, int *numTracks) {
     paintWindow.setHeight(y);
     paintWindow.setWidth(x);
+    edit = nullptr;
     
     scale = sc;
     controlImageHeightpx = controlImageHeightpx / scale;
@@ -95,7 +96,7 @@ void Timeline_t::setAudioTrackList(std::vector<te::Track*> *newTracks) {
     audioTrackList = newTracks;
 }
 
-void Timeline_t::resize() {
+void Timeline_t::resized() {
     int buttonHeight = 100, buttonWidth = 100, i = 0;
     juce::Rectangle<int> buttonRect = juce::Rectangle<int>(paintWindow);
     juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
@@ -127,40 +128,40 @@ void Timeline_t::resize() {
     textBox.performLayout(textRect);
 }
 
-std::function<void(juce::Graphics*, te::Edit*)> Timeline_t::paint () {
-    std::function<void(juce::Graphics*, te::Edit*)> paintFunc = [this](juce::Graphics* g, te::Edit* edit) -> void {
-        g->fillAll(bg_color);
-        
-        transport = &edit->getTransport();
-        
-        // You can add your drawing code here!
-        statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
-        trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(*numTracks), juce::NotificationType::dontSendNotification);
-        juce::Array<te::Track*> trackList = edit->getTrackList().objects;
-        juce::String trackNames = "";
-        
-        /* only iter when the there are tracks in audiotracklist */
-        trackNames += "TrackList: \n";
-        if (trackList.size () > 0){
-            for (auto track : trackList) {
-                
-                if (audioTrackList != nullptr && audioTrackList->size() > *currentTrack) {
-                    if (track == (*audioTrackList)[(*currentTrack)]) {
-                        trackNames += "* ";
-                    }
-                }
-                 
-                trackNames += track->getName();
-                trackNames += '\n';
-            }
-        }
-        trackCountLbl.setText(trackNames, juce::NotificationType::dontSendNotification);
-    };
+void Timeline_t::paint(juce::Graphics &g) {
+    g.fillAll(bg_color);
     
-    return paintFunc;
+    transport = &edit->getTransport();
+    
+    // You can add your drawing code here!
+    statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
+    trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(*numTracks), juce::NotificationType::dontSendNotification);
+    juce::Array<te::Track*> trackList = edit->getTrackList().objects;
+    juce::String trackNames = "";
+    
+    /* only iter when the there are tracks in audiotracklist */
+    trackNames += "TrackList: \n";
+    if (trackList.size () > 0){
+        for (auto track : trackList) {
+            
+            if (audioTrackList != nullptr && audioTrackList->size() > *currentTrack) {
+                if (track == (*audioTrackList)[(*currentTrack)]) {
+                    trackNames += "* ";
+                }
+            }
+             
+            trackNames += track->getName();
+            trackNames += '\n';
+        }
+    }
+    trackCountLbl.setText(trackNames, juce::NotificationType::dontSendNotification);
 }
 
 /* do nothing for now */
 void Timeline_t::setupButtonImages() {
     return;
+}
+
+void Timeline_t::setEdit(te::Edit *edit) {
+    this->edit = edit;
 }

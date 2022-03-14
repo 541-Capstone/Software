@@ -13,6 +13,8 @@
 #include "MidiService.h"
 #include "AudioVisualizer.h"
 #include "WaveformManager.h"
+#include "Waveforms.h"
+#include "Cursors.h"
 
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
@@ -228,7 +230,9 @@ private:
     void addAudioTrack(te::AudioTrack* audioTrack);
     
     /* testing purposes, remove and put in different file later...*/
-    WaveformManager waveformManager;
+    //WaveformManager waveformManager;
+    Waveforms waveforms;
+    Cursors cursor;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

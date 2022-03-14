@@ -10,10 +10,14 @@
             file="Source/AudioVisualizer.cpp"/>
       <FILE id="tROaBi" name="AudioVisualizer.h" compile="0" resource="0"
             file="Source/AudioVisualizer.h"/>
+      <FILE id="MAtA3B" name="Cursors.cpp" compile="1" resource="0" file="Source/Cursors.cpp"/>
+      <FILE id="qk01in" name="Cursors.h" compile="0" resource="0" file="Source/Cursors.h"/>
       <FILE id="ijVKc8" name="WaveformManager.cpp" compile="1" resource="0"
             file="Source/WaveformManager.cpp"/>
       <FILE id="TWcZ7U" name="WaveformManager.h" compile="0" resource="0"
             file="Source/WaveformManager.h"/>
+      <FILE id="ZgEpWP" name="Waveforms.cpp" compile="1" resource="0" file="Source/Waveforms.cpp"/>
+      <FILE id="UMToWz" name="Waveforms.h" compile="0" resource="0" file="Source/Waveforms.h"/>
     </GROUP>
     <GROUP id="{45134452-03F1-548C-E837-29A252B778B8}" name="MIDIServices">
       <FILE id="HX4UFj" name="MidiService.cpp" compile="1" resource="0" file="Source/MidiService.cpp"/>
