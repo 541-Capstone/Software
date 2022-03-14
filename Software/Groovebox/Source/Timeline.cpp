@@ -39,6 +39,9 @@ Timeline_t::Timeline_t(int x, int y, int sc, int *numTracks) {
     /* push labels onto timelineObjects label vector */
     timelineObjects.lbls.push_back(&statusLbl);
     timelineObjects.lbls.push_back(&trackCountLbl);
+    
+    /* testing flags */
+    draw_once_for_testing = true;
 }
 
 Timeline_t::~Timeline_t(){

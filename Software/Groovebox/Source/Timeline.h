@@ -19,6 +19,7 @@
 #include "viewObjects.h"
 #include "TrackManager.h"
 #include "FileManager.h"
+#include "Utilities.h"
 
 class Timeline_t : juce::ActionBroadcaster {
 public:
@@ -136,6 +137,9 @@ private:
     void play();
     void pause();
     void record();
+    
+    /* draw once flag */
+    bool draw_once_for_testing;
 
     /* this is the absolute path of Groovebox */
     const std::string apath = APATH;

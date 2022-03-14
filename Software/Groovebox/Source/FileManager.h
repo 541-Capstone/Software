@@ -21,13 +21,13 @@
 
 
 #ifdef __MACH__
-#define TESTAUDIOPATH "~/Documents/test.m4a"
+#define TESTAUDIOPATH "~/Documents/test.wav"
 #endif
 
 #ifdef _WIN64
 #define TESTAUDIOPATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\lemons-improved.wav"
 #endif
-
+namespace te = tracktion_engine;
 class FileManager {
 public:
     FileManager ();

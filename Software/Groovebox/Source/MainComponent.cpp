@@ -37,10 +37,13 @@ MainComponent::MainComponent(){
     /* initally, program set to TrackView*/
     setupTrackView(true);
     
-    
+    waveformManager.setBounds(100, 100, 512, 128);
+    addAndMakeVisible(waveformManager);
+    waveformManager.showAudioResource(tracktion_engine::getAudioTracks(*edit)[0]);
 }
 
 MainComponent::~MainComponent(){
+
 }
 
 void MainComponent::paint(juce::Graphics &g){
@@ -56,6 +59,7 @@ void MainComponent::paint(juce::Graphics &g){
         /* call edit.get() to get raw pointer from
            std::unique_ptr */
         tg (&g, edit.get());
+        
     }
     midiService.paint();
 
@@ -257,10 +261,5 @@ void MainComponent::prevTrack() {
 }
 
 void MainComponent::drawAudioWaveform(){
-    int thumbnailSize = 512; // px
-    std::unique_ptr<juce::FileChooser> chooser;
-    juce::AudioFormatManager formatManager;
-    juce::AudioThumbnailCache thumbnailCache {5};
-    juce::AudioThumbnail thumbnail {thumbnailSize, formatManager, thumbnailCache};
     
 }

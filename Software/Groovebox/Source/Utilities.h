@@ -8,6 +8,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "FileManager.h"
 
 #if __MACH__
 #define LOG(x) std::cout<<x

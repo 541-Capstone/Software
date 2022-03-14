@@ -36,6 +36,7 @@ struct viewObjects {
     bool inclLbls;
     std::vector<juce::Button*> btns;
     std::vector<juce::Label*> lbls;
+    std::vector<juce::AudioThumbnail*> thbs;
 };
 
 #endif

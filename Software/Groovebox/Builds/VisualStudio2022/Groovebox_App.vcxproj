@@ -139,6 +139,8 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\AudioVisualizer.cpp"/>
+    <ClCompile Include="..\..\Source\WaveformManager.cpp"/>
     <ClCompile Include="..\..\Source\MidiService.cpp"/>
     <ClCompile Include="..\..\Source\Utilities.cpp"/>
     <ClCompile Include="..\..\Source\FileManager.cpp"/>
@@ -4125,6 +4127,8 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_tracktion_graph.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\AudioVisualizer.h"/>
+    <ClInclude Include="..\..\Source\WaveformManager.h"/>
     <ClInclude Include="..\..\Source\MidiService.h"/>
     <ClInclude Include="..\..\Source\Utilities.h"/>
     <ClInclude Include="..\..\Source\FileManager.h"/>

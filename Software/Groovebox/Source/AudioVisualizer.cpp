@@ -1,0 +1,114 @@
+/*
+  ==============================================================================
+
+    AudioVisualizer.cpp
+    Created: 13 Mar 2022 5:38:47pm
+    Author:  Peter Tso
+
+  ==============================================================================
+*/
+
+#include "AudioVisualizer.h"
+
+AudioVisualizer::AudioVisualizer (juce::AudioFormatManager& formatManager, juce::AudioTransportSource& source) : transportSource(source), thumbnail(512, formatManager, thumbnailCache) {
+    thumbnail.addChangeListener(this);
+    
+    addAndMakeVisible(scrollbar);
+    scrollbar.setRangeLimits(visibleRange);
+    scrollbar.setAutoHide(false);
+    scrollbar.addListener(this);
+    
+    clipBounds = getLocalBounds();
+    
+    track = nullptr;
+}
+
+AudioVisualizer::~AudioVisualizer () {
+    scrollbar.removeListener(this);
+    thumbnail.removeChangeListener(this);
+}
+
+void AudioVisualizer::setRange(juce::Range<double> newRange) {
+    visibleRange = newRange;
+    scrollbar.setCurrentRange(visibleRange);
+    updateMouseCursor();
+    repaint();
+}
+
+void AudioVisualizer::setURL (const juce::URL& url) {
+    juce::InputSource *inputSource = nullptr;
+    if (url.isLocalFile()) {
+        inputSource = new juce::FileInputSource(url.getLocalFile());
+    }
+    else {
+        if (inputSource == nullptr) {
+            inputSource = new juce::URLInputSource  (url);
+        }
+    }
+    
+    if (inputSource != nullptr) {
+        thumbnail.setSource(inputSource);
+        juce::Range<double> newRange (0.0, thumbnail.getTotalLength());
+        scrollbar.setRangeLimits(newRange);
+        setRange(newRange);
+        
+        startTimerHz (40);
+    }
+}
+
+void AudioVisualizer::paint(juce::Graphics &g) {
+    g.fillAll(background_color);
+    g.setColour(waveform_background);
+    
+    if (thumbnail.getTotalLength() > 0) {
+        auto thumbArea = getLocalBounds ();
+        thumbArea.removeFromTop(scrollbar.getHeight() + 4);
+        if (loadFrom && track != nullptr) {
+            thumbnail.drawChannels(g, thumbArea.reduced(2), visibleRange.getStart(), visibleRange.getEnd(), 1.0f);
+        }
+        else {
+            thumbnail.drawChannels(g, thumbArea.reduced(2), visibleRange.getStart(), visibleRange.getEnd(), 1.0f);
+        }
+    }
+    else {
+        g.setFont(14.0f);
+        g.drawFittedText("No audio Selected / Not working!", getLocalBounds(), juce::Justification::centred, 2);
+    }
+}
+
+void AudioVisualizer::resized() {
+    scrollbar.setBounds (getLocalBounds().removeFromBottom(14).reduced(2));
+}
+
+void AudioVisualizer::changeListenerCallback(juce::ChangeBroadcaster * dont_care) {
+    repaint();
+}
+
+void AudioVisualizer::scrollBarMoved(juce::ScrollBar *scrollBarThatHasMoved, double newRangeStart) {
+    
+}
+
+void AudioVisualizer::timerCallback() {
+    
+}
+
+juce::URL AudioVisualizer::getLastDroppedFile() const noexcept {
+    return lastfileDropped;
+}
+
+void AudioVisualizer::setFollowsTransport(bool shouldFollow) {
+    isFollowingTransport = shouldFollow;
+}
+
+void AudioVisualizer::setTrack(te::AudioTrack *track) {
+    this->track = track;
+}
+
+void AudioVisualizer::loadFromTrackOrURL(bool load) {
+    loadFrom = load;
+}
+
+void AudioVisualizer::setThumbnailBounds(juce::Rectangle<int> bounds) {
+    clipBounds = bounds;
+}
+
