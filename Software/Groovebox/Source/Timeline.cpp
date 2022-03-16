@@ -10,18 +10,17 @@
 
 #include "Timeline.h"
 
-Timeline_t::Timeline_t(int x, int y, int sc, int *numTracks) {
-    paintWindow.setHeight(y);
-    paintWindow.setWidth(x);
-    edit = nullptr;
-    
-    scale = sc;
-    controlImageHeightpx = controlImageHeightpx / scale;
-    controlImageWidthpx = controlImageWidthpx / scale;
-    
-    this->numTracks = numTracks;
-    
+Timeline::Timeline() {
+    // Set all the nullptrs
+    this->edit = nullptr;
+    this->numTracks = nullptr;
     this->currentTrack = nullptr;
+    this->transport = nullptr;
+    this->mainComponent = nullptr;
+    
+    funcs.clear();
+    
+    waveform_window.setBounds(100, 100, 512, 128);
     
     audioTrackList = nullptr;/*new std::vector<te::Track*>();*/
     
@@ -36,69 +35,41 @@ Timeline_t::Timeline_t(int x, int y, int sc, int *numTracks) {
     timelineObjects.btns.push_back(&addTrackBtn);
     timelineObjects.btns.push_back(&leftBtn);
     timelineObjects.btns.push_back(&rightBtn);
+    timelineObjects.btns.push_back(&addClip);
     
     /* push labels onto timelineObjects label vector */
     timelineObjects.lbls.push_back(&statusLbl);
     timelineObjects.lbls.push_back(&trackCountLbl);
     
-    /* testing flags */
-    draw_once_for_testing = true;
+    for (auto btn: timelineObjects.btns){
+        addAndMakeVisible(*btn);
+        btn->addListener(this);
+    }
+    for (auto lbl: timelineObjects.lbls){
+        addAndMakeVisible(*lbl);
+    }
 }
 
-Timeline_t::~Timeline_t(){
+Timeline::~Timeline(){
     // do nothing for now!
-    //delete audioTrackList;
 }
 
-viewObjects* Timeline_t::getObjects() {
+viewObjects* Timeline::getObjects() {
     return &timelineObjects;
 }
 
-bool Timeline_t::assignFunctionToObjects(std::initializer_list<std::function<void()>> list) {
-    for (auto elem : list)
-        funcs.push_back(elem);
-    return true;
-}
-
-bool Timeline_t::assignFuncToBtn(juce::Button *btn, std::function<void ()> func) {
-    int i = 0;
-    for (auto b : timelineObjects.btns) {
-        if (b == btn) {
-            funcs[i] = func;
-            return true;
-        }
-        i++;
-    }
-    return false;
- }
-
-void Timeline_t::onClick (juce::Button *btn) {
-    int i = 0;
-    for (auto b : timelineObjects.btns) {
-        if (i >= funcs.size () ) {
-           LOG("Function not implmented!");
-            return;
-        }
-        if (b == btn) {
-            funcs[i]();
-            return;
-        }
-        i++;
-    }
-}
-
-void Timeline_t::setCurrentTrackPtr
+void Timeline::setCurrentTrackPtr
  (int *currentTrack) {
     this->currentTrack = currentTrack;
 }
 
-void Timeline_t::setAudioTrackList(std::vector<te::Track*> *newTracks) {
+void Timeline::setAudioTrackList(std::vector<te::Track*> *newTracks) {
     audioTrackList = newTracks;
 }
 
-void Timeline_t::resized() {
+void Timeline::resized() {
     int buttonHeight = 100, buttonWidth = 100, i = 0;
-    juce::Rectangle<int> buttonRect = juce::Rectangle<int>(paintWindow);
+    juce::Rectangle<int> buttonRect = this->getBounds();
     juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
 
     juce::FlexBox buttonBox{ juce::FlexBox::Direction::row,
@@ -128,14 +99,15 @@ void Timeline_t::resized() {
     textBox.performLayout(textRect);
 }
 
-void Timeline_t::paint(juce::Graphics &g) {
+void Timeline::paint(juce::Graphics &g) {
     g.fillAll(bg_color);
     
+    if (edit == nullptr) return;
     transport = &edit->getTransport();
     
     // You can add your drawing code here!
     statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
-    trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(*numTracks), juce::NotificationType::dontSendNotification);
+    trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(edit->getTrackList().size()), juce::NotificationType::dontSendNotification);
     juce::Array<te::Track*> trackList = edit->getTrackList().objects;
     juce::String trackNames = "";
     
@@ -157,11 +129,95 @@ void Timeline_t::paint(juce::Graphics &g) {
     trackCountLbl.setText(trackNames, juce::NotificationType::dontSendNotification);
 }
 
-/* do nothing for now */
-void Timeline_t::setupButtonImages() {
+void Timeline::setEdit(te::Edit *edit) {
+    this->edit = edit;
+    waveforms.setBounds(waveform_window);
+    cursors.setBounds(waveform_window);
+    waveforms.setEdit(edit);
+    cursors.setEdit(edit);
+    addAndMakeVisible(waveforms);
+    addAndMakeVisible(cursors);
+    waveforms.showEdit();
+}
+
+void Timeline::timerCallback(){
+    repaint();
+}
+
+void Timeline::setMainComponentPtr(juce::Component *component) {
+    this->mainComponent = component;
+}
+
+void Timeline::play(){
+    if (funcs.size() < 1) return;
+    funcs[0]();
+}
+
+void Timeline::pause(){
+    if (funcs.size() < 2) return;
+    funcs[1]();
+}
+
+void Timeline::record(){
+    if (funcs.size() < 3) return;
+    funcs[2]();
+}
+
+void Timeline::nextTrack(){
+    if (funcs.size() < 4) return;
+    funcs[3]();
+}
+
+void Timeline::prevTrack(){
+    if (funcs.size() < 5) return;
+    funcs[4]();
+}
+
+void Timeline::addAudioTrack(){
+    if (funcs.size() < 6) return;
+    funcs[5]();
+    waveforms.showEdit();
+    cursors.defineCursorByRect(waveforms.getBounds());
+}
+
+void Timeline::addClipToTrack(){
+    if (funcs.size() < 7) return;
+    funcs[6]();
+    waveforms.showEdit();
+}
+
+void Timeline::addActionListener(juce::ActionListener *listener) {
+    
+}
+
+void Timeline::removeActionListener(juce::ActionListener *listener) {
+    
+}
+
+void Timeline::removeAllActionListener() {
+    
+}
+
+void Timeline::sendActionMessage(const juce::String &message) const {
+    
+}
+
+void Timeline::setupFunctions(std::vector<std::function<void ()>> vec) {
+    funcs = vec;
+    
+}
+
+void Timeline::onClick(juce::Button *button) {
+    if (button == &playBtn) play();
+    if (button == &pauseBtn) pause();
+    if (button == &recordBtn) record();
+    if (button == &addTrackBtn) addAudioTrack();
+    if (button == &leftBtn) nextTrack();
+    if (button == &rightBtn) prevTrack();
+    if (button == &addClip) addClipToTrack();
     return;
 }
 
-void Timeline_t::setEdit(te::Edit *edit) {
-    this->edit = edit;
+void Timeline::buttonClicked(juce::Button *button){
+    this->onClick(button);
 }

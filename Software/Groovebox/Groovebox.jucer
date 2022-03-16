@@ -5,7 +5,7 @@
               defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;" headerPath="usr/include/freetype2"
               cppLanguageStandard="17">
   <MAINGROUP id="JlHjiV" name="Groovebox">
-    <GROUP id="{F91CA04B-82C4-EEE3-5037-6BA7E851FC29}" name="AudioVisualizer">
+    <GROUP id="{F91CA04B-82C4-EEE3-5037-6BA7E851FC29}" name="WaveformClasses">
       <FILE id="uvsOft" name="AudioVisualizer.cpp" compile="1" resource="0"
             file="Source/AudioVisualizer.cpp"/>
       <FILE id="tROaBi" name="AudioVisualizer.h" compile="0" resource="0"

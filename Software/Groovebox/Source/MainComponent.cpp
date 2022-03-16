@@ -37,22 +37,25 @@ MainComponent::MainComponent(){
     /* initally, program set to TrackView*/
     setupTrackView(true);
     
-    //waveformManager.setBounds(100, 100, 512, 128);
-    //addAndMakeVisible(waveformManager);
-    //waveformManager.showAudioResource(tracktion_engine::getAudioTracks(*edit)[0]);
-    //waveformManager.showAudioResource(edit.get());
-    
+    // Setup waveform
+    /*
     waveforms.setEdit(edit.get());
     waveforms.setBounds(100, 100, 512, 128);
     addAndMakeVisible(waveforms);
-    waveforms.showEdit();
+    waveforms.showEdit(); */
+    
+    // Setup Cursor
+    /*
     cursor.setEdit(edit.get());
     cursor.setBounds(100, 100, 512, 128);
     cursor.defineCursorByRect(waveforms.getBounds());
-    addAndMakeVisible(cursor);
+    addAndMakeVisible(cursor); */
      
+    // Setup timeline
+    timeline.setBounds(this->getBounds());
     addAndMakeVisible(timeline);
     timeline.setEdit(edit.get());
+    timeline.setMainComponentPtr(this);
 }
 
 MainComponent::~MainComponent(){
@@ -64,7 +67,7 @@ void MainComponent::paint(juce::Graphics &g){
     g.fillAll(background_color);
     
     /* Draw the time line graphics objects */
-    if (WState == WindowStates::Timeline){
+    if (WState == WindowStates::TrackView){
         timeline.setVisible(true);
         timeline.setEnabled(true);
         timeline.paint(g);
@@ -83,12 +86,9 @@ void MainComponent::resized() {
 /* button listener */
 void MainComponent::buttonClicked(juce::Button *button){
     /* check to see for timeline button */
-    if (WState == WindowStates::Timeline) {
-        for (auto btn : timeline.getObjects()->btns) {
-            if (button == btn) {
-                timeline.onClick (btn);
-            }
-        }
+    LOG("Button Pressed\n");
+    if (WState == WindowStates::TrackView) {
+        timeline.onClick(button);
     }
 }
 
@@ -118,38 +118,39 @@ void MainComponent::releaseResources(){
 /* Private functions */
 
 void MainComponent::setupTrackView(bool fst){
-    /* add the buttons */
-    if (fst) {
-
-        /* get the viewable objects from timeline */
-        viewObjects* viewObjs = timeline.getObjects();
-        
-        /* make the buttons visible and add listeners */
-        for (auto btn: viewObjs->btns) {
-            addAndMakeVisible(*btn);
-            btn->addListener(this);
-        }
-        
-        /* make the labels visible */
-        for (auto lbl: viewObjs->lbls) {
-            addAndMakeVisible(*lbl);
-        }
-        
-        //TODO: Refactor this
-        std::function<void()> playFun = [this](void)->void{play();};
-        
-        std::function<void()> pauseFun = [this](void)->void{pause();};
-        
-        std::function<void()> recordFun = [this](void)->void{record();};
-
-        std::function<void()> addTrackFun = [this](void)->void {createAudioTrack(); };
-
-        std::function<void()> prevTrackFun = [this](void)->void {prevTrack(); };
-
-        std::function<void()> nextTrackFun = [this](void)->void {nextTrack(); };
-        
-        timeline.assignFunctionToObjects({playFun, pauseFun, recordFun, addTrackFun, prevTrackFun, nextTrackFun});
-    }
+    std::function<void()> playFunc = [this]()->void{
+        play();
+    };
+    std::function<void()> pauseFunc = [this]()->void{
+        pause();
+    };
+    std::function<void()> recordFunc = [this]()->void{
+        record();
+    };
+    std::function<void()> nextTrackFunc = [this]()->void{
+        nextTrack();
+    };
+    std::function<void()> prevTrackFunc = [this]()->void{
+        prevTrack();
+    };
+    std::function<void()> addTrackFunc = [this]()->void{
+        createAudioTrack();
+    };
+    std::function<void()> addClipFunc = [this]()->void{
+        addClipToTrack();
+    };
+    std::vector<std::function<void()> > funcs;
+    funcs.clear();
+    funcs.push_back(playFunc);
+    funcs.push_back(pauseFunc);
+    funcs.push_back(recordFunc);
+    funcs.push_back(nextTrackFunc);
+    funcs.push_back(prevTrackFunc);
+    funcs.push_back(addTrackFunc);
+    funcs.push_back(addClipFunc);
+    play();
+    timeline.setupFunctions(funcs);
+    return;
 }
 
 void MainComponent::setMaxTracks(int n){
@@ -189,7 +190,7 @@ void MainComponent::disableAllButtons(){
 void MainComponent::enableButtonAtCurrentState(){
     
     // if the state is at Timeline, enable and set visible all buttons
-    if (WState == WindowStates::Timeline) {
+    if (WState == WindowStates::TrackView) {
         for (auto btn : timeline.getObjects()->btns) {
             (*btn).setEnabled(true);
             (*btn).setVisible(true);
@@ -250,8 +251,8 @@ void MainComponent::addAudioTrack(te::AudioTrack *audioTrack) {
     numAudioTracks++;
     audioTracks.push_back(audioTrack);
     //waveformManager.showAudioResource(edit.get());
-    waveforms.showEdit();
-    cursor.defineCursorByRect(waveforms.getBounds());
+    //waveforms.showEdit();
+    //cursor.defineCursorByRect(waveforms.getBounds());
     LOG("Added track " + (juce::String)numAudioTracks +
         "\nNumber of clips in track: " + (juce::String)audioTrack->getClips().size() + 
         "\nNumber of tracks in edit: " + (juce::String)edit->getTrackList().size());
@@ -271,6 +272,9 @@ void MainComponent::prevTrack() {
     }
 }
 
-void MainComponent::drawAudioWaveform(){
-    
+void MainComponent::addClipToTrack() {
+    auto audioTracks = te::getAudioTracks(*edit);
+    auto track = audioTracks[currentTrackIndex];
+    Helpers::insertClipToTrack(track, &edit->getTransport(), TESTAUDIOPATH);
+    //waveforms.showEdit();
 }

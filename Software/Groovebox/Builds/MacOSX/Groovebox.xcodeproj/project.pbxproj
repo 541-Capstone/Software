@@ -164,7 +164,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		04687ABF02277B09DA5D2252 /* AudioVisualizer */ = {
+		04687ABF02277B09DA5D2252 /* WaveformClasses */ = {
 			isa = PBXGroup;
 			children = (
 				9C9E88DC6EE82ECCFA7D924F,
@@ -176,7 +176,7 @@
 				2659E03D5C980B148E96FD6D,
 				EBFFFBBAEA4EAB13F030C7AC,
 			);
-			name = AudioVisualizer;
+			name = WaveformClasses;
 			sourceTree = "<group>";
 		};
 		3FF0D67B63BF05541B8A8B07 /* Source */ = {

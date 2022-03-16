@@ -2,8 +2,8 @@
 
 <Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Groovebox\AudioVisualizer">
-      <UniqueIdentifier>{2D9E8156-4277-13C3-E6E0-6B69D8C11376}</UniqueIdentifier>
+    <Filter Include="Groovebox\WaveformClasses">
+      <UniqueIdentifier>{2F39FA70-2585-E6F6-2784-11CD04FBAD1E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Groovebox\MIDIServices">
       <UniqueIdentifier>{66A834E4-28DB-B3C7-9F07-F7B0BD1FCCEB}</UniqueIdentifier>
@@ -1187,16 +1187,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\AudioVisualizer.cpp">
-      <Filter>Groovebox\AudioVisualizer</Filter>
+      <Filter>Groovebox\WaveformClasses</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Cursors.cpp">
-      <Filter>Groovebox\AudioVisualizer</Filter>
+      <Filter>Groovebox\WaveformClasses</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\WaveformManager.cpp">
-      <Filter>Groovebox\AudioVisualizer</Filter>
+      <Filter>Groovebox\WaveformClasses</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Waveforms.cpp">
-      <Filter>Groovebox\AudioVisualizer</Filter>
+      <Filter>Groovebox\WaveformClasses</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\MidiService.cpp">
       <Filter>Groovebox\MIDIServices</Filter>
@@ -5371,16 +5371,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\AudioVisualizer.h">
-      <Filter>Groovebox\AudioVisualizer</Filter>
+      <Filter>Groovebox\WaveformClasses</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Cursors.h">
-      <Filter>Groovebox\AudioVisualizer</Filter>
+      <Filter>Groovebox\WaveformClasses</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\WaveformManager.h">
-      <Filter>Groovebox\AudioVisualizer</Filter>
+      <Filter>Groovebox\WaveformClasses</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Waveforms.h">
-      <Filter>Groovebox\AudioVisualizer</Filter>
+      <Filter>Groovebox\WaveformClasses</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\MidiService.h">
       <Filter>Groovebox\MIDIServices</Filter>

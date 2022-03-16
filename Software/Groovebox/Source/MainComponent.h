@@ -44,9 +44,6 @@ public:
     void releaseResources() override;
     
     void timerCallback() override;
-    
-    
-    
 
 private:
     //==============================================================================
@@ -72,7 +69,7 @@ private:
     
     /* This contains the states needed to switch between timeline, mixer, etc. */
     enum WindowStates {
-        Timeline,
+        TrackView,
         Mixer,
         Generator,
         Effects,
@@ -80,7 +77,7 @@ private:
     };
     
     /* This is the state of the views */
-    WindowStates WState = WindowStates::Timeline;
+    WindowStates WState = WindowStates::TrackView;
     
     /* This contains the states needed to play and pause */
     enum PlayStates {
@@ -112,8 +109,6 @@ private:
     const std::string apath = APATH;
     
     juce::Label timelineLoadedLabel {"No edit loaded!"};
-    
-    void drawAudioWaveform();
     
     //=================================================================
     
@@ -168,7 +163,7 @@ private:
     int currentTrackIndex;
     
     /* this is the timeline object */
-    Timeline_t timeline{ window[0], window[1], scale,  &numTracks};
+    Timeline timeline;
     FileManager fileManager;
     tracktion_engine::SelectionManager selectionmanager {engine};
 
@@ -208,6 +203,11 @@ private:
     /* core features should be added in MainComponent for all state objects to use. If a button or other componnent in the state object needs to use a core feature, call viewObjects* the_state_t::getObjects (), and pass function there */
     // Common functions for playing, recording, pausing, etc.
     
+    /* testing purposes, remove and put in different file later.... Preferrably Timeline */
+    //WaveformManager waveformManager;
+    //Waveforms waveforms;
+    //Cursors cursor;
+    
     //Begins playing the track from the current playhead position
     void play();
     
@@ -229,10 +229,8 @@ private:
     //Add an existing audio track at the end of the list if possible
     void addAudioTrack(te::AudioTrack* audioTrack);
     
-    /* testing purposes, remove and put in different file later...*/
-    //WaveformManager waveformManager;
-    Waveforms waveforms;
-    Cursors cursor;
+    // adds a clip to an existing audio track
+    void addClipToTrack();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
