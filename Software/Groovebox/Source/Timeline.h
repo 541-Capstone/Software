@@ -53,6 +53,7 @@ public:
     void setupFunctions(std::vector<std::function<void()> > vec);
     void onClick(juce::Button *button);
     void buttonClicked(juce::Button *button) override;
+    void setAllComponents(bool state);
 // private member variables go here
 private:
     

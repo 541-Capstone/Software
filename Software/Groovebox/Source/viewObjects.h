@@ -23,6 +23,8 @@
 
 #include <JuceHeader.h>
 #include <vector>
+#include "Waveforms.h"
+#include "Cursors.h"
 
 // For now the viewObjects only includes ImageButtons and labels
 
@@ -37,6 +39,8 @@ struct viewObjects {
     std::vector<juce::Button*> btns;
     std::vector<juce::Label*> lbls;
     std::vector<juce::AudioThumbnail*> thbs;
+    Waveforms *waveforms;
+    Cursors *cursors;
 };
 
 #endif

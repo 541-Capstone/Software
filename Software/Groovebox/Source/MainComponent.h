@@ -173,9 +173,8 @@ private:
     
     /**
      * @brief The setupTrackView function sets up the track view buttons
-     * @param fst True when it is the first time setting up track view
      */
-    void setupTrackView(bool firstTime);
+    void setupTrackView();
     
     void setMaxTracks(int n);
     
@@ -183,6 +182,8 @@ private:
      * @brief This disables and hides all buttons
      */
     void disableAllButtons();
+    
+    void disableAllStates();
     
     /**
      * @brief Enables buttons based on state

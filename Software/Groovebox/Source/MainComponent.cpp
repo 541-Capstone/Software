@@ -35,7 +35,7 @@ MainComponent::MainComponent(){
     timeline.setCurrentTrackPtr (&currentTrackIndex);
     timeline.setAudioTrackList  (&audioTracks);
     /* initally, program set to TrackView*/
-    setupTrackView(true);
+    setupTrackView();
     
     // Setup waveform
     /*
@@ -70,7 +70,6 @@ void MainComponent::paint(juce::Graphics &g){
     if (WState == WindowStates::TrackView){
         timeline.setVisible(true);
         timeline.setEnabled(true);
-        timeline.paint(g);
     }
     midiService.paint();
 
@@ -117,7 +116,7 @@ void MainComponent::releaseResources(){
 
 /* Private functions */
 
-void MainComponent::setupTrackView(bool fst){
+void MainComponent::setupTrackView(){
     std::function<void()> playFunc = [this]()->void{
         play();
     };
@@ -148,7 +147,6 @@ void MainComponent::setupTrackView(bool fst){
     funcs.push_back(prevTrackFunc);
     funcs.push_back(addTrackFunc);
     funcs.push_back(addClipFunc);
-    play();
     timeline.setupFunctions(funcs);
     return;
 }
@@ -277,4 +275,11 @@ void MainComponent::addClipToTrack() {
     auto track = audioTracks[currentTrackIndex];
     Helpers::insertClipToTrack(track, &edit->getTransport(), TESTAUDIOPATH);
     //waveforms.showEdit();
+}
+
+void MainComponent::disableAllStates(){
+    /* add states here to disable! */
+    timeline.setAllComponents(false);
+    timeline.setVisible(false);
+    timeline.setEnabled(false);
 }

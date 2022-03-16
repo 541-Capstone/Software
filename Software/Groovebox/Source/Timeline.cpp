@@ -41,6 +41,10 @@ Timeline::Timeline() {
     timelineObjects.lbls.push_back(&statusLbl);
     timelineObjects.lbls.push_back(&trackCountLbl);
     
+    /* push other objects onto timelineObjects */
+    timelineObjects.waveforms = &waveforms;
+    timelineObjects.cursors = &cursors;
+    
     for (auto btn: timelineObjects.btns){
         addAndMakeVisible(*btn);
         btn->addListener(this);
@@ -48,6 +52,8 @@ Timeline::Timeline() {
     for (auto lbl: timelineObjects.lbls){
         addAndMakeVisible(*lbl);
     }
+    
+    
 }
 
 Timeline::~Timeline(){
@@ -220,4 +226,22 @@ void Timeline::onClick(juce::Button *button) {
 
 void Timeline::buttonClicked(juce::Button *button){
     this->onClick(button);
+}
+
+void Timeline::setAllComponents(bool state){
+    for (auto btn: timelineObjects.btns) {
+        btn->setVisible(state);
+        btn->setEnabled(state);
+    }
+    
+    for (auto lbl: timelineObjects.lbls) {
+        lbl->setVisible(state);
+        lbl->setEnabled(state);
+    }
+    
+    waveforms.setVisible(state);
+    waveforms.setEnabled(state);
+    
+    cursors.setVisible(state);
+    cursors.setEnabled(state);
 }
