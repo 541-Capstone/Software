@@ -60,7 +60,7 @@ void AudioVisualizer::setURL (const juce::URL& url) {
 
 void AudioVisualizer::paint(juce::Graphics &g) {
     g.fillAll(background_color);
-    g.setColour(waveform_background);
+    g.setColour(waveform_color);
     
     if (thumbnail.getTotalLength() > 0) {
         auto thumbArea = getLocalBounds ();
@@ -112,4 +112,12 @@ void AudioVisualizer::loadFromTrackOrURL(bool load) {
 
 void AudioVisualizer::setThumbnailBounds(juce::Rectangle<int> bounds) {
     clipBounds = bounds;
+}
+
+void AudioVisualizer::setWaveformColor(juce::Colour color) {
+    waveform_color = color;
+}
+
+void AudioVisualizer::setBackgroundColor(juce::Colour color) {
+    background_color = color;
 }

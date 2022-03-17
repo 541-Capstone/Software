@@ -1192,6 +1192,9 @@
     <ClCompile Include="..\..\Source\Cursors.cpp">
       <Filter>Groovebox\WaveformClasses</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Scrollable.cpp">
+      <Filter>Groovebox\WaveformClasses</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\WaveformManager.cpp">
       <Filter>Groovebox\WaveformClasses</Filter>
     </ClCompile>
@@ -5374,6 +5377,9 @@
       <Filter>Groovebox\WaveformClasses</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Cursors.h">
+      <Filter>Groovebox\WaveformClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Scrollable.h">
       <Filter>Groovebox\WaveformClasses</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\WaveformManager.h">

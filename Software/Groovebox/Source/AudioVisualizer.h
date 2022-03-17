@@ -30,6 +30,8 @@ public:
     juce::URL getLastDroppedFile() const noexcept;
     void setFollowsTransport (bool shouldFollow);
     void setThumbnailBounds (juce::Rectangle<int> bounds);
+    void setWaveformColor (juce::Colour color);
+    void setBackgroundColor (juce::Colour color);
     
 private:
     juce::AudioTransportSource &transportSource;

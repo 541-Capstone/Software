@@ -22,6 +22,7 @@
 #include "Utilities.h"
 #include "Waveforms.h"
 #include "Cursors.h"
+#include "Scrollable.h"
 
 class Timeline : public juce::ActionBroadcaster, public juce::Component, public juce::Timer, public juce::Button::Listener {
 public:
@@ -113,6 +114,10 @@ private:
     /* For waveform views */
     Waveforms waveforms;
     Cursors cursors;
+    Scrollable scrollable;
+    
+    void setupWaveformDisplay();
+    void redrawWaveform();
 };
 
 #endif

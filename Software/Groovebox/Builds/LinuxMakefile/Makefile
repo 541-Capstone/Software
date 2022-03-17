@@ -70,6 +70,7 @@ endif
 OBJECTS_APP := \
   $(JUCE_OBJDIR)/AudioVisualizer_1a49b7b5.o \
   $(JUCE_OBJDIR)/Cursors_a7d171be.o \
+  $(JUCE_OBJDIR)/Scrollable_5c72b7b0.o \
   $(JUCE_OBJDIR)/WaveformManager_64430a11.o \
   $(JUCE_OBJDIR)/Waveforms_c2792737.o \
   $(JUCE_OBJDIR)/MidiService_473bf4b5.o \
@@ -125,6 +126,11 @@ $(JUCE_OBJDIR)/AudioVisualizer_1a49b7b5.o: ../../Source/AudioVisualizer.cpp
 $(JUCE_OBJDIR)/Cursors_a7d171be.o: ../../Source/Cursors.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling Cursors.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/Scrollable_5c72b7b0.o: ../../Source/Scrollable.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling Scrollable.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/WaveformManager_64430a11.o: ../../Source/WaveformManager.cpp

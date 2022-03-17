@@ -12,6 +12,8 @@
             file="Source/AudioVisualizer.h"/>
       <FILE id="MAtA3B" name="Cursors.cpp" compile="1" resource="0" file="Source/Cursors.cpp"/>
       <FILE id="qk01in" name="Cursors.h" compile="0" resource="0" file="Source/Cursors.h"/>
+      <FILE id="OnPewl" name="Scrollable.cpp" compile="1" resource="0" file="Source/Scrollable.cpp"/>
+      <FILE id="Pdne92" name="Scrollable.h" compile="0" resource="0" file="Source/Scrollable.h"/>
       <FILE id="ijVKc8" name="WaveformManager.cpp" compile="1" resource="0"
             file="Source/WaveformManager.cpp"/>
       <FILE id="TWcZ7U" name="WaveformManager.h" compile="0" resource="0"

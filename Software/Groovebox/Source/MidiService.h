@@ -24,8 +24,10 @@ public:
 
 	void addMessageToList(const juce::MidiMessage& message, const juce::String& source);
 
-	std::function<void(juce::Graphics*, te::Edit*)> paint();
-
+    void paint(juce::Graphics &g) override;
+    
+    void resized() override;
+    
 	void resize(juce::Rectangle<int> rect);
 
 private:

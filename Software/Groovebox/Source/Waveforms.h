@@ -25,14 +25,18 @@ public:
     void showEdit ();
     void resized () override;
     void setEdit (te::Edit *edit);
+    void setColorRandomizer(bool set);
 private:
     WaveformManager ***waveformManagers = nullptr;
     const int cursor_width = 5;
     const double timeScale = 2.0f;
     const int numClipsPerTrack = 5;
     const int numTracks = 5;
+    const int heightPerTrack = 64;
     te::Edit *edit;
+    bool randomIsEnabled = false;
     void clean();
     void setup();
+    juce::Colour randomColor();
 };
 #endif

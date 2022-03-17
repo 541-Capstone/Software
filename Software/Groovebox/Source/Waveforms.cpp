@@ -20,17 +20,8 @@ Waveforms::~Waveforms () {
     clean();
 }
 
-void Waveforms::paint(Graphics &g) {
+void Waveforms::paint(juce::Graphics &g) {
     g.fillAll(juce::Colours::blue);
-    /*
-    if (edit == nullptr) return;
-    double playPosition = edit->getTransport().getCurrentPosition() * timeScale;
-    juce::Rectangle<int> cursor = juce::Rectangle<int>();
-    cursor.setBounds(playPosition, 0, cursor_width, this->getHeight());
-    g.setColour(juce::Colours::white);
-    g.fillRect(cursor);
-    */
-    return;
 }
 
 void Waveforms::resized() {
@@ -73,7 +64,7 @@ void Waveforms::showEdit() {
     int numAudioTracks = audioTracks.size();
     if (numAudioTracks > numTracks) numAudioTracks = numTracks;
     if (numAudioTracks <= 0) return;
-    this->setBounds(this->getX(), this->getY(), this->getWidth(), 128 * numAudioTracks);
+    this->setBounds(this->getX(), this->getY(), this->getWidth(), heightPerTrack * numAudioTracks);
     for (int i = 0; i < numAudioTracks; ++i) {
         auto clips = audioTracks[i]->getClips();
         int numClips = clips.size();
@@ -87,11 +78,25 @@ void Waveforms::showEdit() {
                 double clip_start = clip->getPosition().getStart() * timeScale;
                 double clip_length = clip->getPosition().getLength() * timeScale;
                 
-                waveformManagers[i][k]->setBounds(clip_start, i * 128, clip_length, 128);
+                waveformManagers[i][k]->setBounds(clip_start, i * heightPerTrack, clip_length, heightPerTrack);
                 
                 addAndMakeVisible(waveformManagers[i][k]);
+                if (randomIsEnabled){
+                    waveformManagers[i][k]->setForegroundColor(randomColor());
+                    waveformManagers[i][k]->setBackgroundColor(randomColor());
+                }
                 waveformManagers[i][k]->showAudioResource(url);
             }
         }
     }
+}
+
+void Waveforms::setColorRandomizer(bool set) {
+    randomIsEnabled = set;
+}
+
+juce::Colour Waveforms::randomColor(){
+    int limit = 256;
+    auto& random = juce::Random::getSystemRandom();
+    return juce::Colour(random.nextInt(limit), random.nextInt(limit), random.nextInt(limit));
 }

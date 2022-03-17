@@ -20,7 +20,7 @@ Timeline::Timeline() {
     
     funcs.clear();
     
-    waveform_window.setBounds(100, 100, 512, 128);
+    waveform_window.setBounds(100, 100, 512, 64);
     
     audioTrackList = nullptr;/*new std::vector<te::Track*>();*/
     
@@ -137,12 +137,24 @@ void Timeline::paint(juce::Graphics &g) {
 
 void Timeline::setEdit(te::Edit *edit) {
     this->edit = edit;
+    setupWaveformDisplay();
+}
+
+void Timeline::setupWaveformDisplay(){
+    waveforms.setColorRandomizer(true);
+    
     waveforms.setBounds(waveform_window);
     cursors.setBounds(waveform_window);
+    scrollable.setBounds(waveform_window);
+    
     waveforms.setEdit(edit);
     cursors.setEdit(edit);
+    scrollable.setEdit(edit);
+    
     addAndMakeVisible(waveforms);
     addAndMakeVisible(cursors);
+    addAndMakeVisible(scrollable);
+    
     waveforms.showEdit();
 }
 
@@ -182,14 +194,13 @@ void Timeline::prevTrack(){
 void Timeline::addAudioTrack(){
     if (funcs.size() < 6) return;
     funcs[5]();
-    waveforms.showEdit();
-    cursors.defineCursorByRect(waveforms.getBounds());
+    redrawWaveform();
 }
 
 void Timeline::addClipToTrack(){
     if (funcs.size() < 7) return;
     funcs[6]();
-    waveforms.showEdit();
+    redrawWaveform();
 }
 
 void Timeline::addActionListener(juce::ActionListener *listener) {
@@ -244,4 +255,10 @@ void Timeline::setAllComponents(bool state){
     
     cursors.setVisible(state);
     cursors.setEnabled(state);
+}
+
+void Timeline::redrawWaveform(){
+    waveforms.showEdit();
+    cursors.defineCursorByRect(waveforms.getBounds());
+    scrollable.defineScrollByRect(waveforms.getBounds());
 }

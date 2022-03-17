@@ -27,6 +27,8 @@ public:
     void showAudioResource (juce::URL resource);
     void showAudioResource (te::AudioTrack *track);
     void showAudioResource (te::Edit *p_edit);
+    void setBackgroundColor (juce::Colour color);
+    void setForegroundColor (juce::Colour color);
     
 private:
     juce::AudioFormatManager formatManager;
@@ -38,6 +40,9 @@ private:
     bool loadFrom = false; // false is URL, true is AudioTrack
     
     juce::Colour default_color = juce::Colours::black;
+    juce::Colour bgColor = default_color;
+    juce::Colour fgColor = juce::Colours::blue;
+    
     
     void changeListenerCallback (juce::ChangeBroadcaster *source) override;
     bool loadURLIntoTransport (const juce::URL &audioURL);
@@ -46,6 +51,8 @@ private:
     int trackWindowHeight = 128;
     int trackWindowWidth = this->getWidth();
     double timeScale = 0.1;
+    bool bgcolorChanged = false;
+    bool fgcolorChanged = false;
     
 };
 #endif

@@ -27,6 +27,8 @@ WaveformManager::~WaveformManager(){
 void WaveformManager::showAudioResource(juce::URL resource) {
     if (loadURLIntoTransport(resource))
         currentAudioFile = std::move (resource);
+    thumbnail->setWaveformColor(fgColor);
+    thumbnail->setBackgroundColor(bgColor);
     thumbnail->setURL(currentAudioFile);
 }
 
@@ -140,4 +142,14 @@ void WaveformManager::showAudioResource(te::Edit *p_edit) {
         
         trackWindow.setY(trackWindow.getY() + trackWindow.getHeight());
     }
+}
+
+void WaveformManager::setBackgroundColor(juce::Colour color) {
+    if (!bgcolorChanged) bgColor = color;
+    bgcolorChanged = true;
+}
+
+void WaveformManager::setForegroundColor(juce::Colour color) {
+    if(!fgcolorChanged) fgColor = color;
+    fgcolorChanged = true;
 }

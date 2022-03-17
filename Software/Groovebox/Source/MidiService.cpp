@@ -132,12 +132,12 @@ juce::String MidiService::getMidiMessageDescription(const juce::MidiMessage& m)
     return juce::String::toHexString(m.getRawData(), m.getRawDataSize());
 }
 
-std::function<void(juce::Graphics*, te::Edit*)> MidiService::paint() {
-    std::function<void(juce::Graphics*, te::Edit*)> paintFunc = [this](juce::Graphics* g, te::Edit* edit) -> void {
-        g->fillAll(juce::Colours::grey);
-    };
+void MidiService::paint(juce::Graphics &g) {
+    g.fillAll(juce::Colours::grey);
+}
 
-    return paintFunc;
+void MidiService::resized(){
+    repaint();
 }
 
 void MidiService::resize(juce::Rectangle<int> rect) {
@@ -155,7 +155,6 @@ void MidiService::resize(juce::Rectangle<int> rect) {
                            juce::FlexBox::AlignItems::flexStart,
                            juce::FlexBox::JustifyContent::flexEnd
     };
-
 
     renderBox.items.add(midiInputListLabel); 
     renderBox.items.add(midiInputList);

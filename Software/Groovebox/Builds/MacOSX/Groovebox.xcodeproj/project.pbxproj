@@ -43,6 +43,7 @@
 		ACF993AB2F90E98D00E68D9A /* include_juce_gui_extra.mm */ = {isa = PBXBuildFile; fileRef = 236D4F5785FC2574D6AD3005; };
 		B3FB06867C0174F1162CDA6F /* WaveformManager.cpp */ = {isa = PBXBuildFile; fileRef = AEA9328AF7493C3BE4F1A71A; };
 		C6AE449AACF149D8B0C752F4 /* include_tracktion_engine_model_1.cpp */ = {isa = PBXBuildFile; fileRef = FC05C90807717B102496561E; };
+		C8136820F13FA174D6C608E1 /* Scrollable.cpp */ = {isa = PBXBuildFile; fileRef = BE551F521318EEA3C24E4137; };
 		C8403764D5C1BA4CE728C922 /* CoreMIDI.framework */ = {isa = PBXBuildFile; fileRef = FB8544B89C265E7E83B6C229; };
 		D187BAE110BB55C345841457 /* include_juce_events.mm */ = {isa = PBXBuildFile; fileRef = 6A50641C380956146A1DDAEE; };
 		D5D79A52C745546F90D3C2D8 /* AudioVisualizer.cpp */ = {isa = PBXBuildFile; fileRef = 9C9E88DC6EE82ECCFA7D924F; };
@@ -116,6 +117,7 @@
 		B64989778643D8375BF8B833 /* MidiService.h */ /* MidiService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MidiService.h; path = ../../Source/MidiService.h; sourceTree = SOURCE_ROOT; };
 		BA1F6B8FDF31DD8F04E7E58C /* MainComponent.h */ /* MainComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainComponent.h; path = ../../Source/MainComponent.h; sourceTree = SOURCE_ROOT; };
 		BCFE5524B47A72F107A5EE88 /* juce_data_structures */ /* juce_data_structures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_data_structures; path = /Users/petertso/JUCE/modules/juce_data_structures; sourceTree = "<absolute>"; };
+		BE551F521318EEA3C24E4137 /* Scrollable.cpp */ /* Scrollable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Scrollable.cpp; path = ../../Source/Scrollable.cpp; sourceTree = SOURCE_ROOT; };
 		BFE625D7D67BBF319801827D /* BinaryData.cpp */ /* BinaryData.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BinaryData.cpp; path = ../../JuceLibraryCode/BinaryData.cpp; sourceTree = SOURCE_ROOT; };
 		C4DEA01D71CD4B721870680E /* CoreAudioKit.framework */ /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		C51EDCEAC01A803124134480 /* FileManager.cpp */ /* FileManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileManager.cpp; path = ../../Source/FileManager.cpp; sourceTree = SOURCE_ROOT; };
@@ -124,6 +126,7 @@
 		CA3988EA7AA3711282EE44DC /* juce_audio_processors */ /* juce_audio_processors */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_audio_processors; path = /Users/petertso/JUCE/modules/juce_audio_processors; sourceTree = "<absolute>"; };
 		CAE370BA85C46D8FA00409E5 /* include_juce_data_structures.mm */ /* include_juce_data_structures.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_data_structures.mm; path = ../../JuceLibraryCode/include_juce_data_structures.mm; sourceTree = SOURCE_ROOT; };
 		CDD4489D79E3E68EFD4D60E0 /* include_tracktion_engine_playback.cpp */ /* include_tracktion_engine_playback.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_tracktion_engine_playback.cpp; path = ../../JuceLibraryCode/include_tracktion_engine_playback.cpp; sourceTree = SOURCE_ROOT; };
+		CE68AAC5ED23552A1D695417 /* Scrollable.h */ /* Scrollable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Scrollable.h; path = ../../Source/Scrollable.h; sourceTree = SOURCE_ROOT; };
 		D5D4C8CD13D3704524513A79 /* include_tracktion_engine_model_2.cpp */ /* include_tracktion_engine_model_2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_tracktion_engine_model_2.cpp; path = ../../JuceLibraryCode/include_tracktion_engine_model_2.cpp; sourceTree = SOURCE_ROOT; };
 		D8C40D9D7286E866977D8E8B /* playButtonImage.png */ /* playButtonImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = playButtonImage.png; path = ../../TimelineControlButtonFiles/playButtonImage.png; sourceTree = SOURCE_ROOT; };
 		E1C247FBC9BBCA5722C43D2F /* JuceHeader.h */ /* JuceHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = JuceHeader.h; path = ../../JuceLibraryCode/JuceHeader.h; sourceTree = SOURCE_ROOT; };
@@ -171,6 +174,8 @@
 				EE676BFC567CD10ECC24910F,
 				3784D50E52E55640AB45DD01,
 				A834F5ED38360891DB64099D,
+				BE551F521318EEA3C24E4137,
+				CE68AAC5ED23552A1D695417,
 				AEA9328AF7493C3BE4F1A71A,
 				3AEB3F3C6B1F12518604787A,
 				2659E03D5C980B148E96FD6D,
@@ -458,6 +463,7 @@
 			files = (
 				D5D79A52C745546F90D3C2D8,
 				41AF44BC879C5EDF5767A77A,
+				C8136820F13FA174D6C608E1,
 				B3FB06867C0174F1162CDA6F,
 				99AC1D455AB15E16031F088C,
 				9C5D113FA3F30FFD092854EF,

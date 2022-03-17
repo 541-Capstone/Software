@@ -56,6 +56,9 @@ MainComponent::MainComponent(){
     addAndMakeVisible(timeline);
     timeline.setEdit(edit.get());
     timeline.setMainComponentPtr(this);
+    
+    // Setup MIDI
+    addAndMakeVisible(midiService);
 }
 
 MainComponent::~MainComponent(){
@@ -71,7 +74,7 @@ void MainComponent::paint(juce::Graphics &g){
         timeline.setVisible(true);
         timeline.setEnabled(true);
     }
-    midiService.paint();
+    midiService.paint(g);
 
 }
 
