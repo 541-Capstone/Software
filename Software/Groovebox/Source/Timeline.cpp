@@ -229,8 +229,8 @@ void Timeline::onClick(juce::Button *button) {
     if (button == &pauseBtn) pause();
     if (button == &recordBtn) record();
     if (button == &addTrackBtn) addAudioTrack();
-    if (button == &leftBtn) nextTrack();
-    if (button == &rightBtn) prevTrack();
+    if (button == &leftBtn) prevTrack();
+    if (button == &rightBtn) nextTrack();
     if (button == &addClip) addClipToTrack();
     return;
 }

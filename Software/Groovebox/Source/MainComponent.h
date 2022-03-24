@@ -10,11 +10,11 @@
 #include "Timeline.h"
 #include "TrackManager.h"
 #include "FileManager.h"
-#include "MidiService.h"
 #include "AudioVisualizer.h"
 #include "WaveformManager.h"
 #include "Waveforms.h"
 #include "Cursors.h"
+#include "MidiManager.h"
 
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
@@ -26,7 +26,10 @@
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainComponent  : public juce::Button::Listener, public juce::AudioAppComponent, public juce::Timer
+class MainComponent  : public juce::Button::Listener, 
+    public juce::AudioAppComponent, 
+    public juce::Timer,
+    public juce::ActionListener
 {
 public:
     //==============================================================================
@@ -66,6 +69,9 @@ private:
     
     int frameInterval = 16; // 16 millisecond per frame time
     double timeCount     = 0.0f;  // counts the time in seconds
+
+    // This manages MIDI inputs
+    MidiManager* midiManager;
     
     /* This contains the states needed to switch between timeline, mixer, etc. */
     enum WindowStates {
@@ -189,10 +195,12 @@ private:
      * @brief Enables buttons based on state
      */
     void enableButtonAtCurrentState();
+
+    void actionListenerCallback(const juce::String& message) override;
     
     /**
-     * TODO: Create a button/method for allowing user to call fload
-     * Fload loads an edit from the filename. If the file doesn't exist, then it creates a empty edit
+     * TODO: Create a button/method for allowing user to call loadEdit
+     * loadEdit loads an edit from the filename. If the file doesn't exist, then it creates a empty edit
      */
     
     // Function to load the edit

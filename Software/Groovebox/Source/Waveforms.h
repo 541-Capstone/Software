@@ -15,7 +15,13 @@
 #include <JuceHeader.h>
 #include "WaveformManager.h"
 #include <stdio.h>
+#ifdef __MACH__
 #include <unistd.h>
+#endif
+
+#ifdef _WIN64
+#include <io.h>
+#endif
 namespace te = tracktion_engine;
 class Waveforms : public juce::Component {
 public:

@@ -42,7 +42,7 @@ bool WaveformManager::loadURLIntoTransport(const juce::URL &audioURL) {
         reader = formatManager.createReaderFor(audioURL.getLocalFile());
     else {
         if (reader == nullptr) {
-            reader = formatManager.createReaderFor (audioURL.createInputStream (URL::InputStreamOptions (URL::ParameterHandling::inAddress)));
+            reader = formatManager.createReaderFor (audioURL.createInputStream (juce::URL::InputStreamOptions (juce::URL::ParameterHandling::inAddress)));
         }
     }
     
@@ -57,7 +57,7 @@ bool WaveformManager::loadURLIntoTransport(const juce::URL &audioURL) {
     
 }
 
-void WaveformManager::changeListenerCallback(ChangeBroadcaster *source) {
+void WaveformManager::changeListenerCallback(juce::ChangeBroadcaster *source) {
     if (source == thumbnail.get())
         showAudioResource(juce::URL (thumbnail->getLastDroppedFile()));
 }

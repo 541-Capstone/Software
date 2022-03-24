@@ -5,6 +5,7 @@ MidiService::MidiService() {
     midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
     auto midiInputs = juce::MidiInput::getAvailableDevices();
 
+
     juce::StringArray midiInputNames;
 
     for (auto input : midiInputs) {
@@ -15,27 +16,24 @@ MidiService::MidiService() {
     midiInputList.addItemList(midiInputNames, 1);
     midiInputList.onChange = [this] { setMidiInput(midiInputList.getSelectedItemIndex()); };
 
-    //// find the first enabled device and use that by default
-    //for (auto input : midiInputs)
-    //{
-    //    if (deviceManager.isMidiInputDeviceEnabled(input.identifier))
-    //    {
-    //        setMidiInput(midiInputs.indexOf(input));
-    //        /*break;*/
-    //    }
-    //}
+    // find the first enabled device and use that by default
+    for (auto input : midiInputs)
+    {
+        if (deviceManager.isMidiInputDeviceEnabled(input.identifier))
+        {
+            setMidiInput(midiInputs.indexOf(input));
+            break;
+        }
+    }
 
-    //// if no enabled devices were found just use the first one in the list
-    //if (midiInputList.getSelectedId() == 0)
-    //    setMidiInput(0);
-    LOG(midiInputs[1].name);
-    setMidiInput(1);
+    // if no enabled devices were found just use the first one in the list
+    if (midiInputList.getSelectedId() == 0)
+        setMidiInput(0);
 
+    //TODO: Delete this
+    //setMidiInput(1);
 
     midiInputList.onChange = [this] { setMidiInput(midiInputList.getSelectedItemIndex()); };
-
-    addAndMakeVisible(keyboardComponent);
-    keyboardState.addListener(this);
 }
 
 void MidiService::setMidiInput(int index)
@@ -55,10 +53,22 @@ void MidiService::setMidiInput(int index)
     lastInputIndex = index;
 }
 
+void MidiService::setMidiBuffer(juce::MidiBuffer* buffer) {
+    midiBuffer = buffer;
+}
+
+void MidiService::setSampleRate(int newRate) {
+    LOG("New sample rate: " + std::to_string(newRate));
+    std::string temp = std::to_string(newRate);
+    int thisIsStupid = std::stoi(temp);
+    sampleRate = thisIsStupid;
+}
+
+void MidiService::setSampleRateFromTransport(te::TransportControl& t) {
+
+}
+
 void MidiService::handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) {
-    const juce::ScopedValueSetter<bool> scopedInputFlag(isAddingFromMidiInput, true);
-    keyboardState.processNextMidiEvent(message);
-    //LOG("MIDI Event occured; message: " + message.getDescription());
     postMessageToList(message, source->getName());
 }
 
@@ -82,27 +92,12 @@ void MidiService::addMessageToList(const juce::MidiMessage& message, const juce:
         seconds,
         millis);
 
-    //auto description = getMidiMessageDescription(message);
-
-    juce::String midiMessageString(timecode + "  -  " + message.getDescription() + " (" + source + ")"); // [7]
+    juce::String midiMessageString(timecode + "  -  " + message.getDescription() + " (" + source + ")");
     LOG(midiMessageString);
-}
-
-void MidiService::handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) {
-    if (!isAddingFromMidiInput)
-    {
-        auto m = juce::MidiMessage::noteOn(midiChannel, midiNoteNumber, velocity);
-        m.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001);
-        postMessageToList(m, "On-Screen Keyboard");
-    }
-}
-
-void MidiService::handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) {
-    if (!isAddingFromMidiInput)
-    {
-        auto m = juce::MidiMessage::noteOff(midiChannel, midiNoteNumber);
-        m.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001);
-        postMessageToList(m, "On-Screen Keyboard");
+    if (midiBuffer != nullptr) {
+        double timestamp = message.getTimeStamp();
+        int sampleNumber = (int)(timestamp * 48000);
+        midiBuffer->addEvent(message, sampleNumber);
     }
 }
 
@@ -142,12 +137,6 @@ void MidiService::resized(){
 
 void MidiService::resize(juce::Rectangle<int> rect) {
     juce::Rectangle<int> area = rect;
-    /*
-    * juce::AudioDeviceManager deviceManager;
-	juce::ComboBox midiInputList;
-	juce::Label midiInputListLabel;
-    juce::MidiKeyboardComponent keyboardComponent
-    */
 
     juce::FlexBox renderBox{ juce::FlexBox::Direction::column,
                            juce::FlexBox::Wrap::noWrap,
@@ -158,11 +147,7 @@ void MidiService::resize(juce::Rectangle<int> rect) {
 
     renderBox.items.add(midiInputListLabel); 
     renderBox.items.add(midiInputList);
-    renderBox.items.add(keyboardComponent);
     renderBox.performLayout(area);
-
-
-
 
 }
 

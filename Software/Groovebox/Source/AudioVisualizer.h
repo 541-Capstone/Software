@@ -14,7 +14,7 @@
 #include <JuceHeader.h>
 #include <functional>
 namespace te = tracktion_engine;
-class AudioVisualizer : public juce::Component, public juce::ChangeListener, public  juce::ChangeBroadcaster, private juce::ScrollBar::Listener, private Timer {
+class AudioVisualizer : public juce::Component, public juce::ChangeListener, public  juce::ChangeBroadcaster, private juce::ScrollBar::Listener, private juce::Timer {
 public:
     AudioVisualizer (juce::AudioFormatManager& formatManager,
                      juce::AudioTransportSource& source);

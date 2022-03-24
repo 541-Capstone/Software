@@ -25,9 +25,7 @@ MainComponent::MainComponent(){
     fileManager.setEdit(edit.get());
     Helpers::insertClipFromFile(tracktion_engine::getAudioTracks(*edit)[0], &edit->getTransport(), TESTAUDIOPATH);
 
-    // Add new track to audioTracks
 
-    
     // set current track to zero (testing purposes for now)
     currentTrack = edit->getTrackList().objects[edit->getTrackList().objects.size() - 1];
     addAudioTrack((te::AudioTrack*)currentTrack);
@@ -36,20 +34,6 @@ MainComponent::MainComponent(){
     timeline.setAudioTrackList  (&audioTracks);
     /* initally, program set to TrackView*/
     setupTrackView();
-    
-    // Setup waveform
-    /*
-    waveforms.setEdit(edit.get());
-    waveforms.setBounds(100, 100, 512, 128);
-    addAndMakeVisible(waveforms);
-    waveforms.showEdit(); */
-    
-    // Setup Cursor
-    /*
-    cursor.setEdit(edit.get());
-    cursor.setBounds(100, 100, 512, 128);
-    cursor.defineCursorByRect(waveforms.getBounds());
-    addAndMakeVisible(cursor); */
      
     // Setup timeline
     timeline.setBounds(this->getBounds());
@@ -58,7 +42,11 @@ MainComponent::MainComponent(){
     timeline.setMainComponentPtr(this);
     
     // Setup MIDI
-    addAndMakeVisible(midiService);
+    midiManager = new MidiManager((int)edit->getTransport().engine.getDeviceManager().getSampleRate());
+    midiManager->setSampleRateFromTransport(edit->getTransport());
+    //int sampleRate = (int)edit->getTransport().engine.getDeviceManager().getSampleRate();
+    //midiManager->setSampleRate(sampleRate);
+    addAndMakeVisible(midiManager);
 }
 
 MainComponent::~MainComponent(){
@@ -74,7 +62,7 @@ void MainComponent::paint(juce::Graphics &g){
         timeline.setVisible(true);
         timeline.setEnabled(true);
     }
-    midiService.paint(g);
+    //midiService.paint(g);
 
 }
 
@@ -82,7 +70,7 @@ void MainComponent::resized() {
     //Make this into a for loop to resize each context
     timeline.resized();
     juce::Rectangle<int> midiRect = getLocalBounds().removeFromBottom(300);
-    midiService.resize(midiRect);
+    //midiService.resize(midiRect);
 }
 
 /* button listener */
@@ -114,6 +102,10 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo &buffer
 
 void MainComponent::releaseResources(){
     
+}
+
+void MainComponent::actionListenerCallback(const juce::String& message) {
+
 }
 
 

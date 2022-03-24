@@ -15,7 +15,7 @@
 
 class MidiService : public juce::Component,
 	private juce::MidiInputCallback,
-	private juce::MidiKeyboardState::Listener
+	public  juce::ActionBroadcaster
 {
 public:
 	MidiService();
@@ -30,6 +30,13 @@ public:
     
 	void resize(juce::Rectangle<int> rect);
 
+	void setMidiBuffer(juce::MidiBuffer* buffer);
+
+	void setSampleRate(int newRate);
+	void setSampleRateFromTransport(te::TransportControl& t);
+
+	//void changeListenerCallback(juce::ChangeBroadcaster*) override;
+
 private:
 
 	//===============================================================================================
@@ -41,17 +48,15 @@ private:
 	int lastInputIndex = 0;
 	bool isAddingFromMidiInput = false;
 
-	juce::MidiKeyboardState keyboardState;
-	juce::MidiKeyboardComponent keyboardComponent{ keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard };
+	//MIDI buffer to append incoming messages to
+	juce::MidiBuffer* midiBuffer;
+	int sampleRate;
 
 	void setMidiInput(int index);
 	void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
 	void postMessageToList(const juce::MidiMessage& message, const juce::String& source);
 
 	juce::String getMidiMessageDescription(const juce::MidiMessage& m);
-
-	void handleNoteOn(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
-	void handleNoteOff(juce::MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override;
 
 };
 
