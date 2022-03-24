@@ -173,7 +173,7 @@ private:
     FileManager fileManager;
     tracktion_engine::SelectionManager selectionmanager {engine};
 
-    MidiService midiService;
+    //actMidiService midiService;
     
     /* State functions below! */
     

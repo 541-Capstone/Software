@@ -43,14 +43,15 @@ MainComponent::MainComponent(){
     
     // Setup MIDI
     midiManager = new MidiManager((int)edit->getTransport().engine.getDeviceManager().getSampleRate());
-    midiManager->setSampleRateFromTransport(edit->getTransport());
+    midiManager->addActionListener(this);
+    //midiManager->setSampleRateFromTransport(edit->getTransport());
     //int sampleRate = (int)edit->getTransport().engine.getDeviceManager().getSampleRate();
     //midiManager->setSampleRate(sampleRate);
-    addAndMakeVisible(midiManager);
+    //addAndMakeVisible(midiManager);
 }
 
 MainComponent::~MainComponent(){
-
+    delete midiManager;
 }
 
 void MainComponent::paint(juce::Graphics &g){
@@ -105,7 +106,8 @@ void MainComponent::releaseResources(){
 }
 
 void MainComponent::actionListenerCallback(const juce::String& message) {
-
+    LOG("Action Callback received: " + message);
+    LOG(midiManager->getMidiMessage()->getDescription());
 }
 
 

@@ -1,10 +1,12 @@
 #include "MidiService.h"
 
-MidiService::MidiService() {
+MidiService::MidiService(int rate, juce::MidiBuffer* buffer) {
     addAndMakeVisible(midiInputList);
     midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
     auto midiInputs = juce::MidiInput::getAvailableDevices();
 
+    sampleRate = rate;
+    midiBuffer = buffer;
 
     juce::StringArray midiInputNames;
 
@@ -59,9 +61,7 @@ void MidiService::setMidiBuffer(juce::MidiBuffer* buffer) {
 
 void MidiService::setSampleRate(int newRate) {
     LOG("New sample rate: " + std::to_string(newRate));
-    std::string temp = std::to_string(newRate);
-    int thisIsStupid = std::stoi(temp);
-    sampleRate = thisIsStupid;
+    sampleRate = newRate;
 }
 
 void MidiService::setSampleRateFromTransport(te::TransportControl& t) {
@@ -96,8 +96,10 @@ void MidiService::addMessageToList(const juce::MidiMessage& message, const juce:
     LOG(midiMessageString);
     if (midiBuffer != nullptr) {
         double timestamp = message.getTimeStamp();
-        int sampleNumber = (int)(timestamp * 48000);
+        int sampleNumber = (int)(timestamp * sampleRate);
         midiBuffer->addEvent(message, sampleNumber);
+        *sharedMidiMsg = juce::MidiMessage(message);
+        sendActionMessage("Hello Manager");
     }
 }
 
@@ -154,6 +156,10 @@ void MidiService::resize(juce::Rectangle<int> rect) {
 void IncomingMessageCallback::messageCallback() {
     if (owner != nullptr)
         owner->MidiService::addMessageToList(message, source);
+}
+
+void MidiService::setMidiMessagePointer(juce::MidiMessage* ptr) {
+    sharedMidiMsg = ptr;
 }
 
 MidiService::~MidiService() {

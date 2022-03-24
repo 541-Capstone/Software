@@ -18,7 +18,7 @@ class MidiService : public juce::Component,
 	public  juce::ActionBroadcaster
 {
 public:
-	MidiService();
+	MidiService(int sampleRate, juce::MidiBuffer* midiBuffer);
 
 	~MidiService();
 
@@ -34,6 +34,8 @@ public:
 
 	void setSampleRate(int newRate);
 	void setSampleRateFromTransport(te::TransportControl& t);
+
+	void setMidiMessagePointer(juce::MidiMessage* ptr);
 
 	//void changeListenerCallback(juce::ChangeBroadcaster*) override;
 
@@ -51,6 +53,8 @@ private:
 	//MIDI buffer to append incoming messages to
 	juce::MidiBuffer* midiBuffer;
 	int sampleRate;
+	//TODO: Make this a shared pointer or something
+	juce::MidiMessage* sharedMidiMsg;
 
 	void setMidiInput(int index);
 	void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;

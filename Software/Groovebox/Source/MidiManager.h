@@ -25,10 +25,13 @@ public:
 	void setMidiBuffer(juce::MidiBuffer* buffer);
 	void setSampleRate(int newRate);
 	void setSampleRateFromTransport(te::TransportControl& t);
+	juce::MidiMessage* getMidiMessage();
+
 private:
 	juce::MidiBuffer* midiBuffer;
 	int sampleRate;
 	MidiService* midiService;
+	juce::MidiMessage * midiMsg;
 
 	void actionListenerCallback(const juce::String& message) override;
 
