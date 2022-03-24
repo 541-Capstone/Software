@@ -30,8 +30,8 @@ private:
     WaveformManager ***waveformManagers = nullptr;
     const int cursor_width = 5;
     const double timeScale = 2.0f;
-    const int numClipsPerTrack = 5;
-    const int numTracks = 5;
+    const int numClipsPerTrack = 25;
+    const int numTracks = 10;
     const int heightPerTrack = 64;
     te::Edit *edit;
     bool randomIsEnabled = false;
