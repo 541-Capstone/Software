@@ -32,8 +32,10 @@ MidiService::MidiService(int rate, std::shared_ptr<juce::MidiBuffer> buffer) {
     if (midiInputList.getSelectedId() == 0)
         setMidiInput(0);
 
+#if __MACH__
     //TODO: Delete this
-    //setMidiInput(1);
+    setMidiInput(1);
+#endif
 
     midiInputList.onChange = [this] { setMidiInput(midiInputList.getSelectedItemIndex()); };
 }

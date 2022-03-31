@@ -24,7 +24,7 @@
 #include "Cursors.h"
 #include "Scrollable.h"
 
-class Timeline : public juce::ActionBroadcaster, public juce::Component, public juce::Timer, public juce::Button::Listener {
+class Timeline : public juce::ActionBroadcaster, public juce::ActionListener, public juce::Component, public juce::Timer, public juce::Button::Listener {
 public:
     
     /**
@@ -55,6 +55,7 @@ public:
     void onClick(juce::Button *button);
     void buttonClicked(juce::Button *button) override;
     void setAllComponents(bool state);
+    void actionListenerCallback (const juce::String &message) override;
 // private member variables go here
 private:
     

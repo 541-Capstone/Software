@@ -124,12 +124,14 @@ void MainComponent::actionListenerCallback(const juce::String& message) {
                 LOG("Universal Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
                     " Value: " + (juce::String)metadata.getMessage().getControllerValue());
                 //Create function to handle this
-                universalControls(metadata.getMessage().getControllerValue());
+                universalControls(metadata);
+                
             }
             else if (type == Helpers::MessageType::Contextual) {
                 LOG("Contextual Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
                     " Value: " + (juce::String)metadata.getMessage().getControllerValue());
                 //Pass off signal to current context
+                
             }
             
         }
@@ -317,23 +319,43 @@ void MainComponent::disableAllStates(){
 }
 
 /* This assumes that the type of messaegs are of type UNIVERSAL */
-void MainComponent::universalControls( juce::MidiBufferIterator::reference &metadata) {
+void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata) {
+    /* get the controller Value */
+    const int controllerValue = metadata.getMessage().getControllerValue();
     
-}
-
-void MainComponent::universalControls(const int &controllerValue) {
-    LOG("Universal Controls: controllerValue"+(juce::String)controllerValue+"\n");
+    /* get the message */
+    const juce::MidiMessage message = metadata.getMessage();
     
-    /**
-     * Function
-     * Record    1
-     * Mute       2
-     * Solo       3
-     * Timeline  4
-     * Synth      5
-     * Settings 6
-     * Plugins  7
-     */
+    const int controllerNumber = metadata.getMessage().getControllerNumber();
+    
+    /* TODO: */
+    /* remove later*/
+    if (controllerNumber == 1) pause();
+    else if (controllerNumber == 2) play();
+    else if (controllerNumber == 3) disableAllStates();
+    else if (controllerNumber == 4) {
+        timeline.setAllComponents(true);
+        timeline.setEnabled(true);
+        timeline.setVisible(true);
+    }
+    return;
+    
+    /* Check to see if Status is Song Start or Song Stop */
+    /* Pause or play */
+    if (message.isMidiStop()) pause();
+    else if (message.isMidiStart()) play();
+    
+    /*---------------------*/
+    /* Functions     Value */
+    /* Record            1 */
+    /* Mute              2 */
+    /* Solo              3 */
+    /* Timeline          4 */
+    /* Synth             5 */
+    /* Settings          6 */
+    /* Plugins           7 */
+    /*---------------------*/
+    
     switch (controllerValue) {
         case 1:
             LOG("Record\n");
@@ -347,18 +369,26 @@ void MainComponent::universalControls(const int &controllerValue) {
             break;
         case 4:
             LOG("Timeline\n");
+            disableAllStates();
+            timeline.setEnabled(true);
+            timeline.setVisible(true);
+            timeline.setAllComponents(true);
             break;
         case 5:
             LOG("Synth\n");
+            disableAllStates();
             break;
         case 6:
             LOG("Settings\n");
+            disableAllStates();
             break;
         case 7:
             LOG("Plugins\n");
+            disableAllStates();
             break;
         default:
-            LOG("None called\n");
+            LOG("None called or Play/Pause called\n");
             break;
     }
+    
 }

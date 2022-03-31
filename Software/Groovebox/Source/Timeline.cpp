@@ -255,10 +255,17 @@ void Timeline::setAllComponents(bool state){
     
     cursors.setVisible(state);
     cursors.setEnabled(state);
+    
+    scrollable.setVisible(state);
+    scrollable.setEnabled(state);
 }
 
 void Timeline::redrawWaveform(){
     waveforms.showEdit();
     cursors.defineCursorByRect(waveforms.getBounds());
     scrollable.defineScrollByRect(waveforms.getBounds());
+}
+
+void Timeline::actionListenerCallback (const juce::String &message) {
+    
 }
