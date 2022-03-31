@@ -247,5 +247,9 @@ private:
     // adds a clip to an existing audio track
     void addClipToTrack();
     
+    /* do something with universal controls */
+    void universalControls( juce::MidiBufferIterator::reference &metadata);
+    void universalControls(const int &controllerValue);
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

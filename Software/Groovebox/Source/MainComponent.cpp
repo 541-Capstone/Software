@@ -124,6 +124,7 @@ void MainComponent::actionListenerCallback(const juce::String& message) {
                 LOG("Universal Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
                     " Value: " + (juce::String)metadata.getMessage().getControllerValue());
                 //Create function to handle this
+                universalControls(metadata.getMessage().getControllerValue());
             }
             else if (type == Helpers::MessageType::Contextual) {
                 LOG("Contextual Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
@@ -313,4 +314,51 @@ void MainComponent::disableAllStates(){
     timeline.setAllComponents(false);
     timeline.setVisible(false);
     timeline.setEnabled(false);
+}
+
+/* This assumes that the type of messaegs are of type UNIVERSAL */
+void MainComponent::universalControls( juce::MidiBufferIterator::reference &metadata) {
+    
+}
+
+void MainComponent::universalControls(const int &controllerValue) {
+    LOG("Universal Controls: controllerValue"+(juce::String)controllerValue+"\n");
+    
+    /**
+     * Function
+     * Record    1
+     * Mute       2
+     * Solo       3
+     * Timeline  4
+     * Synth      5
+     * Settings 6
+     * Plugins  7
+     */
+    switch (controllerValue) {
+        case 1:
+            LOG("Record\n");
+            record();
+            break;
+        case 2:
+            LOG("Mute\n");
+            break;
+        case 3:
+            LOG("Solo\n");
+            break;
+        case 4:
+            LOG("Timeline\n");
+            break;
+        case 5:
+            LOG("Synth\n");
+            break;
+        case 6:
+            LOG("Settings\n");
+            break;
+        case 7:
+            LOG("Plugins\n");
+            break;
+        default:
+            LOG("None called\n");
+            break;
+    }
 }
