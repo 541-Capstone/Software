@@ -271,6 +271,7 @@ void Timeline::actionListenerCallback (const juce::String &message) {
 }
 
 void Timeline::contextualControls(const juce::MidiMessageMetadata &metadata) {
+    
     /* get the MidiMessage from metadata */
     const juce::MidiMessage message = metadata.getMessage();
     
@@ -342,7 +343,11 @@ void Timeline::contextualControls(const juce::MidiMessageMetadata &metadata) {
             }
             
             break;
-    
+    }
 #endif
 
+}
+
+Waveforms *Timeline::getWaveformPtr(){
+    return &waveforms;
 }

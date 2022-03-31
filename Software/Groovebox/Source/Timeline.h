@@ -56,6 +56,10 @@ public:
     void buttonClicked(juce::Button *button) override;
     void setAllComponents(bool state);
     void actionListenerCallback (const juce::String &message) override;
+    /* This assumes that the type of message is CONTEXTUAL and is for TIMELINE */
+    void contextualControls(const juce::MidiMessageMetadata &metadata);
+    Waveforms *getWaveformPtr();
+    
 // private member variables go here
 private:
     
@@ -130,8 +134,6 @@ private:
     void setupWaveformDisplay();
     void redrawWaveform();
     
-    /* This assumes that the type of message is CONTEXTUAL and is for TIMELINE */
-    void contextualControls(const juce::MidiMessageMetadata &metadata);
 };
 
 #endif
