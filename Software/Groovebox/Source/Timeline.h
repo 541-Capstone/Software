@@ -117,8 +117,21 @@ private:
     Cursors cursors;
     Scrollable scrollable;
     
+    /* values to scroll */
+    /* the controller value sets what encoder to use */
+    const int scrollControllerValueX = 3;
+    const int scrollControllerValueY = 4;
+    
+    /* the scroll scale is used for fine-tuning the
+       rate of scrolling */
+    const int scrollScale             = 5;
+    const int scrollAmt               = 10;
+    
     void setupWaveformDisplay();
     void redrawWaveform();
+    
+    /* This assumes that the type of message is CONTEXTUAL and is for TIMELINE */
+    void contextualControls(const juce::MidiMessageMetadata &metadata);
 };
 
 #endif

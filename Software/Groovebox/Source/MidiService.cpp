@@ -32,7 +32,7 @@ MidiService::MidiService(int rate, std::shared_ptr<juce::MidiBuffer> buffer) {
     if (midiInputList.getSelectedId() == 0)
         setMidiInput(0);
 
-#if __MACH__
+#ifdef __MACH__
     //TODO: Delete this
     setMidiInput(1);
 #endif
