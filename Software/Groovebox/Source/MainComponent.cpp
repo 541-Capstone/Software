@@ -10,8 +10,8 @@ MainComponent::MainComponent(){
     isPlaying = false;
     numAudioTracks = 0;
     
-    // start the timer
-    startTimer(frameInterval);
+    // start the timer. The frequency of the timer is also its ID
+    startTimer(frameInterval, frameInterval);
     
     // set the maximum number of Audio tracks
     setMaxTracks(-1);
@@ -20,6 +20,10 @@ MainComponent::MainComponent(){
     loadEdit();
 
     //Set sample rate 
+    sampleRate = (int)edit->getTransport().engine.getDeviceManager().getSampleRate();
+
+    //Initialize previousSampleNumber
+    inputPrevSampleNumber = 0;
     
     // call fileManager
     fileManager.setEdit(edit.get());
@@ -42,16 +46,12 @@ MainComponent::MainComponent(){
     timeline.setMainComponentPtr(this);
     
     // Setup MIDI
-    midiManager = new MidiManager((int)edit->getTransport().engine.getDeviceManager().getSampleRate());
-    midiManager->addActionListener(this);
-    //midiManager->setSampleRateFromTransport(edit->getTransport());
-    //int sampleRate = (int)edit->getTransport().engine.getDeviceManager().getSampleRate();
-    //midiManager->setSampleRate(sampleRate);
-    //addAndMakeVisible(midiManager);
+    inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
+    midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
+    midiService->addActionListener(this);
 }
 
 MainComponent::~MainComponent(){
-    delete midiManager;
 }
 
 void MainComponent::paint(juce::Graphics &g){
@@ -83,12 +83,6 @@ void MainComponent::buttonClicked(juce::Button *button){
     }
 }
 
-void MainComponent::timerCallback() {
-    timeCount += isPlaying ? ((double)frameInterval * 0.001) : 0;
-    //std::cout<<timeCount<<'\n';
-    repaint();
-}
-
 void MainComponent::prepareToPlay(int samplesPerBlockExpected, double sampleRate){
     
 }
@@ -105,9 +99,49 @@ void MainComponent::releaseResources(){
     
 }
 
+void MainComponent::timerCallback(int timerId) {
+    if (timerId == 0)
+        timeCount += isPlaying ? ((double)frameInterval * 0.001) : 0;
+    //std::cout<<timeCount<<'\n';
+    repaint();
+}
+
 void MainComponent::actionListenerCallback(const juce::String& message) {
     LOG("Action Callback received: " + message);
-    LOG(midiManager->getMidiMessage()->getDescription());
+    if (message == "MIDI") {
+        auto currentTime = edit->getTransport().getCurrentPosition();
+        auto currentSampleNumber = (int)(currentTime * sampleRate);
+        for (const auto metadata : *inputMidiBuffer)
+        {
+            juce::MidiMessage message = metadata.getMessage();
+            auto type = Helpers::getMidiMessageType(message);
+            if (type == Helpers::MessageType::Note) {
+                LOG("Sending note " + juce::MidiMessage::getMidiNoteName(message.getNoteNumber(), true, true, 3) 
+                + " to Track " + (juce::String)currentTrackIndex);
+                //Send the midi note to the track's MIDI buffer
+            }
+            else if (type == Helpers::MessageType::Universal) {
+                LOG("Universal Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
+                    " Value: " + (juce::String)metadata.getMessage().getControllerValue());
+                //Create function to handle this
+            }
+            else if (type == Helpers::MessageType::Contextual) {
+                LOG("Contextual Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
+                    " Value: " + (juce::String)metadata.getMessage().getControllerValue());
+                //Pass off signal to current context
+            }
+            
+        }
+        // Clear the input buffer
+        //Possible that MIDI messages added between when callback was sent and when loop concluded causes messages to be cleared before being processed
+        //inputMidiBuffer->clear(inputPrevSampleNumber, currentSampleNumber - inputPrevSampleNumber);
+        inputMidiBuffer->clear();
+        inputPrevSampleNumber = currentSampleNumber;
+    }
+    else if (message == "Contextual" || message == "Note") {
+
+    }
+    //LOG(midiManager->getMidiMessage()->getDescription());
 }
 
 

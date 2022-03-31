@@ -5250,9 +5250,6 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_tracktion_graph.cpp">
       <Filter>JUCE Library Code</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\MidiManager.cpp">
-      <Filter>Groovebox\MIDIServices</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\AudioVisualizer.h">
@@ -9334,9 +9331,6 @@
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">
       <Filter>JUCE Library Code</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\MidiManager.h">
-      <Filter>Groovebox\MIDIServices</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

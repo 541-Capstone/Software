@@ -67,4 +67,20 @@ void Helpers::insertClipToTrack(te::AudioTrack *track, te::TransportControl *tra
         const double start{ playheadPosition };
         clip->setStart(start, true, true);
     }
+
+
+}
+
+Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
+    if (msg.isNoteOnOrOff()) {
+        return Helpers::MessageType::Note;
+    }
+    else {
+        if (msg.getControllerNumber() == CONTEXTUAL_CC_CHANNEL) {
+            return Helpers::MessageType::Contextual;
+        }
+        else {
+            return Helpers::MessageType::Universal;
+        }
+    }
 }

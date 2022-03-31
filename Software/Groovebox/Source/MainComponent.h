@@ -14,7 +14,7 @@
 #include "WaveformManager.h"
 #include "Waveforms.h"
 #include "Cursors.h"
-#include "MidiManager.h"
+#include "MidiService.h"
 
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
@@ -28,7 +28,7 @@
 */
 class MainComponent  : public juce::Button::Listener, 
     public juce::AudioAppComponent, 
-    public juce::Timer,
+    public juce::MultiTimer,
     public juce::ActionListener
 {
 public:
@@ -46,7 +46,7 @@ public:
     void getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill) override;
     void releaseResources() override;
     
-    void timerCallback() override;
+    void timerCallback(int id) override;
 
 private:
     //==============================================================================
@@ -68,10 +68,15 @@ private:
     //-------------------------------------------------------------
     
     int frameInterval = 16; // 16 millisecond per frame time
-    double timeCount     = 0.0f;  // counts the time in seconds
+    double timeCount  = 0.0f;  // counts the time in seconds
 
+    int sampleRate; //Engine sample rate in Hz
+
+    // Shared MIDI buffer for reading inputs
+    std::shared_ptr<juce::MidiBuffer> inputMidiBuffer;
+    int inputPrevSampleNumber; //Integer sample number of previously processed sample, used for clearing buffer
     // This manages MIDI inputs
-    MidiManager* midiManager;
+    std::unique_ptr<MidiService> midiService;
     
     /* This contains the states needed to switch between timeline, mixer, etc. */
     enum WindowStates {
@@ -196,6 +201,7 @@ private:
      */
     void enableButtonAtCurrentState();
 
+    //Possible race condition in here
     void actionListenerCallback(const juce::String& message) override;
     
     /**

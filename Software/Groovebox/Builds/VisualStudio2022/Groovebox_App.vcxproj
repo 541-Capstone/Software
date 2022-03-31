@@ -134,7 +134,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\AudioVisualizer.cpp" />
     <ClCompile Include="..\..\Source\Cursors.cpp" />
-    <ClCompile Include="..\..\Source\MidiManager.cpp" />
     <ClCompile Include="..\..\Source\Scrollable.cpp" />
     <ClCompile Include="..\..\Source\WaveformManager.cpp" />
     <ClCompile Include="..\..\Source\Waveforms.cpp" />
@@ -4132,7 +4131,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\AudioVisualizer.h" />
     <ClInclude Include="..\..\Source\Cursors.h" />
-    <ClInclude Include="..\..\Source\MidiManager.h" />
     <ClInclude Include="..\..\Source\Scrollable.h" />
     <ClInclude Include="..\..\Source\WaveformManager.h" />
     <ClInclude Include="..\..\Source\Waveforms.h" />

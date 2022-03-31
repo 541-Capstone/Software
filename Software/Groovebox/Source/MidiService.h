@@ -18,7 +18,7 @@ class MidiService : public juce::Component,
 	public  juce::ActionBroadcaster
 {
 public:
-	MidiService(int sampleRate, juce::MidiBuffer* midiBuffer);
+	MidiService(int sampleRate, std::shared_ptr<juce::MidiBuffer> midiBuffer);
 
 	~MidiService();
 
@@ -30,14 +30,10 @@ public:
     
 	void resize(juce::Rectangle<int> rect);
 
-	void setMidiBuffer(juce::MidiBuffer* buffer);
-
 	void setSampleRate(int newRate);
 	void setSampleRateFromTransport(te::TransportControl& t);
 
-	void setMidiMessagePointer(juce::MidiMessage* ptr);
-
-	//void changeListenerCallback(juce::ChangeBroadcaster*) override;
+	void setMidiBuffer(std::shared_ptr<juce::MidiBuffer> buffer);
 
 private:
 
@@ -51,10 +47,8 @@ private:
 	bool isAddingFromMidiInput = false;
 
 	//MIDI buffer to append incoming messages to
-	juce::MidiBuffer* midiBuffer;
+	std::shared_ptr<juce::MidiBuffer> midiBuffer;
 	int sampleRate;
-	//TODO: Make this a shared pointer or something
-	juce::MidiMessage* sharedMidiMsg;
 
 	void setMidiInput(int index);
 	void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
