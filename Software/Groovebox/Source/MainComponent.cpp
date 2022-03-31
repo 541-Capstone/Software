@@ -330,6 +330,7 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
     
     /* TODO: */
     /* remove later*/
+    /*======================================*/
     if (controllerNumber == 1) pause();
     else if (controllerNumber == 2) play();
     else if (controllerNumber == 3) disableAllStates();
@@ -339,6 +340,7 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
         timeline.setVisible(true);
     }
     return;
+    /*======================================*/
     
     /* Check to see if Status is Song Start or Song Stop */
     /* Pause or play */
