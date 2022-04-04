@@ -24,7 +24,7 @@
 #include "Cursors.h"
 #include "Scrollable.h"
 
-class Timeline : public juce::ActionBroadcaster, public juce::Component, public juce::Timer, public juce::Button::Listener {
+class Timeline : public juce::ActionBroadcaster, public juce::ActionListener, public juce::Component, public juce::Timer, public juce::Button::Listener {
 public:
     
     /**
@@ -55,6 +55,11 @@ public:
     void onClick(juce::Button *button);
     void buttonClicked(juce::Button *button) override;
     void setAllComponents(bool state);
+    void actionListenerCallback (const juce::String &message) override;
+    /* This assumes that the type of message is CONTEXTUAL and is for TIMELINE */
+    void contextualControls(const juce::MidiMessageMetadata &metadata);
+    Waveforms *getWaveformPtr();
+    
 // private member variables go here
 private:
     
@@ -116,8 +121,19 @@ private:
     Cursors cursors;
     Scrollable scrollable;
     
+    /* values to scroll */
+    /* the controller value sets what encoder to use */
+    const int scrollControllerValueX = 3;
+    const int scrollControllerValueY = 4;
+    
+    /* the scroll scale is used for fine-tuning the
+       rate of scrolling */
+    const int scrollScale             = 5;
+    const int scrollAmt               = 10;
+    
     void setupWaveformDisplay();
     void redrawWaveform();
+    
 };
 
 #endif

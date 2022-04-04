@@ -255,10 +255,99 @@ void Timeline::setAllComponents(bool state){
     
     cursors.setVisible(state);
     cursors.setEnabled(state);
+    
+    scrollable.setVisible(state);
+    scrollable.setEnabled(state);
 }
 
 void Timeline::redrawWaveform(){
     waveforms.showEdit();
     cursors.defineCursorByRect(waveforms.getBounds());
     scrollable.defineScrollByRect(waveforms.getBounds());
+}
+
+void Timeline::actionListenerCallback (const juce::String &message) {
+    
+}
+
+void Timeline::contextualControls(const juce::MidiMessageMetadata &metadata) {
+    
+    /* get the MidiMessage from metadata */
+    const juce::MidiMessage message = metadata.getMessage();
+    
+    /* This part is just for testing */
+#define TIMELINE_CC_DBG 1
+#if TIMELINE_CC_DBG == 1
+    /* read from encoders */
+    const int controllerNumber = message.getControllerNumber();
+    
+    const int controllerValue = message.getControllerValue();
+    
+    /* this is the value to scroll by, only used by scrollable */
+    const int scrollAmount = controllerValue/scrollScale;
+    
+    /* scroll the scrollable class if scroll channel is changed  */
+    if (controllerNumber == scrollControllerValueX) {
+        scrollable.scrollXAmount(scrollAmount);
+        return;
+    }
+    if (controllerNumber == scrollControllerValueY) {
+        scrollable.scrollYAmount(scrollAmount);
+        return;
+    }
+#else
+    const int controllerValue = message.getControllerValue();
+
+    switch (controllerValue) {
+        /* Cut */
+        case 1:
+            
+            break;
+        /* paste */
+        case 2:
+            
+            break;
+        /* left */
+        case 3:
+            
+            break;
+        /* right */
+        case 4:
+            
+            break;
+        /* save */
+        case 5:
+            
+            break;
+        /* load */
+        case 6:
+            
+            break;
+        /* add */
+        case 7:
+            
+            break;
+        /* delete */
+        case 8:
+            
+            break;
+        /* used for encoders */
+        default:
+            
+            /* scroll the scrollbars*/
+            if (controllerValue == scrollControllerValueX) {
+                scrollable.scrollXAmount(scrollAmt);
+            }
+            else if (controllerValue == scrollControllerValueY) {
+                scrollable.scrollYAmount(scrollAmt);
+            }
+            
+            break;
+    }
+#endif
+
+}
+
+Waveforms *Timeline::getWaveformPtr(){
+    return &waveforms;
 }

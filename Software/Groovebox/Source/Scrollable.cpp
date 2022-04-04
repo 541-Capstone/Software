@@ -70,9 +70,11 @@ int Scrollable::getNumberOfTracks(){
 
 void Scrollable::scrollXAmount(int x) {
     xOffset += x;
+    repaint();
 }
 
 void Scrollable::scrollYAmount(int y) {
     yOffset += y;
+    repaint();
 }
 

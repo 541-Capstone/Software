@@ -23,7 +23,7 @@
 #include <io.h>
 #endif
 namespace te = tracktion_engine;
-class Waveforms : public juce::Component {
+class Waveforms : public juce::Component, public juce::ActionListener {
 public:
     Waveforms ();
     ~Waveforms() override;
@@ -32,6 +32,7 @@ public:
     void resized () override;
     void setEdit (te::Edit *edit);
     void setColorRandomizer(bool set);
+    void actionListenerCallback (const juce::String &message) override;
 private:
     WaveformManager ***waveformManagers = nullptr;
     const int cursor_width = 5;

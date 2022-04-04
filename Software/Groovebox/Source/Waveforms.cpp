@@ -100,3 +100,7 @@ juce::Colour Waveforms::randomColor(){
     auto& random = juce::Random::getSystemRandom();
     return juce::Colour(random.nextInt(limit), random.nextInt(limit), random.nextInt(limit));
 }
+
+void Waveforms::actionListenerCallback(const juce::String &message) {
+    
+}
