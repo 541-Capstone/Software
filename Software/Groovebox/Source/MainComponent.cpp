@@ -49,6 +49,8 @@ MainComponent::MainComponent(){
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
     midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
     midiService->addActionListener(this);
+
+    engine.getPluginManager();
 }
 
 MainComponent::~MainComponent(){
@@ -111,7 +113,7 @@ void MainComponent::actionListenerCallback(const juce::String& message) {
     if (message == "MIDI") {
         auto currentTime = edit->getTransport().getCurrentPosition();
         auto currentSampleNumber = (int)(currentTime * sampleRate);
-        for (const auto metadata : *inputMidiBuffer)
+        for (const juce::MidiBufferIterator::reference metadata : *inputMidiBuffer)
         {
             juce::MidiMessage message = metadata.getMessage();
             auto type = Helpers::getMidiMessageType(message);

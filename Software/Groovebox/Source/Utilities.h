@@ -12,6 +12,7 @@
  *====================================================*/
 #include <JuceHeader.h>
 #include "FileManager.h"
+#include "IPlugin.h"
 
 #if __MACH__
 #define LOG(x) std::cout<<x
@@ -44,6 +45,18 @@ namespace Helpers
 	*/
 	enum class MessageType { Note, Universal, Contextual};
 
+
+
 	MessageType getMidiMessageType(const juce::MidiMessage&);
+
+	//===========================================================================
+	/*
+	* The possible types of plugins as we care about them
+	* Synth: Any plugin that generates audio
+	* Effect: Any plugin that passes audio through, with or without altering it
+	*/
+	enum class PluginType { Synth, Effect };
+
+	PluginType getPluginType(const IPlugin&);
 }
 
