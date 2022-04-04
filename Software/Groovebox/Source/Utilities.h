@@ -45,10 +45,13 @@ namespace Helpers
 	*/
 	enum class MessageType { Note, Universal, Contextual};
 
-
-
 	MessageType getMidiMessageType(const juce::MidiMessage&);
 
+	enum class ContextualCommands { Cut, Paste, Save, Load, Add, Delete };
+	ContextualCommands getContextualCmdType(const juce::MidiMessage&);
+
+	enum class UniversalCommands { Play, Pause, Record, Mute, Solo, Metronome, Settings, OctaveUp, OctaveDown };
+	UniversalCommands getUniversalCmdType(const juce::MidiMessage&);
 	//===========================================================================
 	/*
 	* The possible types of plugins as we care about them

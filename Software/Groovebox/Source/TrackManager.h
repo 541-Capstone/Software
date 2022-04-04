@@ -10,7 +10,7 @@
 #include <JuceHeader.h>
 #include <functional>
 
-namespace te = tracktion_engine;
+#include "Utilities.h"
 
 class TrackManager {
 public:
@@ -28,6 +28,5 @@ private:
 	te::TrackList* trackList;
 	//List of audio tracks in the Session - only includes MIDI and WAV tracks
 	std::vector<te::Track*> audioTrackList;
-	
 
 };
