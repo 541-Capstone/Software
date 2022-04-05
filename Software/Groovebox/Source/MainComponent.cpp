@@ -50,7 +50,6 @@ MainComponent::MainComponent(){
     midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
     midiService->addActionListener(this);
 
-    engine.getPluginManager();
 }
 
 MainComponent::~MainComponent(){

@@ -68,6 +68,9 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS_APP := \
+  $(JUCE_OBJDIR)/IPlugin_75e41b5d.o \
+  $(JUCE_OBJDIR)/Wavetable_df08ef56.o \
+  $(JUCE_OBJDIR)/WavetableVoice_355fbac6.o \
   $(JUCE_OBJDIR)/AudioVisualizer_1a49b7b5.o \
   $(JUCE_OBJDIR)/Cursors_a7d171be.o \
   $(JUCE_OBJDIR)/Scrollable_5c72b7b0.o \
@@ -117,6 +120,21 @@ $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) : $(OBJECTS_APP) $(RESOURCES)
 	-$(V_AT)mkdir -p $(JUCE_LIBDIR)
 	-$(V_AT)mkdir -p $(JUCE_OUTDIR)
 	$(V_AT)$(CXX) -o $(JUCE_OUTDIR)/$(JUCE_TARGET_APP) $(OBJECTS_APP) $(JUCE_LDFLAGS) $(JUCE_LDFLAGS_APP) $(RESOURCES) $(TARGET_ARCH)
+
+$(JUCE_OBJDIR)/IPlugin_75e41b5d.o: ../../Source/IPlugin.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling IPlugin.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/Wavetable_df08ef56.o: ../../Source/Wavetable.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling Wavetable.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/WavetableVoice_355fbac6.o: ../../Source/WavetableVoice.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling WavetableVoice.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/AudioVisualizer_1a49b7b5.o: ../../Source/AudioVisualizer.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)

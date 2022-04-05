@@ -139,6 +139,9 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\IPlugin.cpp"/>
+    <ClCompile Include="..\..\Source\Wavetable.cpp"/>
+    <ClCompile Include="..\..\Source\WavetableVoice.cpp"/>
     <ClCompile Include="..\..\Source\AudioVisualizer.cpp"/>
     <ClCompile Include="..\..\Source\Cursors.cpp"/>
     <ClCompile Include="..\..\Source\Scrollable.cpp"/>
@@ -4136,6 +4139,10 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_tracktion_graph.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\IPlugin.h"/>
+    <ClInclude Include="..\..\Source\Wavetable.h"/>
+    <ClInclude Include="..\..\Source\WavetableSound.h"/>
+    <ClInclude Include="..\..\Source\WavetableVoice.h"/>
     <ClInclude Include="..\..\Source\AudioVisualizer.h"/>
     <ClInclude Include="..\..\Source\Cursors.h"/>
     <ClInclude Include="..\..\Source\Scrollable.h"/>

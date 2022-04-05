@@ -5,6 +5,18 @@
               defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;" headerPath="usr/include/freetype2"
               cppLanguageStandard="17">
   <MAINGROUP id="JlHjiV" name="Groovebox">
+    <GROUP id="{16B81334-D32E-8B3B-630D-3407478ED327}" name="Plugins">
+      <FILE id="tODL9G" name="IPlugin.cpp" compile="1" resource="0" file="Source/IPlugin.cpp"/>
+      <FILE id="IbJwZl" name="IPlugin.h" compile="0" resource="0" file="Source/IPlugin.h"/>
+      <FILE id="s3dfo6" name="Wavetable.cpp" compile="1" resource="0" file="Source/Wavetable.cpp"/>
+      <FILE id="tJxUo2" name="Wavetable.h" compile="0" resource="0" file="Source/Wavetable.h"/>
+      <FILE id="rOmGkl" name="WavetableSound.h" compile="0" resource="0"
+            file="Source/WavetableSound.h"/>
+      <FILE id="FjeFRb" name="WavetableVoice.cpp" compile="1" resource="0"
+            file="Source/WavetableVoice.cpp"/>
+      <FILE id="vsjN8P" name="WavetableVoice.h" compile="0" resource="0"
+            file="Source/WavetableVoice.h"/>
+    </GROUP>
     <GROUP id="{F91CA04B-82C4-EEE3-5037-6BA7E851FC29}" name="WaveformClasses">
       <FILE id="uvsOft" name="AudioVisualizer.cpp" compile="1" resource="0"
             file="Source/AudioVisualizer.cpp"/>

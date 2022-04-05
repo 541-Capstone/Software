@@ -4,9 +4,7 @@
 
 class IPlugin {
 public:
-	virtual void handleMidiControlEvent(juce::MidiMessage msg);
-	virtual void handleMidiNoteEvent(juce::MidiMessage msg);
-	virtual void getPluginType();
+	virtual void handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record);
+	//virtual Helpers::PluginType getPluginType();
 private:
-	std::shared_ptr<juce::MidiBuffer> midiBuffer;
 };

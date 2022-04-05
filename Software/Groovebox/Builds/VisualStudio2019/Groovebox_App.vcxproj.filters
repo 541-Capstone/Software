@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Groovebox\Plugins">
+      <UniqueIdentifier>{A15B104A-8D1B-E649-E118-225D4C8A5E66}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\WaveformClasses">
       <UniqueIdentifier>{2F39FA70-2585-E6F6-2784-11CD04FBAD1E}</UniqueIdentifier>
     </Filter>
@@ -1186,6 +1189,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\IPlugin.cpp">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Wavetable.cpp">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\WavetableVoice.cpp">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\AudioVisualizer.cpp">
       <Filter>Groovebox\WaveformClasses</Filter>
     </ClCompile>
@@ -5379,6 +5391,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\IPlugin.h">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Wavetable.h">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WavetableSound.h">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WavetableVoice.h">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\AudioVisualizer.h">
       <Filter>Groovebox\WaveformClasses</Filter>
     </ClInclude>

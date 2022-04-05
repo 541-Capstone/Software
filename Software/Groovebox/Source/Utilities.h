@@ -61,5 +61,7 @@ namespace Helpers
 	enum class PluginType { Synth, Effect };
 
 	PluginType getPluginType(const IPlugin&);
+
+	juce::MidiBuffer* midiMessageArrayToMidiBuffer(const te::MidiMessageArray&);
 }
 
