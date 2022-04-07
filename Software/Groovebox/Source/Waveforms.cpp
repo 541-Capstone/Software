@@ -77,15 +77,16 @@ void Waveforms::showEdit() {
                 else drawWaveform(clip, i, k);
                 /*
                 juce::File file = clip->getSourceFileReference().getFile();
-                    juce::URL url(file);
+                juce::URL url(file);
+        
                 double clip_start = clip->getPosition().getStart() * timeScale;
                 double clip_length = clip->getPosition().getLength() * timeScale;
-                    
                 waveformManagers[i][k]->setBounds(clip_start, i * heightPerTrack, clip_length, heightPerTrack);
+                    
                 addAndMakeVisible(waveformManagers[i][k]);
                 if (randomIsEnabled){
                     waveformManagers[i][k]->setForegroundColor(randomColor());
-                        waveformManagers[i][k]->setBackgroundColor(randomColor());
+                    waveformManagers[i][k]->setBackgroundColor(randomColor());
                 }
                 waveformManagers[i][k]->showAudioResource(url);
                 */
@@ -109,29 +110,32 @@ void Waveforms::actionListenerCallback(const juce::String &message) {
     
 }
 
-void Waveforms::drawWaveform(te::Clip *clip, int i, int k){
-    waveformManagers[i][k]->setIsMidi(false);
+void Waveforms::drawWaveform (te::Clip *clip, int i, int k) {
+    waveformManagers[i][k]->isMIDI(false);
     juce::File file = clip->getSourceFileReference().getFile();
-        juce::URL url(file);
+    juce::URL url(file);
+
     double clip_start = clip->getPosition().getStart() * timeScale;
     double clip_length = clip->getPosition().getLength() * timeScale;
-        
     waveformManagers[i][k]->setBounds(clip_start, i * heightPerTrack, clip_length, heightPerTrack);
+        
     addAndMakeVisible(waveformManagers[i][k]);
     if (randomIsEnabled){
         waveformManagers[i][k]->setForegroundColor(randomColor());
-            waveformManagers[i][k]->setBackgroundColor(randomColor());
+        waveformManagers[i][k]->setBackgroundColor(randomColor());
     }
     waveformManagers[i][k]->showAudioResource(url);
 }
 
 void Waveforms::drawLine(te::Clip *clip, int i, int k) {
-    waveformManagers[i][k]->setIsMidi(true);
+    waveformManagers[i][k]->isMIDI(true);
     double clip_start = clip->getPosition().getStart() * timeScale;
     double clip_length = clip->getPosition().getLength() * timeScale;
-    juce::Rectangle<int> frame;
-    frame.setBounds(clip_start, i * heightPerTrack, clip_length, heightPerTrack);
-    waveformManagers[i][k]->setBounds(frame);
+    waveformManagers[i][k]->setBounds(clip_start, i * heightPerTrack, clip_length, heightPerTrack);
     addAndMakeVisible(waveformManagers[i][k]);
+    if (randomIsEnabled){
+        waveformManagers[i][k]->setForegroundColor(randomColor());
+        waveformManagers[i][k]->setBackgroundColor(randomColor());
+    }
     waveformManagers[i][k]->showAudioResource();
 }

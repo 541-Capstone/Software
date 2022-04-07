@@ -30,7 +30,8 @@ public:
     void showAudioResource ();
     void setBackgroundColor (juce::Colour color);
     void setForegroundColor (juce::Colour color);
-    void setIsMidi (bool isMidi);
+    void isMIDI (bool isMidi);
+    
 private:
     juce::AudioFormatManager formatManager;
     juce::URL currentAudioFile;
@@ -43,6 +44,7 @@ private:
     juce::Colour default_color = juce::Colours::black;
     juce::Colour bgColor = default_color;
     juce::Colour fgColor = juce::Colours::blue;
+    bool isMidi = false;
     
     
     void changeListenerCallback (juce::ChangeBroadcaster *source) override;
@@ -54,7 +56,6 @@ private:
     double timeScale = 0.1;
     bool bgcolorChanged = false;
     bool fgcolorChanged = false;
-    bool isMidi = false;
     
 };
 #endif

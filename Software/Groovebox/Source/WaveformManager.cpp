@@ -144,6 +144,11 @@ void WaveformManager::showAudioResource(te::Edit *p_edit) {
     }
 }
 
+void WaveformManager::showAudioResource(){
+    thumbnail->setWaveformColor(fgColor);
+    thumbnail->setBackgroundColor(bgColor);
+}
+
 void WaveformManager::setBackgroundColor(juce::Colour color) {
     if (!bgcolorChanged) bgColor = color;
     bgcolorChanged = true;
@@ -154,12 +159,7 @@ void WaveformManager::setForegroundColor(juce::Colour color) {
     fgcolorChanged = true;
 }
 
-void WaveformManager::setIsMidi(bool isMidi) {
+void WaveformManager::isMIDI(bool isMidi) {
     this->isMidi = isMidi;
-    thumbnail->setisMIDI(this->isMidi);
-}
-
-void WaveformManager::showAudioResource() {
-    thumbnail->setWaveformColor(fgColor);
-    thumbnail->setBackgroundColor(bgColor);
+    thumbnail->isMIDI(this->isMidi);
 }
