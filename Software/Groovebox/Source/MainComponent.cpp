@@ -310,7 +310,7 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
     /* get the controller Value */
     const int controllerValue = metadata.getMessage().getControllerValue();
     
-    Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(metadata.getMessage());
+    //Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(metadata.getMessage());
     
     /* get the message */
     const juce::MidiMessage message = metadata.getMessage();
