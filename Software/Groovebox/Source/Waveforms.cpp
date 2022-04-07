@@ -72,6 +72,7 @@ void Waveforms::showEdit() {
         if (numClips > 0) {
             for (int k = 0; k < numClips; ++k) {
                 auto clip = clips[k];
+                
                 if (clip->isMidi()) drawLine(clip, i, k);
                 else drawWaveform(clip, i, k);
                 /*
