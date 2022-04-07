@@ -72,23 +72,34 @@ void Waveforms::showEdit() {
         if (numClips > 0) {
             for (int k = 0; k < numClips; ++k) {
                 auto clip = clips[k];
-                juce::File file = clip->getSourceFileReference().getFile();
-                juce::URL url(file);
-                
-                double clip_start = clip->getPosition().getStart() * timeScale;
-                double clip_length = clip->getPosition().getLength() * timeScale;
-                
-                waveformManagers[i][k]->setBounds(clip_start, i * heightPerTrack, clip_length, heightPerTrack);
-                
-                addAndMakeVisible(waveformManagers[i][k]);
-                if (randomIsEnabled){
-                    waveformManagers[i][k]->setForegroundColor(randomColor());
-                    waveformManagers[i][k]->setBackgroundColor(randomColor());
+                if (clip->isMidi()) {
+                    /* do midi rendering */
+                    double clip_start = clip->getPosition().getStart() * timeScale;
+                    double clip_length = clip->getPosition().getLength() * timeScale;
+                    
+                    
+
                 }
-                waveformManagers[i][k]->showAudioResource(url);
+                else {
+                    juce::File file = clip->getSourceFileReference().getFile();
+                    juce::URL url(file);
+                    
+                    double clip_start = clip->getPosition().getStart() * timeScale;
+                    double clip_length = clip->getPosition().getLength() * timeScale;
+                    
+                    waveformManagers[i][k]->setBounds(clip_start, i * heightPerTrack, clip_length, heightPerTrack);
+                    
+                    addAndMakeVisible(waveformManagers[i][k]);
+                    if (randomIsEnabled){
+                        waveformManagers[i][k]->setForegroundColor(randomColor());
+                        waveformManagers[i][k]->setBackgroundColor(randomColor());
+                    }
+                    waveformManagers[i][k]->showAudioResource(url);
+                }
             }
         }
     }
+    
 }
 
 void Waveforms::setColorRandomizer(bool set) {
