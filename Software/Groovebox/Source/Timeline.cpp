@@ -13,16 +13,12 @@
 Timeline::Timeline() {
     // Set all the nullptrs
     this->edit = nullptr;
-    this->numTracks = nullptr;
-    this->currentTrack = nullptr;
     this->transport = nullptr;
     this->mainComponent = nullptr;
     
     funcs.clear();
     
     waveform_window.setBounds(100, 100, 512, 64);
-    
-    audioTrackList = nullptr;/*new std::vector<te::Track*>();*/
     
     /* set that buttons are included in timelineObjects */
     timelineObjects.inclBtns = true;
@@ -64,13 +60,8 @@ viewObjects* Timeline::getObjects() {
     return &timelineObjects;
 }
 
-void Timeline::setCurrentTrackPtr
- (int *currentTrack) {
-    this->currentTrack = currentTrack;
-}
-
-void Timeline::setAudioTrackList(std::vector<te::Track*> *newTracks) {
-    audioTrackList = newTracks;
+void Timeline::setTrackManager(std::shared_ptr<TrackManager> trackManager) {
+    this->trackManager = trackManager;
 }
 
 void Timeline::resized() {
@@ -113,8 +104,8 @@ void Timeline::paint(juce::Graphics &g) {
     
     // You can add your drawing code here!
     statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
-    trackCountLbl.setText((juce::String)edit->getTrackList().size() + ";" + (juce::String)(edit->getTrackList().size()), juce::NotificationType::dontSendNotification);
-    juce::Array<te::Track*> trackList = edit->getTrackList().objects;
+    trackCountLbl.setText((juce::String)trackManager->getNumTracks(), juce::NotificationType::dontSendNotification);
+    juce::Array<te::AudioTrack*> trackList = trackManager->getAudioTrackList();
     juce::String trackNames = "";
     
     /* only iter when the there are tracks in audiotracklist */
@@ -122,10 +113,8 @@ void Timeline::paint(juce::Graphics &g) {
     if (trackList.size () > 0){
         for (auto track : trackList) {
             
-            if (audioTrackList != nullptr && audioTrackList->size() > *currentTrack) {
-                if (track == (*audioTrackList)[(*currentTrack)]) {
-                    trackNames += "* ";
-                }
+            if (track == trackManager->getActiveTrack()) {
+                trackNames += "* ";
             }
              
             trackNames += track->getName();

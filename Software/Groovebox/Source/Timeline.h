@@ -42,8 +42,7 @@ public:
     viewObjects* getObjects();
     void paint(juce::Graphics &g) override;
     void resized() override;
-    void setCurrentTrackPtr (int *currentTrack);
-    void setAudioTrackList(std::vector<te::Track*> *newTracks);
+    void setTrackManager(std::shared_ptr<TrackManager>);
     void setEdit(te::Edit *edit);
     void timerCallback()override;
     void setMainComponentPtr(juce::Component *component);
@@ -65,7 +64,7 @@ private:
     
     /* Objects */
     te::TransportControl *transport;
-    TrackManager *trackManager;
+    std::shared_ptr<TrackManager> trackManager;
     viewObjects timelineObjects;
     te::Edit *edit;
     juce::Component *mainComponent;
@@ -91,15 +90,6 @@ private:
     /* Colours */
     juce::Colour bg_color = juce::Colour(64, 64, 64);
     juce::Colour alt_color = juce::Colour(0, 0, 0);
-    
-    /* Number of tracks pointer */
-    int *numTracks;
-    
-    /* current track pointer */
-    int *currentTrack;
-    
-    /* audio track list */
-    std::vector<te::Track*> *audioTrackList = nullptr;
 
     /* broadcast functions*/
     void play();

@@ -8,7 +8,6 @@ MainComponent::MainComponent(){
     // set edit to nullptr for the time being
     edit = nullptr;
     isPlaying = false;
-    numAudioTracks = 0;
     
     // start the timer. The frequency of the timer is also its ID
     startTimer(frameInterval, frameInterval);
@@ -29,13 +28,12 @@ MainComponent::MainComponent(){
     fileManager.setEdit(edit.get());
     Helpers::insertClipFromFile(tracktion_engine::getAudioTracks(*edit)[0], &edit->getTransport(), TESTAUDIOPATH);
 
+    // Initialize TrackManager
+    trackManager = std::make_shared<TrackManager>(edit);
 
     // set current track to zero (testing purposes for now)
-    currentTrack = edit->getTrackList().objects[edit->getTrackList().objects.size() - 1];
-    addAudioTrack((te::AudioTrack*)currentTrack);
-    currentTrackIndex = 0;
-    timeline.setCurrentTrackPtr (&currentTrackIndex);
-    timeline.setAudioTrackList  (&audioTracks);
+    trackManager->createTrack();
+    timeline.setTrackManager(trackManager);
     /* initally, program set to TrackView*/
     setupTrackView();
      
@@ -118,7 +116,7 @@ void MainComponent::actionListenerCallback(const juce::String& message) {
             auto type = Helpers::getMidiMessageType(message);
             if (type == Helpers::MessageType::Note) {
                 LOG("Sending note " + juce::MidiMessage::getMidiNoteName(message.getNoteNumber(), true, true, 3) 
-                + " to Track " + (juce::String)currentTrackIndex);
+                + " to Track " + (juce::String)trackManager->getActiveTrackIndex());
                 //Send the midi note to the track's MIDI buffer
             }
             else if (type == Helpers::MessageType::Universal) {
@@ -197,11 +195,11 @@ void MainComponent::loadEdit(){
     
     // get the edit if it exists
     if (editFile.existsAsFile()) {
-        edit = (tracktion_engine::loadEditFromFile(engine, editFile));
+        edit = std::move(te::loadEditFromFile(engine, editFile));
     }
     // else create a new, empty edit if it doesn't exist
     else{
-        edit = tracktion_engine::createEmptyEdit(engine, editFile);
+        edit = std::move(te::createEmptyEdit(engine, editFile));
     }
 }
 
@@ -272,42 +270,31 @@ void MainComponent::record(){
 }
 
 void MainComponent::createAudioTrack() {
-    edit->ensureNumberOfAudioTracks(numAudioTracks + 1);
-    te::AudioTrack* newTrack = te::getAudioTracks(*edit)[numAudioTracks];
+    trackManager->createTrack();
     //TODO: Remove this line!
-    Helpers::insertClipFromFile(newTrack, &edit->getTransport(), TESTAUDIOPATH);
-    addAudioTrack(newTrack);
-}
-
-void MainComponent::addAudioTrack(te::AudioTrack *audioTrack) {
-    numTracks++;
-    numAudioTracks++;
-    audioTracks.push_back(audioTrack);
-    //waveformManager.showAudioResource(edit.get());
-    //waveforms.showEdit();
-    //cursor.defineCursorByRect(waveforms.getBounds());
-    LOG("Added track " + (juce::String)numAudioTracks +
-        "\nNumber of clips in track: " + (juce::String)audioTrack->getClips().size() + 
-        "\nNumber of tracks in edit: " + (juce::String)edit->getTrackList().size());
+    Helpers::insertClipFromFile(trackManager->getActiveTrack(), &edit->getTransport(), TESTAUDIOPATH);
+    LOG("Added track " + (juce::String)trackManager->getAudioTrackList().size() +
+        "\nNumber of clips in track: " + (juce::String)trackManager->getActiveTrack()->getClips().size() +
+        "\nNumber of tracks in edit: " + (juce::String)trackManager->getNumTracks());
 }
 
 void MainComponent::nextTrack() {
-    if (currentTrackIndex < audioTracks.size() - 1) {
-        currentTrackIndex++;
-        LOG("Paged up. Current track:" + (juce::String)currentTrackIndex + "\n");
+    if (trackManager->getActiveTrackIndex() < trackManager->getNumTracks() - 1) {
+        trackManager->setActiveTrack(trackManager->getActiveTrackIndex() + 1);
+        LOG("Paged up. Current track:" + (juce::String)trackManager->getActiveTrackIndex() + "\n");
     }
 }
 
 void MainComponent::prevTrack() {
-    if (currentTrackIndex > 0) {
-        currentTrackIndex--;
-        LOG("Paged down. Current track:" + (juce::String)currentTrackIndex + "\n");
+    if (trackManager->getActiveTrackIndex() > 0) {
+        trackManager->setActiveTrack(trackManager->getActiveTrackIndex() - 1);
+        LOG("Paged down. Current track:" + (juce::String)trackManager->getActiveTrackIndex() + "\n");
     }
 }
 
 void MainComponent::addClipToTrack() {
     auto audioTracks = te::getAudioTracks(*edit);
-    auto track = audioTracks[currentTrackIndex];
+    auto track = trackManager->getActiveTrack();
     Helpers::insertClipToTrack(track, &edit->getTransport(), TESTAUDIOPATH);
     //waveforms.showEdit();
 }
