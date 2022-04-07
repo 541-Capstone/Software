@@ -27,9 +27,10 @@ public:
     void showAudioResource (juce::URL resource);
     void showAudioResource (te::AudioTrack *track);
     void showAudioResource (te::Edit *p_edit);
+    void showAudioResource ();
     void setBackgroundColor (juce::Colour color);
     void setForegroundColor (juce::Colour color);
-    
+    void setIsMidi (bool isMidi);
 private:
     juce::AudioFormatManager formatManager;
     juce::URL currentAudioFile;
@@ -53,6 +54,7 @@ private:
     double timeScale = 0.1;
     bool bgcolorChanged = false;
     bool fgcolorChanged = false;
+    bool isMidi = false;
     
 };
 #endif

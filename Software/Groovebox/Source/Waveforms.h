@@ -44,6 +44,8 @@ private:
     bool randomIsEnabled = false;
     void clean();
     void setup();
+    void drawWaveform(te::Clip *clip, int i, int k);
+    void drawLine(te::Clip *clip, int i, int k);
     juce::Colour randomColor();
 };
 #endif

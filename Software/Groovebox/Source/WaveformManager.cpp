@@ -153,3 +153,13 @@ void WaveformManager::setForegroundColor(juce::Colour color) {
     if(!fgcolorChanged) fgColor = color;
     fgcolorChanged = true;
 }
+
+void WaveformManager::setIsMidi(bool isMidi) {
+    this->isMidi = isMidi;
+    thumbnail->setisMIDI(this->isMidi);
+}
+
+void WaveformManager::showAudioResource() {
+    thumbnail->setWaveformColor(fgColor);
+    thumbnail->setBackgroundColor(bgColor);
+}
