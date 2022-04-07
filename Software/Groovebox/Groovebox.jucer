@@ -51,6 +51,8 @@
       <FILE id="Jdqkr6" name="TrackManager.h" compile="0" resource="0" file="Source/TrackManager.h"/>
     </GROUP>
     <GROUP id="{5323C0E3-87CC-405B-D6B9-AD58964F1DEF}" name="State">
+      <FILE id="gasjoK" name="ContextComponent.h" compile="0" resource="0"
+            file="Source/ContextComponent.h"/>
       <FILE id="qxgQog" name="Timeline.cpp" compile="1" resource="0" file="Source/Timeline.cpp"/>
       <FILE id="g2K5jn" name="Timeline.h" compile="0" resource="0" file="Source/Timeline.h"/>
     </GROUP>

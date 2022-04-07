@@ -120,6 +120,7 @@
 		AE349C1D29BD7FE458CAB411 /* QuartzCore.framework */ /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AEA9328AF7493C3BE4F1A71A /* WaveformManager.cpp */ /* WaveformManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WaveformManager.cpp; path = ../../Source/WaveformManager.cpp; sourceTree = SOURCE_ROOT; };
 		B09FC6FA6BD59319EA70125E /* AudioToolbox.framework */ /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		B3F2DB77CF8231FE1E9DEC24 /* ContextComponent.h */ /* ContextComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ContextComponent.h; path = ../../Source/ContextComponent.h; sourceTree = SOURCE_ROOT; };
 		B46887120136C67C131B0424 /* WavetableVoice.cpp */ /* WavetableVoice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = WavetableVoice.cpp; path = ../../Source/WavetableVoice.cpp; sourceTree = SOURCE_ROOT; };
 		B4E3E1267C7528BBFB902F17 /* viewObjects.h */ /* viewObjects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = viewObjects.h; path = ../../Source/viewObjects.h; sourceTree = SOURCE_ROOT; };
 		B64989778643D8375BF8B833 /* MidiService.h */ /* MidiService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MidiService.h; path = ../../Source/MidiService.h; sourceTree = SOURCE_ROOT; };
@@ -386,6 +387,7 @@
 		D9EADA0902B6F19D1F2B0EBE /* State */ = {
 			isa = PBXGroup;
 			children = (
+				B3F2DB77CF8231FE1E9DEC24,
 				11FC673A3624992BF6FFD93B,
 				1AD7BE0F21467F545CAAF5B3,
 			);

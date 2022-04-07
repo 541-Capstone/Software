@@ -23,7 +23,7 @@
 #include <io.h>
 #endif
 namespace te = tracktion_engine;
-class Waveforms : public juce::Component, public juce::ActionListener {
+class Waveforms : public juce::Component, public juce::ActionListener, public juce::ActionBroadcaster {
 public:
     Waveforms ();
     ~Waveforms() override;

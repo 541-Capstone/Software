@@ -5424,6 +5424,9 @@
     <ClInclude Include="..\..\Source\TrackManager.h">
       <Filter>Groovebox\TrackManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\ContextComponent.h">
+      <Filter>Groovebox\State</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Timeline.h">
       <Filter>Groovebox\State</Filter>
     </ClInclude>

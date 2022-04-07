@@ -4146,6 +4146,7 @@
     <ClInclude Include="..\..\Source\Utilities.h"/>
     <ClInclude Include="..\..\Source\FileManager.h"/>
     <ClInclude Include="..\..\Source\TrackManager.h"/>
+    <ClInclude Include="..\..\Source\ContextComponent.h"/>
     <ClInclude Include="..\..\Source\Timeline.h"/>
     <ClInclude Include="..\..\Source\viewObjects.h"/>
     <ClInclude Include="..\..\Source\MainComponent.h"/>

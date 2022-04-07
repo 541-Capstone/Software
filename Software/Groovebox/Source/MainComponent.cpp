@@ -47,10 +47,12 @@ MainComponent::MainComponent(){
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
     midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
     midiService->addActionListener(this);
-
+    
+    currentComponent = &timeline;
 }
 
 MainComponent::~MainComponent(){
+    currentComponent = nullptr;
 }
 
 void MainComponent::paint(juce::Graphics &g){
@@ -130,6 +132,7 @@ void MainComponent::actionListenerCallback(const juce::String& message) {
                 LOG("Contextual Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
                     " Value: " + (juce::String)metadata.getMessage().getControllerValue());
                 //Pass off signal to current context
+                currentComponent->contextControl(metadata);
                 
             }
             
@@ -364,6 +367,7 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             timeline.setEnabled(true);
             timeline.setVisible(true);
             timeline.setAllComponents(true);
+            currentComponent = &timeline;
             break;
         case 5:
             LOG("Synth\n");

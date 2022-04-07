@@ -22,6 +22,7 @@ Waveforms::~Waveforms () {
 
 void Waveforms::paint(juce::Graphics &g) {
     g.fillAll(juce::Colours::blue);
+    sendActionMessage("1");
 }
 
 void Waveforms::resized() {
