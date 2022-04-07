@@ -109,7 +109,7 @@ void Timeline::paint(juce::Graphics &g) {
     juce::String trackNames = "";
     
     /* only iter when the there are tracks in audiotracklist */
-    trackNames += "TrackList: \n";
+    trackNames += "Track List: \n";
     if (trackList.size () > 0){
         for (auto track : trackList) {
             

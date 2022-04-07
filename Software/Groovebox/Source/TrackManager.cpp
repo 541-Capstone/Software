@@ -35,6 +35,8 @@ void TrackManager::createTrack(int index) {
 
 void TrackManager::createTrack() {
     edit->ensureNumberOfAudioTracks(audioTrackList.size() + 1);
+    auto tracks = &edit->getTrackList();
+    audioTrackList.add((te::AudioTrack*)tracks->objects[edit->getTrackList().objects.size() - 1]);
 }
 
 /*Copy the source MIDI buffer to the active track's input MIDI buffer,
