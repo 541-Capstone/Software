@@ -32,13 +32,20 @@ juce::String Wavetable::getName()                       { return getPluginName()
 juce::String Wavetable::getPluginType()                 { return xmlTypeName; }
 bool Wavetable::needsConstantBufferSize()               { return false; }
 juce::String Wavetable::getSelectableDescription()      { return getName(); }
-void Wavetable::initialise(const te::PluginInitialisationInfo&)    {
-    sampleRate = engine.getDeviceManager().getSampleRate();
+
+void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
+    sampleRate = info.sampleRate;
     synth.setCurrentPlaybackSampleRate(sampleRate);
     synth.addSound(new WavetableSound());
     synth.addVoice(new WavetableVoice());
+
+    for (int i = 0; i < synth.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<WavetableVoice*>(synth.getVoice(i))) {
+            voice->prepareToPlay(sampleRate, info.blockSizeSamples);
+        }
+    }
 }
-void Wavetable::deinitialise()                                     {}
+void Wavetable::deinitialise() {}
 
 
 //Functions similarly to the processBlock of a standalone plugin

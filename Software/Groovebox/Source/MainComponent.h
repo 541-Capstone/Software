@@ -134,7 +134,7 @@ private:
     /**
      * @brief This is the edit pointer. This will be used to load/used to edit
      */
-    std::unique_ptr<tracktion_engine::Edit> edit;
+    std::shared_ptr<te::Edit> edit;
     
     /**
      * @brief This is the file location of edits. Just concat the location to load.
@@ -142,36 +142,16 @@ private:
     const std::string editPath = apath + "/edits/";
     
     /**
-     * @brief This is the total number of tracks available. The total number of tracks
-     is the total number of audio tracks and the total number of MIDI tracks.
+     * @brief This is the vector for storing audio track pointers. Should be handed over to states
      */
-    int numTracks;
-    
-    /**
-     * @brief This is the number of audio tracks present.
-     */
-    int numAudioTracks;
-    
-    /**
-     * @brief This is the number of MIDI tracks.
-     */
-    int numMIDItracks;
+    std::shared_ptr<TrackManager> trackManager;
     
     /**
      * @brief This is the maximum number of tracks (-1 for no limit)
      */
     int maxNumTracks;
 
-    /**
-     * @brief This is the vector for storing audio track pointers. Should be handed over to states
-     * @TODO Replace with a TrackManager object
-     */
-    std::vector<te::Track*> audioTracks;
-
-    te::Track* currentTrack;
-    
     bool isPlaying;
-    int currentTrackIndex;
     
     /* this is the timeline object */
     Timeline timeline;
@@ -240,9 +220,6 @@ private:
 
     //Creates a new audio track at the end of the list if possible
     void createAudioTrack();
-
-    //Add an existing audio track at the end of the list if possible
-    void addAudioTrack(te::AudioTrack* audioTrack);
     
     // adds a clip to an existing audio track
     void addClipToTrack();

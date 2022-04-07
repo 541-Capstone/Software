@@ -20,12 +20,11 @@
 /*
 */
 class Wavetable  : public juce::Component,
-    public te::Plugin,
-    IPlugin
+    public te::Plugin
 {
 public:
     static const char* getPluginName();
-    static const char* xmlTypeName;
+    inline static const char* xmlTypeName;
 
     // Pass in a reference to the engine so that we can register this plugin with the plugin manager
     Wavetable(te::PluginCreationInfo info);
@@ -54,15 +53,12 @@ public:
     void setMidiBuffer(std::shared_ptr<juce::MidiBuffer>);
     void removeMidiBuffer();
 
-    void handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record) override;
+    void handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record);
 
 
 private:
     juce::Array<float> wavetable;
     double sampleRate = 48000.0;
-    std::shared_ptr<juce::AudioBuffer<double>> outputBuffer;
-
-
 
     juce::Synthesiser synth;
 
