@@ -84,3 +84,28 @@ Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
         }
     }
 }
+
+juce::String Helpers::getMidiMessageDescription(const juce::MidiMessage& m)
+{
+    if (m.isNoteOn())           return "Note on " + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3);
+    if (m.isNoteOff())          return "Note off " + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3);
+    if (m.isProgramChange())    return "Program change " + juce::String(m.getProgramChangeNumber());
+    if (m.isPitchWheel())       return "Pitch wheel " + juce::String(m.getPitchWheelValue());
+    if (m.isAftertouch())       return "After touch " + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3) + ": " + juce::String(m.getAfterTouchValue());
+    if (m.isChannelPressure())  return "Channel pressure " + juce::String(m.getChannelPressureValue());
+    if (m.isAllNotesOff())      return "All notes off";
+    if (m.isAllSoundOff())      return "All sound off";
+    if (m.isMetaEvent())        return "Meta event";
+
+    if (m.isController())
+    {
+        juce::String name(juce::MidiMessage::getControllerName(m.getControllerNumber()));
+
+        if (name.isEmpty())
+            name = "[" + juce::String(m.getControllerNumber()) + "]";
+
+        return "Controller " + name + ": " + juce::String(m.getControllerValue());
+    }
+
+    return juce::String::toHexString(m.getRawData(), m.getRawDataSize());
+}

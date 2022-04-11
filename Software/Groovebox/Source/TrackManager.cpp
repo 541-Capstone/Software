@@ -45,7 +45,7 @@ void TrackManager::createTrack() {
 void TrackManager::addMidiToBuffer(const juce::MidiBuffer& buffer) {
     auto midiBuffer = midiBuffers[activeTrackIndex];
     midiBuffer->addEvents(buffer, 0, buffer.getNumEvents(), 0);
-    //TODO: Active plugin should alert active plugin to check MIDI buffer
+    //TODO: Should alert active plugin to check MIDI buffer
 }
 
 void TrackManager::setActiveTrack(int index) {
