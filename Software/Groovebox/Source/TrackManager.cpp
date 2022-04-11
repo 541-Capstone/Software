@@ -3,22 +3,22 @@
 TrackManager::TrackManager(std::shared_ptr<te::Edit> edit) {
     this->edit = edit;
     trackList = &edit->getTrackList();
-	//Add all existing edit tracks to the 
-	audioTrackList.add((te::AudioTrack*)trackList->objects[edit->getTrackList().objects.size() - 1]);
+	//Add the default audio track to the list
+    TrackWrapper tw{ (te::AudioTrack*)trackList->objects[trackList->objects.size() - 1], nullptr, nullptr };
+	audioTrackList.add(std::make_shared<TrackWrapper>(tw));
     activeTrackIndex = 0;
-    activeTrack = audioTrackList[0];
 }
 
 TrackManager::~TrackManager() {
 
 }
 
-juce::Array<te::AudioTrack*> TrackManager::getAudioTrackList() {
+juce::Array<std::shared_ptr<TrackManager::TrackWrapper>> TrackManager::getAudioTrackList() {
     return audioTrackList;
 }
 
-te::AudioTrack* TrackManager::getActiveTrack() {
-    return activeTrack;
+std::shared_ptr<TrackManager::TrackWrapper> TrackManager::getActiveTrack() {
+    return audioTrackList[activeTrackIndex];
 }
 
 int TrackManager::getActiveTrackIndex() {
@@ -36,7 +36,8 @@ void TrackManager::createTrack(int index) {
 void TrackManager::createTrack() {
     edit->ensureNumberOfAudioTracks(audioTrackList.size() + 1);
     auto tracks = &edit->getTrackList();
-    audioTrackList.add((te::AudioTrack*)tracks->objects[edit->getTrackList().objects.size() - 1]);
+    TrackWrapper tw{ (te::AudioTrack*)tracks->objects[edit->getTrackList().objects.size() - 1], nullptr, nullptr };
+    audioTrackList.add(std::make_shared<TrackWrapper>(tw));
 }
 
 /*Copy the source MIDI buffer to the active track's input MIDI buffer,
@@ -50,7 +51,18 @@ void TrackManager::addMidiToBuffer(const juce::MidiBuffer& buffer) {
 
 void TrackManager::setActiveTrack(int index) {
     jassert(index >= 0 && index < audioTrackList.size());
-
-    activeTrack = audioTrackList[index];
     activeTrackIndex = index;
+}
+
+void TrackManager::setSynth(te::Plugin* newSynth) {
+    audioTrackList[activeTrackIndex]->synth = newSynth;
+}
+
+
+juce::String TrackManager::TrackWrapper::getName() {
+    return track->getName();
+}
+
+te::AudioTrack* TrackManager::TrackWrapper::getTrack() {
+    return track;
 }

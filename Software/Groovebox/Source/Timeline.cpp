@@ -105,7 +105,7 @@ void Timeline::paint(juce::Graphics &g) {
     // You can add your drawing code here!
     statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
     trackCountLbl.setText((juce::String)trackManager->getNumTracks(), juce::NotificationType::dontSendNotification);
-    juce::Array<te::AudioTrack*> trackList = trackManager->getAudioTrackList();
+    juce::Array<std::shared_ptr<TrackManager::TrackWrapper>> trackList = trackManager->getAudioTrackList();
     juce::String trackNames = "";
     
     /* only iter when the there are tracks in audiotracklist */

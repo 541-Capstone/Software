@@ -278,7 +278,7 @@ void MainComponent::createAudioTrack() {
     //TODO: Remove this line!
     //Helpers::insertClipFromFile(trackManager->getActiveTrack(), &edit->getTransport(), TESTAUDIOPATH);
     LOG("Added track " + (juce::String)trackManager->getAudioTrackList().size() +
-        "\nNumber of clips in track: " + (juce::String)trackManager->getActiveTrack()->getClips().size() +
+        "\nNumber of clips in track: " + (juce::String)trackManager->getActiveTrack()->track->getClips().size() +
         "\nNumber of tracks in edit: " + (juce::String)trackManager->getNumTracks());
 }
 
@@ -298,7 +298,7 @@ void MainComponent::prevTrack() {
 
 void MainComponent::addClipToTrack() {
     auto track = trackManager->getActiveTrack();
-    Helpers::insertClipToTrack(track, &edit->getTransport(), TESTAUDIOPATH);
+    Helpers::insertClipToTrack(track->getTrack(), &edit->getTransport(), TESTAUDIOPATH);
     //waveforms.showEdit();
 }
 
