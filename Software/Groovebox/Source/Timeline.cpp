@@ -266,6 +266,9 @@ void Timeline::actionListenerCallback (const juce::String &message) {
 
 void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
     
+    printf("\nTimeline says Hello!\n");
+    return;
+    
     /* get the MidiMessage from metadata */
     const juce::MidiMessage message = metadata.getMessage();
     

@@ -12,6 +12,13 @@
 #ifndef contextcomponent_h
 #define contextcomponent_h
 #include <JuceHeader.h>
+
+/*
+ *  Add this virtual class to any contexts so
+ *  we can utilize the currentComponent pointer
+ *  in MainComponent to utilize context controls!
+ *
+ */
 class ContextComponent {
 public:
     virtual ~ContextComponent() = default;

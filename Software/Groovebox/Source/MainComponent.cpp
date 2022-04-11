@@ -49,6 +49,7 @@ MainComponent::MainComponent(){
     midiService->addActionListener(this);
     
     currentComponent = &timeline;
+    currentComponent->contextControl({});
 }
 
 MainComponent::~MainComponent(){
