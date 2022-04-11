@@ -15,7 +15,7 @@
 #include "Waveforms.h"
 #include "Cursors.h"
 #include "MidiService.h"
-
+#include "Setting.h"
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
  reside within their own source code/header file
@@ -228,6 +228,8 @@ private:
     void universalControls(const juce::MidiMessageMetadata &metadata);
     
     ContextComponent *currentComponent = nullptr;
+    
+    Setting setting;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

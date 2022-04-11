@@ -80,6 +80,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/Utilities_707bb76b.o \
   $(JUCE_OBJDIR)/FileManager_9cd5b872.o \
   $(JUCE_OBJDIR)/TrackManager_37b32b6b.o \
+  $(JUCE_OBJDIR)/Setting_fd0db6b1.o \
   $(JUCE_OBJDIR)/Timeline_dfee064a.o \
   $(JUCE_OBJDIR)/viewObjects_2d75c1b0.o \
   $(JUCE_OBJDIR)/Main_90ebc5c2.o \
@@ -179,6 +180,11 @@ $(JUCE_OBJDIR)/FileManager_9cd5b872.o: ../../Source/FileManager.cpp
 $(JUCE_OBJDIR)/TrackManager_37b32b6b.o: ../../Source/TrackManager.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling TrackManager.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/Setting_fd0db6b1.o: ../../Source/Setting.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling Setting.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Timeline_dfee064a.o: ../../Source/Timeline.cpp

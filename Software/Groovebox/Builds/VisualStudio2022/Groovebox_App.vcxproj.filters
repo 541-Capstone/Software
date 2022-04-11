@@ -20,6 +20,12 @@
     <Filter Include="Groovebox\TrackManager">
       <UniqueIdentifier>{6D5C4969-00E1-D743-6C03-ACF410F3B97F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Groovebox\State\Setting">
+      <UniqueIdentifier>{F81A9B22-D882-0E16-3862-4564DF8012D4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Groovebox\State\Timeline">
+      <UniqueIdentifier>{876D5882-7D80-0144-C298-210C7225D4D4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\State">
       <UniqueIdentifier>{6E701E9E-3CC6-49AB-C9AD-65D9CCF9F12C}</UniqueIdentifier>
     </Filter>
@@ -1225,8 +1231,11 @@
     <ClCompile Include="..\..\Source\TrackManager.cpp">
       <Filter>Groovebox\TrackManager</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Setting.cpp">
+      <Filter>Groovebox\State\Setting</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Timeline.cpp">
-      <Filter>Groovebox\State</Filter>
+      <Filter>Groovebox\State\Timeline</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\viewObjects.cpp">
       <Filter>Groovebox\ViewObjects</Filter>
@@ -5424,10 +5433,13 @@
     <ClInclude Include="..\..\Source\TrackManager.h">
       <Filter>Groovebox\TrackManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\ContextComponent.h">
-      <Filter>Groovebox\State</Filter>
+    <ClInclude Include="..\..\Source\Setting.h">
+      <Filter>Groovebox\State\Setting</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Timeline.h">
+      <Filter>Groovebox\State\Timeline</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ContextComponent.h">
       <Filter>Groovebox\State</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\viewObjects.h">
