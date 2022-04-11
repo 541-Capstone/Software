@@ -18,7 +18,8 @@ Timeline::Timeline() {
     
     funcs.clear();
     
-    waveform_window.setBounds(100, 100, 512, 64);
+    //waveform_window.setBounds(100, 100, 512, 64);
+    waveform_window.setBounds(150, 100, 650, 256);
     
     /* set that buttons are included in timelineObjects */
     timelineObjects.inclBtns = true;
@@ -97,6 +98,8 @@ void Timeline::resized() {
 }
 
 void Timeline::paint(juce::Graphics &g) {
+    cursors.defineCursorByRect(waveforms.getBounds());
+    scrollable.defineScrollByRect(waveforms.getBounds());
     g.fillAll(bg_color);
     
     if (edit == nullptr) return;
