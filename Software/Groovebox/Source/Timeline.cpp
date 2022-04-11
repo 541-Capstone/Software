@@ -97,6 +97,7 @@ void Timeline::resized() {
 }
 
 void Timeline::paint(juce::Graphics &g) {
+    redrawWaveform();
     g.fillAll(bg_color);
     
     if (edit == nullptr) return;
