@@ -23,7 +23,7 @@
 #include <io.h>
 #endif
 namespace te = tracktion_engine;
-class Waveforms : public juce::Component, public juce::ActionListener {
+class Waveforms : public juce::Component, public juce::ActionListener, public juce::ActionBroadcaster {
 public:
     Waveforms ();
     ~Waveforms() override;
@@ -44,6 +44,8 @@ private:
     bool randomIsEnabled = false;
     void clean();
     void setup();
+    void drawWaveform (te::Clip *clip, int i, int k);
+    void drawLine (te::Clip *clip, int i, int k);
     juce::Colour randomColor();
 };
 #endif

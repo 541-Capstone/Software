@@ -62,6 +62,15 @@ void AudioVisualizer::paint(juce::Graphics &g) {
     g.fillAll(background_color);
     g.setColour(waveform_color);
     
+    if (isMidi) {
+        juce::Rectangle<int> line;
+        line.removeFromTop(this->getHeight()/1.5);
+        line.removeFromBottom(this->getHeight()/1.5);
+            
+        g.drawRect(line);
+        return;
+    }
+    
     if (thumbnail.getTotalLength() > 0) {
         auto thumbArea = getLocalBounds ();
         thumbArea.removeFromTop(scrollbar.getHeight() + 4);
@@ -120,4 +129,8 @@ void AudioVisualizer::setWaveformColor(juce::Colour color) {
 
 void AudioVisualizer::setBackgroundColor(juce::Colour color) {
     background_color = color;
+}
+
+void AudioVisualizer::isMIDI(bool isMidi) {
+    this->isMidi = isMidi;
 }

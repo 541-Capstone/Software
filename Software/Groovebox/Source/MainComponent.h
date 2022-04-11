@@ -227,5 +227,7 @@ private:
     /* do something with universal controls */
     void universalControls(const juce::MidiMessageMetadata &metadata);
     
+    ContextComponent *currentComponent = nullptr;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

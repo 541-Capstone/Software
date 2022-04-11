@@ -32,6 +32,7 @@ public:
     void setThumbnailBounds (juce::Rectangle<int> bounds);
     void setWaveformColor (juce::Colour color);
     void setBackgroundColor (juce::Colour color);
+    void isMIDI (bool isMidi);
     
 private:
     juce::AudioTransportSource &transportSource;
@@ -51,7 +52,7 @@ private:
     
     void scrollBarMoved (juce::ScrollBar *scrollBarThatHasMoved, double newRangeStart) override;
     void timerCallback ()override;
-    
+    bool isMidi = false;
 };
 
 #endif

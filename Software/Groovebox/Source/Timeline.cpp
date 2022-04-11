@@ -158,26 +158,31 @@ void Timeline::setMainComponentPtr(juce::Component *component) {
 void Timeline::play(){
     if (funcs.size() < 1) return;
     funcs[0]();
+    redrawWaveform();
 }
 
 void Timeline::pause(){
     if (funcs.size() < 2) return;
     funcs[1]();
+    redrawWaveform();
 }
 
 void Timeline::record(){
     if (funcs.size() < 3) return;
     funcs[2]();
+    redrawWaveform();
 }
 
 void Timeline::nextTrack(){
     if (funcs.size() < 4) return;
     funcs[3]();
+    redrawWaveform();
 }
 
 void Timeline::prevTrack(){
     if (funcs.size() < 5) return;
     funcs[4]();
+    redrawWaveform();
 }
 
 void Timeline::addAudioTrack(){
@@ -259,7 +264,10 @@ void Timeline::actionListenerCallback (const juce::String &message) {
     
 }
 
-void Timeline::contextualControls(const juce::MidiMessageMetadata &metadata) {
+void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
+    
+    printf("\nTimeline says Hello!\n");
+    return;
     
     /* get the MidiMessage from metadata */
     const juce::MidiMessage message = metadata.getMessage();

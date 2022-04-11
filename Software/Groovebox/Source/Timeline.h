@@ -23,8 +23,9 @@
 #include "Waveforms.h"
 #include "Cursors.h"
 #include "Scrollable.h"
+#include "ContextComponent.h"
 
-class Timeline : public juce::ActionBroadcaster, public juce::ActionListener, public juce::Component, public juce::Timer, public juce::Button::Listener {
+class Timeline : public juce::ActionBroadcaster, public juce::ActionListener, public juce::Component, public juce::Timer, public juce::Button::Listener, public ContextComponent {
 public:
     
     /**
@@ -56,7 +57,7 @@ public:
     void setAllComponents(bool state);
     void actionListenerCallback (const juce::String &message) override;
     /* This assumes that the type of message is CONTEXTUAL and is for TIMELINE */
-    void contextualControls(const juce::MidiMessageMetadata &metadata);
+    void contextControl(const juce::MidiMessageMetadata &metadata) override;
     Waveforms *getWaveformPtr();
     
 // private member variables go here

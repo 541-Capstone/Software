@@ -27,8 +27,10 @@ public:
     void showAudioResource (juce::URL resource);
     void showAudioResource (te::AudioTrack *track);
     void showAudioResource (te::Edit *p_edit);
+    void showAudioResource ();
     void setBackgroundColor (juce::Colour color);
     void setForegroundColor (juce::Colour color);
+    void isMIDI (bool isMidi);
     
 private:
     juce::AudioFormatManager formatManager;
@@ -42,6 +44,7 @@ private:
     juce::Colour default_color = juce::Colours::black;
     juce::Colour bgColor = default_color;
     juce::Colour fgColor = juce::Colours::blue;
+    bool isMidi = false;
     
     
     void changeListenerCallback (juce::ChangeBroadcaster *source) override;
