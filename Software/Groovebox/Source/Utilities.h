@@ -50,7 +50,7 @@ namespace Helpers
 	enum class ContextualCommands { Cut, Paste, Save, Load, Add, Delete };
 	ContextualCommands getContextualCmdType(const juce::MidiMessage&);
 
-	enum class UniversalCommands { Play, Pause, Record, Mute, Solo, Metronome, Settings, OctaveUp, OctaveDown };
+	enum class UniversalCommands { Play=0, Pause, Record, Mute, Solo, Timeline, Synth, Settings, Fx, Metronome, OctaveUp, OctaveDown };
 	UniversalCommands getUniversalCmdType(const juce::MidiMessage&);
 	//===========================================================================
 	/*

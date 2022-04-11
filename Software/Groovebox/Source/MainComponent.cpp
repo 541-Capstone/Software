@@ -335,11 +335,6 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
     return;
     /*======================================*/
     
-    /* Check to see if Status is Song Start or Song Stop */
-    /* Pause or play */
-    if (message.isMidiStop()) pause();
-    else if (message.isMidiStart()) play();
-    
     /*---------------------*/
     /* Functions     Value */
     /* Record            1 */
@@ -351,6 +346,12 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
     /* Plugins           7 */
     /*---------------------*/
     
+    /* utilize helper function */
+    Helpers::UniversalCommands cmd = Helpers::getUniversalCmdType(message);
+    
+    
+    
+    /*
     switch (controllerValue) {
         case 1:
             LOG("Record\n");
@@ -386,5 +387,5 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             LOG("None called or Play/Pause called\n");
             break;
     }
-    
+    */
 }

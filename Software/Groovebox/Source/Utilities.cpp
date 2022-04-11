@@ -84,3 +84,34 @@ Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
         }
     }
 }
+
+Helpers::UniversalCommands Helpers::getUniversalCmdType(const juce::MidiMessage &message) {
+    /* check if play or stop */
+    if (message.isMidiStop()) return Helpers::UniversalCommands::Pause;
+    if (message.isMidiStart()) return Helpers::UniversalCommands::Play;
+    switch (message.getControllerValue()) {
+        case 1:
+            return Helpers::UniversalCommands::Record;
+        case 2:
+            return Helpers::UniversalCommands::Mute;
+        case 3:
+            return Helpers::UniversalCommands::Solo;
+        case 4:
+            return Helpers::UniversalCommands::Timeline;
+        case 5:
+            return Helpers::UniversalCommands::Synth;
+        case 6:
+            return Helpers::UniversalCommands::Settings;
+        case 7:
+            return Helpers::UniversalCommands::Fx;
+        case 8:
+            return Helpers::UniversalCommands::Metronome;
+        case 9:
+            return Helpers::UniversalCommands::OctaveUp;
+        case 10:
+            return Helpers::UniversalCommands::OctaveDown;
+        default:
+            break;
+    }
+    return Helpers::UniversalCommands::Pause;
+}
