@@ -53,8 +53,6 @@ private:
 	void handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) override;
 	void postMessageToList(const juce::MidiMessage& message, const juce::String& source);
 
-	juce::String getMidiMessageDescription(const juce::MidiMessage& m);
-
 };
 
 class IncomingMessageCallback : public juce::CallbackMessage

@@ -80,6 +80,7 @@ void Wavetable::applyToBuffer(const te::PluginRenderContext& fc) {
 
 void Wavetable::handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record) {
     Helpers::MessageType type = Helpers::getMidiMessageType(msg);
+    LOG(Helpers::getMidiMessageDescription(msg) + "\n");
     if (type == Helpers::MessageType::Note) {
         
         

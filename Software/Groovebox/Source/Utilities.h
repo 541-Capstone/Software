@@ -63,5 +63,7 @@ namespace Helpers
 	PluginType getPluginType(const IPlugin&);
 
 	juce::MidiBuffer* midiMessageArrayToMidiBuffer(const te::MidiMessageArray&);
+
+	juce::String getMidiMessageDescription(const juce::MidiMessage&);
 }
 
