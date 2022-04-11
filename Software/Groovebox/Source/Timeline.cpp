@@ -97,7 +97,8 @@ void Timeline::resized() {
 }
 
 void Timeline::paint(juce::Graphics &g) {
-    redrawWaveform();
+    cursors.defineCursorByRect(waveforms.getBounds());
+    scrollable.defineScrollByRect(waveforms.getBounds());
     g.fillAll(bg_color);
     
     if (edit == nullptr) return;
