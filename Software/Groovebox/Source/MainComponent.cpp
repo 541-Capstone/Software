@@ -349,6 +349,48 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
     /* utilize helper function */
     Helpers::UniversalCommands cmd = Helpers::getUniversalCmdType(message);
     
+    switch (cmd) {
+        case Helpers::UniversalCommands::Play:
+            play();
+            break;
+        case Helpers::UniversalCommands::Pause:
+            pause();
+            break;
+        case Helpers::UniversalCommands::Record:
+            record();
+            break;
+        case Helpers::UniversalCommands::Solo:
+            
+            break;
+        case Helpers::UniversalCommands::Timeline:
+            disableAllStates();
+            timeline.setEnabled(true);
+            timeline.setVisible(true);
+            timeline.setAllComponents(true);
+            currentComponent = &timeline;
+            break;
+        case Helpers::UniversalCommands::Synth:
+            disableAllStates();
+            break;
+        case Helpers::UniversalCommands::Settings:
+            disableAllStates();
+            break;
+        case Helpers::UniversalCommands::Fx:
+            disableAllStates();
+            break;
+        case Helpers::UniversalCommands::Metronome:
+            disableAllStates();
+            break;
+        case Helpers::UniversalCommands::OctaveUp:
+            
+            break;
+        case Helpers::UniversalCommands::OctaveDown:
+            
+            break;
+        default:
+            LOG("\nInvalid Universal Command!\n");
+            break;
+    }
     
     
     /*
