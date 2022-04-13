@@ -36,6 +36,12 @@ MainComponent::MainComponent(){
     timeline.setTrackManager(trackManager);
     /* initally, program set to TrackView*/
     setupTrackView();
+    
+    /*  ===========
+     *  Initalize all states here!
+     *
+     *  ===========
+     */
      
     // Setup timeline
     timeline.setBounds(this->getBounds());
@@ -43,13 +49,33 @@ MainComponent::MainComponent(){
     timeline.setEdit(edit.get());
     timeline.setMainComponentPtr(this);
     
+    // Setup settings
+    setting.setBounds(this->getBounds());
+    addAndMakeVisible(setting);
+    setting.setEdit(edit.get());
+    
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
     midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
     midiService->addActionListener(this);
     
-    currentComponent = &timeline;
-    currentComponent->contextControl({});
+    // Do this function when user exits splash screen
+    std::function<void()> onStartup = [&](void)->void{
+        setting.toggleFirstStartToFalse();
+        WState = WindowStates::TrackView;
+        disableAllStates();
+        timeline.setAllComponents(true);
+        timeline.setVisible(true);
+        timeline.setEnabled(true);
+    };
+    
+    // Setup splash screen
+    disableAllStates();
+    WState = WindowStates::Settings;
+    setting.setStartFunction(onStartup);
+    setting.displaySplashScreen();
+    currentComponent = &setting;
+    //currentComponent->contextControl({});
 }
 
 MainComponent::~MainComponent(){
@@ -57,13 +83,17 @@ MainComponent::~MainComponent(){
 }
 
 void MainComponent::paint(juce::Graphics &g){
-    g.setColour(background_color);
-    g.fillAll(background_color);
+    //g.setColour(background_color);
+    //g.fillAll(background_color);
     
     /* Draw the time line graphics objects */
     if (WState == WindowStates::TrackView){
         timeline.setVisible(true);
         timeline.setEnabled(true);
+    }
+    if (WState == WindowStates::Settings){
+        setting.setVisible(true);
+        setting.setEnabled(true);
     }
     //midiService.paint(g);
 
@@ -72,6 +102,7 @@ void MainComponent::paint(juce::Graphics &g){
 void MainComponent::resized() {
     //Make this into a for loop to resize each context
     timeline.resized();
+    setting.resized();
     juce::Rectangle<int> midiRect = getLocalBounds().removeFromBottom(300);
     //midiService.resize(midiRect);
 }
@@ -307,6 +338,10 @@ void MainComponent::disableAllStates(){
     timeline.setAllComponents(false);
     timeline.setVisible(false);
     timeline.setEnabled(false);
+    
+    setting.setAllComponents(false);
+    setting.setVisible(false);
+    setting.setEnabled(false);
 }
 
 /* This assumes that the type of messaegs are of type UNIVERSAL */
@@ -374,6 +409,10 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             break;
         case Helpers::UniversalCommands::Settings:
             disableAllStates();
+            setting.setEnabled(true);
+            setting.setEnabled(true);
+            setting.setAllComponents(true);
+            currentComponent = &setting;
             break;
         case Helpers::UniversalCommands::Fx:
             disableAllStates();
