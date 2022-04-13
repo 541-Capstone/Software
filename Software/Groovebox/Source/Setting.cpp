@@ -54,7 +54,17 @@ void Setting::setEdit(te::Edit *edit) {
 
 /* This is where the menu is called from */
 void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
+    const juce::MidiMessage message = metadata.getMessage();
+    Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(message);
     
+    /* do stuff with encoders */
+    if (cmd == Helpers::ContextualCommands::Encoder) {
+        
+    }
+    /* else it is other than encoder */
+    else {
+        
+    }
 }
 
 void Setting::displaySplashScreen(){

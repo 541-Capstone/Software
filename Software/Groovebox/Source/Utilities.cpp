@@ -85,6 +85,48 @@ Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
     }
 }
 
+Helpers::Encoders getEncoderType(const juce::MidiMessage &message) {
+    switch (message.getControllerValue()) {
+        case 7:
+            return Helpers::Encoders::CW1;
+        case 8:
+            return Helpers::Encoders::CCW1;
+        case 9:
+            return Helpers::Encoders::CW2;
+        case 10:
+            return Helpers::Encoders::CCW2;
+        case 11:
+            return Helpers::Encoders::CW3;
+        case 12:
+            return Helpers::Encoders::CCW3;
+        case 13:
+            return Helpers::Encoders::CW4;
+        case 14:
+            return Helpers::Encoders::CCW4;
+        default:
+            return Helpers::Encoders::NOTASSIGNED;
+    }
+}
+
+Helpers::ContextualCommands Helpers::getContextualCmdType(const juce::MidiMessage &message){
+    switch (message.getControllerValue()) {
+        case 1:
+            return Helpers::ContextualCommands::Cut;
+        case 2:
+            return Helpers::ContextualCommands::Paste;
+        case 3:
+            return Helpers::ContextualCommands::Save;
+        case 4:
+            return Helpers::ContextualCommands::Load;
+        case 5:
+            return Helpers::ContextualCommands::Add;
+        case 6:
+            return Helpers::ContextualCommands::Delete;
+        default:
+            return Helpers::ContextualCommands::Encoder;
+    }
+}
+
 Helpers::UniversalCommands Helpers::getUniversalCmdType(const juce::MidiMessage &message) {
     /* check if play or stop */
     if (message.isMidiStop()) return Helpers::UniversalCommands::Pause;
@@ -111,9 +153,8 @@ Helpers::UniversalCommands Helpers::getUniversalCmdType(const juce::MidiMessage 
         case 10:
             return Helpers::UniversalCommands::OctaveDown;
         default:
-            break;
+            return Helpers::UniversalCommands::Pause;
     }
-    return Helpers::UniversalCommands::Pause;
 }
 juce::String Helpers::getMidiMessageDescription(const juce::MidiMessage& m){
     if (m.isNoteOn())           return "Note on " + juce::MidiMessage::getMidiNoteName(m.getNoteNumber(), true, true, 3);

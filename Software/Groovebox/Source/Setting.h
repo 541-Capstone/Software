@@ -13,6 +13,7 @@
 #define setting_h
 #include <iostream>
 #include <JuceHeader.h>
+#include "Utilities.h"
 #include <functional>
 #include "ContextComponent.h"
 namespace te = tracktion_engine;
