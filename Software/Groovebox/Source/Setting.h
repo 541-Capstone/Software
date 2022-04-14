@@ -53,5 +53,6 @@ private:
     juce::TextButton start {"Start!"};
     const int bsize = 100;
     const int half  = bsize/2;
+    const int scrollAmount = 1;
 };
 #endif

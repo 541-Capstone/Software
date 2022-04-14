@@ -13,10 +13,11 @@
 FileBrowser::FileBrowser(){
     edit = nullptr;
     addAndMakeVisible(fileTreeComp);
-    directoryList.setDirectory(juce::File::getSpecialLocation(juce::File::userHomeDirectory), true, true);
+    directoryList.setDirectory(juce::File::getSpecialLocation(juce::File::userDesktopDirectory), true, true);
     fileTreeComp.setTitle("Files");
     fileTreeComp.setColour(juce::FileTreeComponent::backgroundColourId, juce::Colours::wheat);
     fileTreeComp.addListener(this);
+    getNumberofItems();
 }
 
 FileBrowser::~FileBrowser(){
@@ -36,11 +37,18 @@ void FileBrowser::setEdit(te::Edit *edit){
 }
 
 void FileBrowser::scrollUp(const int amount){
-    
+    const int newItemSelection = amount + itemSelection;
+    if (newItemSelection < 0 || newItemSelection >= numItems) return;
+    juce::File file = directoryList.getFile(newItemSelection);
+    fileTreeComp.setSelectedFile(file);
+    std::cout<<"filename: "<<file.getFileName()<<'\n';
+    std::cout<<"Index: "<<newItemSelection<<'\n';
+    itemSelection = newItemSelection;
+    getNumberofItems();
 }
 
 void FileBrowser::scrollDown(const int amount){
-    
+    scrollUp(-amount);
 }
 
 void FileBrowser::actionListenerCallback(const juce::String &message){
@@ -49,6 +57,10 @@ void FileBrowser::actionListenerCallback(const juce::String &message){
 
 void FileBrowser::showFiles(){
     
+}
+
+void FileBrowser::setDirectory(const juce::File::SpecialLocationType type){
+    directoryList.setDirectory(juce::File::getSpecialLocation(type), true, true);
 }
 
 void FileBrowser::setAllComponents(bool state){
@@ -60,8 +72,10 @@ void FileBrowser::startThread(const int threadID){
     thread.startThread(threadID);
 }
 
+/* do something when selection has changed */
 void FileBrowser::selectionChanged(){
-    
+    LOG("SelectionChanged!\n");
+    getNumberofItems();
 }
 
 void FileBrowser::fileClicked(const juce::File &file, const juce::MouseEvent &event){
@@ -74,4 +88,9 @@ void FileBrowser::fileDoubleClicked(const juce::File &file){
 
 void FileBrowser::browserRootChanged(const juce::File &newRoot){
     
+}
+
+void FileBrowser::getNumberofItems(){
+    numItems = fileTreeComp.getNumRowsInTree();
+    std::cout<<"\nnumber of items inside tree: "<<numItems<<'\n';
 }

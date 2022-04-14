@@ -25,6 +25,17 @@ Setting::Setting(){
     addAndMakeVisible(start);
     
     
+    std::function<void()> testFunctionScrollUp = [&]()->void{
+        browser.scrollUp(scrollAmount);
+    };
+    
+    std::function<void()> testFunctionScrollDown = [&]()->void{
+        browser.scrollDown(scrollAmount);
+    };
+    
+    loadEdit.onClick = testFunctionScrollUp;
+    loadWav.onClick = testFunctionScrollDown;
+    
     /* hide all buttons */
     setAllComponents(false);
     
@@ -60,6 +71,14 @@ void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
     const juce::MidiMessage message = metadata.getMessage();
     Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(message);
     
+    /* as a check, DO NOT DO ANYTHING if browser
+       component is set to not enabled */
+    if (!browser.isEnabled()) {
+        std::cout<<"This is an error. This should not happen.";
+        std::cout<<" From Setting context!\n";
+        return;
+    }
+    
     /* do stuff with encoders */
     if (cmd == Helpers::ContextualCommands::Encoder) {
         Helpers::Encoders enc = Helpers::getEncoderType(message);
@@ -72,9 +91,11 @@ void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
         switch (enc) {
             case Helpers::Encoders::CW1:
                 /* rotate clockwise */
+                browser.scrollUp(scrollAmount);
                 break;
             case Helpers::Encoders::CCW1:
                 /* rotate counter clockwise */
+                browser.scrollDown(scrollAmount);
                 break;
             default:
                 /* do nothing */
