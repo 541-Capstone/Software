@@ -29,10 +29,18 @@ public:
     void setAllComponents(bool state);
     void setStartFunction(std::function<void()> func);
     void toggleFirstStartToFalse();
+    void setLoadEditFunction(std::function<void()> func);
+    void setSaveEditFunction(std::function<void()> func);
+    
 private:
     te::Edit *edit;
     bool firstStart = true;
     std::function<void()> onStartUpFunction;
+    std::function<void()> loadFromFileLambda;
+    std::function<void()> saveToFileLambda;
+    void loadEditFromFile();
+    void saveEditToFile();
+    juce::String filename = "";
     
     juce::TextButton loadEdit {"load edit from file"};
     juce::TextButton loadWav  {"load .wav from file"};

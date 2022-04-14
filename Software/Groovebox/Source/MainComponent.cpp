@@ -54,25 +54,19 @@ MainComponent::MainComponent(){
     addAndMakeVisible(setting);
     setting.setEdit(edit.get());
     
+    setupSetting();
+    
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
     midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
     midiService->addActionListener(this);
     
-    // Do this function when user exits splash screen
-    std::function<void()> onStartup = [&](void)->void{
-        setting.toggleFirstStartToFalse();
-        WState = WindowStates::TrackView;
-        disableAllStates();
-        timeline.setAllComponents(true);
-        timeline.setVisible(true);
-        timeline.setEnabled(true);
-    };
+    // Setup save and load functions for setting
+    setupSetting();
     
     // Setup splash screen
     disableAllStates();
     WState = WindowStates::Settings;
-    setting.setStartFunction(onStartup);
     setting.displaySplashScreen();
     currentComponent = &setting;
     //currentComponent->contextControl({});
@@ -430,43 +424,20 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             LOG("\nInvalid Universal Command!\n");
             break;
     }
+}
+
+void MainComponent::setupSetting(){
+    std::function<void()> onStartup = [&](void)->void{
+        setting.toggleFirstStartToFalse();
+        WState = WindowStates::TrackView;
+        disableAllStates();
+        timeline.setAllComponents(true);
+        timeline.setVisible(true);
+        timeline.setEnabled(true);
+    };
+    setting.setStartFunction(onStartup);
     
-    
-    /*
-    switch (controllerValue) {
-        case 1:
-            LOG("Record\n");
-            record();
-            break;
-        case 2:
-            LOG("Mute\n");
-            break;
-        case 3:
-            LOG("Solo\n");
-            break;
-        case 4:
-            LOG("Timeline\n");
-            disableAllStates();
-            timeline.setEnabled(true);
-            timeline.setVisible(true);
-            timeline.setAllComponents(true);
-            currentComponent = &timeline;
-            break;
-        case 5:
-            LOG("Synth\n");
-            disableAllStates();
-            break;
-        case 6:
-            LOG("Settings\n");
-            disableAllStates();
-            break;
-        case 7:
-            LOG("Plugins\n");
-            disableAllStates();
-            break;
-        default:
-            LOG("None called or Play/Pause called\n");
-            break;
-    }
-    */
+    std::function<void()> giveLoad = [&](juce::String filename)->void{
+        
+    };
 }

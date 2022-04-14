@@ -59,11 +59,40 @@ void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
     
     /* do stuff with encoders */
     if (cmd == Helpers::ContextualCommands::Encoder) {
+        Helpers::Encoders enc = Helpers::getEncoderType(message);
+        if (enc == Helpers::Encoders::NOTASSIGNED) return;
         
+        /*
+         * This will be used to increment
+         * through file system.
+         */
+        switch (enc) {
+            case Helpers::Encoders::CW1:
+                /* rotate clockwise */
+                break;
+            case Helpers::Encoders::CCW1:
+                /* rotate counter clockwise */
+                break;
+            default:
+                /* do nothing */
+                break;
+        }
     }
     /* else it is other than encoder */
     else {
-        
+        switch (cmd) {
+            case Helpers::ContextualCommands::Load:
+                /* load */
+                loadEditFromFile();
+                break;
+            case Helpers::ContextualCommands::Save:
+                /* save */
+                saveEditToFile();
+                break;
+            default:
+                /* do nothing */
+                break;
+        }
     }
 }
 
@@ -88,4 +117,34 @@ void Setting::setStartFunction(std::function<void ()> func) {
 
 void Setting::toggleFirstStartToFalse(){
     firstStart = false;
+}
+
+void Setting::loadEditFromFile(){
+    /* check if valid file name (not "") */
+    if (filename == "" || filename == " ") {
+        std::cout<<"Filename not set!\n";
+        return;
+    }
+    
+    /* now, check if file exists */
+    
+    
+    /* load into edit with function defined in MainComponent */
+    loadFromFileLambda();
+    
+}
+
+void Setting::saveEditToFile(){
+    
+    
+    /* save edit with function defined in MainComponent */
+    saveToFileLambda();
+}
+
+void Setting::setLoadEditFunction(std::function<void ()> func){
+    loadFromFileLambda = func;
+}
+
+void Setting::setSaveEditFunction(std::function<void ()> func){
+    saveToFileLambda = func;
 }

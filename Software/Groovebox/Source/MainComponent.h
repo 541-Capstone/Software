@@ -230,6 +230,7 @@ private:
     ContextComponent *currentComponent = nullptr;
     
     Setting setting;
+    void setupSetting();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
