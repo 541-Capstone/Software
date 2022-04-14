@@ -85,7 +85,7 @@ Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
     }
 }
 
-Helpers::Encoders getEncoderType(const juce::MidiMessage &message) {
+Helpers::Encoders Helpers::getEncoderType(const juce::MidiMessage &message) {
     switch (message.getControllerValue()) {
         case 7:
             return Helpers::Encoders::CW1;

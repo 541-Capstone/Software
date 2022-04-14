@@ -16,7 +16,7 @@ MainComponent::MainComponent(){
     setMaxTracks(-1);
     
     // just call loadEdit for now
-    loadEdit();
+    loadEdit("");
 
     //Set sample rate 
     sampleRate = (int)edit->getTransport().engine.getDeviceManager().getSampleRate();
@@ -53,8 +53,6 @@ MainComponent::MainComponent(){
     setting.setBounds(this->getBounds());
     addAndMakeVisible(setting);
     setting.setEdit(edit.get());
-    
-    setupSetting();
     
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
@@ -217,8 +215,7 @@ void MainComponent::setMaxTracks(int n){
     maxNumTracks = n;
 }
 
-void MainComponent::loadEdit(){
-    std::string filename = "\0";
+void MainComponent::loadEdit(std::string filename){
     const juce::String editFilePath = editPath + filename;
     const juce::File editFile (editFilePath);
     
@@ -427,17 +424,27 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
 }
 
 void MainComponent::setupSetting(){
+    /* change how this function works to change how
+       splash screen functions */
     std::function<void()> onStartup = [&](void)->void{
         setting.toggleFirstStartToFalse();
-        WState = WindowStates::TrackView;
+        WState = WindowStates::Settings;
         disableAllStates();
-        timeline.setAllComponents(true);
-        timeline.setVisible(true);
-        timeline.setEnabled(true);
+        setting.setAllComponents(true);
+        setting.setVisible(true);
+        setting.setEnabled(true);
     };
     setting.setStartFunction(onStartup);
     
-    std::function<void()> giveLoad = [&](juce::String filename)->void{
-        
+    std::function<void(std::string)> giveLoad = [&](std::string filename)->void{
+        loadEdit(filename);
     };
+    setting.setLoadEditFunction(giveLoad);
+    
+    std::function<void(std::string)> giveSave = [&](std::string filename)->void{
+      // no save for now!
+    };
+    setting.setSaveEditFunction(giveSave);
+    
+    
 }

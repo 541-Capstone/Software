@@ -190,8 +190,7 @@ private:
      */
     
     // Function to load the edit
-    void loadEdit();
-    
+    void loadEdit(std::string filename);
     // temporary button for loading (can get rid later for phy buttons !)
     juce::ImageButton load;
     

@@ -13,9 +13,11 @@
 #define setting_h
 #include <iostream>
 #include <JuceHeader.h>
-#include "Utilities.h"
 #include <functional>
 #include "ContextComponent.h"
+#include "Utilities.h"
+#include "FileBrowser.h"
+
 namespace te = tracktion_engine;
 class Setting : public juce::Component, public ContextComponent {
 public:
@@ -29,22 +31,27 @@ public:
     void setAllComponents(bool state);
     void setStartFunction(std::function<void()> func);
     void toggleFirstStartToFalse();
-    void setLoadEditFunction(std::function<void()> func);
-    void setSaveEditFunction(std::function<void()> func);
+    void setLoadEditFunction(std::function<void(std::string)> func);
+    void setSaveEditFunction(std::function<void(std::string)> func);
     
 private:
     te::Edit *edit;
     bool firstStart = true;
     std::function<void()> onStartUpFunction;
-    std::function<void()> loadFromFileLambda;
-    std::function<void()> saveToFileLambda;
+    
+    // File components/functions
+    std::function<void(std::string)> loadFromFileLambda;
+    std::function<void(std::string)> saveToFileLambda;
     void loadEditFromFile();
     void saveEditToFile();
-    juce::String filename = "";
+    std::string filename = "";
+    FileBrowser browser;
     
+    // button sizes
     juce::TextButton loadEdit {"load edit from file"};
     juce::TextButton loadWav  {"load .wav from file"};
     juce::TextButton start {"Start!"};
-    juce::Rectangle<int> buttonSize;
+    const int bsize = 100;
+    const int half  = bsize/2;
 };
 #endif

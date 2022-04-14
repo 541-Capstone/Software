@@ -11,12 +11,6 @@
 #include "Setting.h"
 
 Setting::Setting(){
-    buttonSize = this->getBounds();
-    //buttonSize.removeFromTop(this->getX()/3);
-    //buttonSize.removeFromBottom(this->getX()/3);
-    //buttonSize.removeFromLeft(this->getY()/3);
-    //buttonSize.removeFromRight(this->getY()/3);
-    
     edit = nullptr;
     /* set buttons */
     
@@ -26,12 +20,16 @@ Setting::Setting(){
     addAndMakeVisible(loadEdit);
     addAndMakeVisible(loadWav);
     
-    start.setBounds(this->getWidth()/2-50, this->getHeight()/2-50, 100, 100);
+    /* set size of buttons */
+    start.setBounds(this->getWidth()/2-half, this->getHeight()/2-half, bsize, bsize);
     addAndMakeVisible(start);
     
+    
     /* hide all buttons */
-    start.setBounds(this->getWidth()/2-50, this->getHeight()/2-50, 100, 100);
     setAllComponents(false);
+    
+    addAndMakeVisible(browser);
+    browser.startThread(3);
 }
 
 Setting::~Setting(){
@@ -45,11 +43,16 @@ void Setting::paint(juce::Graphics &g){
 }
 
 void Setting::resized(){
+    browser.setBounds(0, 0, this->getWidth(), this->getHeight()/2);
     
+    loadEdit.setBounds(this->getWidth()/2-bsize, this->getHeight()-bsize, bsize, bsize);
+    
+    loadWav.setBounds(this->getWidth()/2, this->getHeight()-bsize, bsize, bsize);
 }
 
 void Setting::setEdit(te::Edit *edit) {
     this->edit = edit;
+    browser.setEdit(edit);
 }
 
 /* This is where the menu is called from */
@@ -77,6 +80,7 @@ void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
                 /* do nothing */
                 break;
         }
+        
     }
     /* else it is other than encoder */
     else {
@@ -109,6 +113,9 @@ void Setting::setAllComponents(bool state){
     loadEdit.setVisible(state);
     loadWav.setEnabled(state);
     loadWav.setVisible(state);
+    browser.setAllComponents(state);
+    browser.setEnabled(state);
+    browser.setVisible(state);
 }
 
 void Setting::setStartFunction(std::function<void ()> func) {
@@ -117,6 +124,8 @@ void Setting::setStartFunction(std::function<void ()> func) {
 
 void Setting::toggleFirstStartToFalse(){
     firstStart = false;
+    start.setEnabled(false);
+    start.setVisible(false);
 }
 
 void Setting::loadEditFromFile(){
@@ -130,7 +139,7 @@ void Setting::loadEditFromFile(){
     
     
     /* load into edit with function defined in MainComponent */
-    loadFromFileLambda();
+    loadFromFileLambda(filename);
     
 }
 
@@ -138,13 +147,13 @@ void Setting::saveEditToFile(){
     
     
     /* save edit with function defined in MainComponent */
-    saveToFileLambda();
+    saveToFileLambda(filename);
 }
 
-void Setting::setLoadEditFunction(std::function<void ()> func){
+void Setting::setLoadEditFunction(std::function<void (std::string)> func){
     loadFromFileLambda = func;
 }
 
-void Setting::setSaveEditFunction(std::function<void ()> func){
+void Setting::setSaveEditFunction(std::function<void (std::string)> func){
     saveToFileLambda = func;
 }
