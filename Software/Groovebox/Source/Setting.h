@@ -46,6 +46,7 @@ private:
     void saveEditToFile();
     std::string filename = "";
     FileBrowser browser;
+    const int numItemsOnScreen = 10;
     
     // button sizes
     juce::TextButton loadEdit {"load edit from file"};
@@ -53,6 +54,14 @@ private:
     juce::TextButton start {"Start!"};
     const int bsize = 100;
     const int half  = bsize/2;
+    
+    //Curosr Variables and Functions
     const int scrollAmount = 1;
+    int cursorLocation = 0;
+    int cursorHeight = 0;
+    const int cursorWidth  = 10;
+    juce::Rectangle<int> cursor;
+    juce::Colour cursorColor = juce::Colours::red;
+    void updateCursorLocation();
 };
 #endif

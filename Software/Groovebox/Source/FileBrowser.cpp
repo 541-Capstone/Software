@@ -25,7 +25,7 @@ FileBrowser::~FileBrowser(){
 }
 
 void FileBrowser::paint(juce::Graphics &g){
-    
+
 }
 
 void FileBrowser::resized(){
@@ -41,6 +41,8 @@ void FileBrowser::scrollUp(const int amount){
     if (newItemSelection < 0 || newItemSelection >= numItems) return;
     juce::File file = directoryList.getFile(newItemSelection);
     fileTreeComp.setSelectedFile(file);
+    auto treeItem = fileTreeComp.getItemOnRow(newItemSelection);
+    fileTreeComp.scrollToKeepItemVisible(treeItem);
     std::cout<<"filename: "<<file.getFileName()<<'\n';
     std::cout<<"Index: "<<newItemSelection<<'\n';
     itemSelection = newItemSelection;
@@ -93,4 +95,12 @@ void FileBrowser::browserRootChanged(const juce::File &newRoot){
 void FileBrowser::getNumberofItems(){
     numItems = fileTreeComp.getNumRowsInTree();
     std::cout<<"\nnumber of items inside tree: "<<numItems<<'\n';
+}
+
+int FileBrowser::getItemIndex()const{
+    return itemSelection;
+}
+
+int FileBrowser::getItemHeight()const{
+    return fileTreeComp.getItemHeight();
 }

@@ -29,13 +29,14 @@ public:
     void startThread(const int threadID);
     void resized() override;
     void setDirectory(const juce::File::SpecialLocationType type);
+    int getItemIndex()const;
+    int getItemHeight()const;
 private:
     void selectionChanged() override;
     void fileClicked(const juce::File &file, const juce::MouseEvent &event) override;
     void fileDoubleClicked (const juce::File &file) override;
     void browserRootChanged (const juce::File &newRoot) override;
     void getNumberofItems();
-    
     te::Edit *edit;
     juce::TimeSliceThread thread {"file browser"};
     juce::DirectoryContentsList directoryList {nullptr, thread};

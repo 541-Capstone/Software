@@ -27,10 +27,12 @@ Setting::Setting(){
     
     std::function<void()> testFunctionScrollUp = [&]()->void{
         browser.scrollUp(scrollAmount);
+        updateCursorLocation();
     };
     
     std::function<void()> testFunctionScrollDown = [&]()->void{
         browser.scrollDown(scrollAmount);
+        updateCursorLocation();
     };
     
     loadEdit.onClick = testFunctionScrollUp;
@@ -49,12 +51,14 @@ Setting::~Setting(){
 
 void Setting::paint(juce::Graphics &g){
     if (!firstStart) {
-        
+        g.setColour(cursorColor);
+        g.fillRect(cursor);
     }
 }
 
 void Setting::resized(){
-    browser.setBounds(0, 0, this->getWidth(), this->getHeight()/2);
+    const int browserHeight = numItemsOnScreen * browser.getItemHeight();
+    browser.setBounds(cursorWidth, 0, this->getWidth()-cursorWidth, browserHeight);
     
     loadEdit.setBounds(this->getWidth()/2-bsize, this->getHeight()-bsize, bsize, bsize);
     
@@ -177,4 +181,19 @@ void Setting::setLoadEditFunction(std::function<void (std::string)> func){
 
 void Setting::setSaveEditFunction(std::function<void (std::string)> func){
     saveToFileLambda = func;
+}
+
+void Setting::updateCursorLocation(){
+    int maxHeight  = browser.getHeight();
+    const int oldCursorLocation = cursorLocation;
+    cursorLocation = browser.getItemIndex();
+    cursorHeight   = browser.getItemHeight();
+    
+    int newYCoord = cursorHeight * cursorLocation;
+    if (newYCoord < maxHeight) {
+        cursor.setBounds(0, cursorLocation * cursorHeight, cursorWidth*2, cursorHeight);
+    }
+    else {
+        cursorLocation = oldCursorLocation;
+    }
 }
