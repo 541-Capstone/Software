@@ -48,11 +48,21 @@ namespace Helpers
 
 	MessageType getMidiMessageType(const juce::MidiMessage&);
 
-	enum class ContextualCommands { Cut, Paste, Save, Load, Add, Delete };
-	ContextualCommands getContextualCmdType(const juce::MidiMessage&);
+	enum class ContextualCommands { Cut, Paste, Save, Load, Add, Delete, Encoder };
+
+    enum class Encoders {
+        CW1, CCW1, CW2, CCW2,
+        CW3, CCW3, CW4, CCW4,
+        NOTASSIGNED
+    };
+
+    Encoders getEncoderType(const juce::MidiMessage &message);
+
+	ContextualCommands getContextualCmdType(const juce::MidiMessage &message);
 
 	enum class UniversalCommands { Play=0, Pause, Record, Mute, Solo, Timeline, Synth, Settings, Fx, Metronome, OctaveUp, OctaveDown };
-	UniversalCommands getUniversalCmdType(const juce::MidiMessage&);
+
+	UniversalCommands getUniversalCmdType(const juce::MidiMessage &message);
 	//===========================================================================
 	/*
 	* The possible types of plugins as we care about them

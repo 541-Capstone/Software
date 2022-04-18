@@ -191,8 +191,7 @@ private:
      */
     
     // Function to load the edit
-    void loadEdit();
-    
+    void loadEdit(std::string filename);
     // temporary button for loading (can get rid later for phy buttons !)
     juce::ImageButton load;
     
@@ -231,6 +230,7 @@ private:
     ContextComponent *currentComponent = nullptr;
     
     Setting setting;
+    void setupSetting();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

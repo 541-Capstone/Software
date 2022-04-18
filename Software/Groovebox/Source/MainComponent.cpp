@@ -16,7 +16,7 @@ MainComponent::MainComponent(){
     setMaxTracks(-1);
     
     // just call loadEdit for now
-    loadEdit();
+    loadEdit("");
 
     //Set sample rate 
     sampleRate = (int)edit->getTransport().engine.getDeviceManager().getSampleRate();
@@ -36,6 +36,12 @@ MainComponent::MainComponent(){
     timeline.setTrackManager(trackManager);
     /* initally, program set to TrackView*/
     setupTrackView();
+    
+    /*  ===========
+     *  Initalize all states here!
+     *
+     *  ===========
+     */
      
     // Setup timeline
     timeline.setBounds(this->getBounds());
@@ -43,14 +49,25 @@ MainComponent::MainComponent(){
     timeline.setEdit(edit.get());
     timeline.setMainComponentPtr(this);
     
+    // Setup settings
+    setting.setBounds(this->getBounds());
+    addAndMakeVisible(setting);
+    setting.setEdit(edit.get());
+    
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
     midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
     midiService->addActionListener(this);
     
-    currentComponent = &timeline;
-    currentComponent->contextControl({});
-
+    // Setup save and load functions for setting
+    setupSetting();
+    
+    // Setup splash screen
+    disableAllStates();
+    WState = WindowStates::Settings;
+    setting.displaySplashScreen();
+    currentComponent = &setting;
+    //currentComponent->contextControl({});
     //TODO: Move to Synth Context
     engine.getPluginManager().createBuiltInType<Wavetable>();
     //te::Plugin::Ptr wavetablePlugin = edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {});
@@ -85,13 +102,17 @@ MainComponent::~MainComponent(){
 }
 
 void MainComponent::paint(juce::Graphics &g){
-    g.setColour(background_color);
-    g.fillAll(background_color);
+    //g.setColour(background_color);
+    //g.fillAll(background_color);
     
     /* Draw the time line graphics objects */
     if (WState == WindowStates::TrackView){
         timeline.setVisible(true);
         timeline.setEnabled(true);
+    }
+    if (WState == WindowStates::Settings){
+        setting.setVisible(true);
+        setting.setEnabled(true);
     }
     //midiService.paint(g);
 
@@ -100,6 +121,7 @@ void MainComponent::paint(juce::Graphics &g){
 void MainComponent::resized() {
     //Make this into a for loop to resize each context
     timeline.resized();
+    setting.resized();
     juce::Rectangle<int> midiRect = getLocalBounds().removeFromBottom(300);
     //midiService.resize(midiRect);
 }
@@ -220,8 +242,7 @@ void MainComponent::setMaxTracks(int n){
     maxNumTracks = n;
 }
 
-void MainComponent::loadEdit(){
-    std::string filename = "\0";
+void MainComponent::loadEdit(std::string filename){
     const juce::String editFilePath = editPath + filename;
     const juce::File editFile (editFilePath);
     
@@ -336,6 +357,10 @@ void MainComponent::disableAllStates(){
     timeline.setAllComponents(false);
     timeline.setVisible(false);
     timeline.setEnabled(false);
+    
+    setting.setAllComponents(false);
+    setting.setVisible(false);
+    setting.setEnabled(false);
 }
 
 /* This assumes that the type of messaegs are of type UNIVERSAL */
@@ -403,6 +428,10 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             break;
         case Helpers::UniversalCommands::Settings:
             disableAllStates();
+            setting.setEnabled(true);
+            setting.setEnabled(true);
+            setting.setAllComponents(true);
+            currentComponent = &setting;
             break;
         case Helpers::UniversalCommands::Fx:
             disableAllStates();
@@ -420,5 +449,30 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             LOG("\nInvalid Universal Command!\n");
             break;
     }
+}
+
+void MainComponent::setupSetting(){
+    /* change how this function works to change how
+       splash screen functions */
+    std::function<void()> onStartup = [&](void)->void{
+        setting.toggleFirstStartToFalse();
+        WState = WindowStates::Settings;
+        disableAllStates();
+        setting.setAllComponents(true);
+        setting.setVisible(true);
+        setting.setEnabled(true);
+    };
+    setting.setStartFunction(onStartup);
+    
+    std::function<void(std::string)> giveLoad = [&](std::string filename)->void{
+        loadEdit(filename);
+    };
+    setting.setLoadEditFunction(giveLoad);
+    
+    std::function<void(std::string)> giveSave = [&](std::string filename)->void{
+      // no save for now!
+    };
+    setting.setSaveEditFunction(giveSave);
+    
     
 }

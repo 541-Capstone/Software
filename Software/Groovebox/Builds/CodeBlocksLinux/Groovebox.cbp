@@ -146,7 +146,17 @@
       <Add option="-Wno-strict-overflow"/>
     </Compiler>
     <Linker/>
-    <Unit filename="../../Source/Wavetable.cpp">
+    <Unit filename="../../Source/FileBrowser.cpp">
+      <Option target="App | Debug"/>
+      <Option target="App | Release"/>
+    </Unit>
+    <Unit filename="../../Source/FileBrowser.h">
+      <Option target="App | Debug"/>
+      <Option target="App | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
+    </Unit>
+    <Unit filename="../../Source/IPlugin.cpp">
       <Option target="App | Debug"/>
       <Option target="App | Release"/>
     </Unit>

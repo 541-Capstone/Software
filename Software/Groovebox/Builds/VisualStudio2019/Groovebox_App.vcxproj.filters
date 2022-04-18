@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Groovebox\FileBrowser">
+      <UniqueIdentifier>{4107A70F-25CC-F778-F19C-A190EB6D99D0}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\Plugins\Wavetable">
       <UniqueIdentifier>{3607A0A5-DED4-97A6-4164-A079D5F3BF7B}</UniqueIdentifier>
     </Filter>
@@ -1198,14 +1201,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\Wavetable.cpp">
-      <Filter>Groovebox\Plugins\Wavetable</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\WavetableEditor.cpp">
-      <Filter>Groovebox\Plugins\Wavetable</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\WavetableVoice.cpp">
-      <Filter>Groovebox\Plugins\Wavetable</Filter>
+    <ClCompile Include="..\..\Source\FileBrowser.cpp">
+      <Filter>Groovebox\FileBrowser</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\IPlugin.cpp">
       <Filter>Groovebox\Plugins</Filter>
@@ -5409,6 +5406,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\FileBrowser.h">
+      <Filter>Groovebox\FileBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\IPlugin.h">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\Wavetable.h">
       <Filter>Groovebox\Plugins\Wavetable</Filter>
     </ClInclude>
