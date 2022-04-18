@@ -26,6 +26,7 @@
 
 #define UNIVERSAL_CC_CHANNEL  16
 #define CONTEXTUAL_CC_CHANNEL 17
+#define NOTE_CHANNEL          1
 
 
 namespace te = tracktion_engine;

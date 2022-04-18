@@ -19,10 +19,12 @@ class TrackManager {
 public:
 	struct TrackWrapper {
 		te::AudioTrack* track;
-		te::Plugin* synth;
+		std::unique_ptr<juce::MidiBuffer> midiBuffer;
+		std::unique_ptr<IPlugin> synth;
 		juce::Array<te::Plugin*> effects;
 		juce::String getName();
 		te::AudioTrack* getTrack();
+		void addMidiMessage(const juce::MidiMessage&, int sampleNumber);
 	};
 
 	TrackManager(std::shared_ptr<te::Edit> edit);
@@ -41,11 +43,11 @@ public:
 
 	void createTrack();
 
-	void addMidiToBuffer(const juce::MidiBuffer&);
+	void addMidiToBuffer(const juce::MidiMessage&, int sampleNumber, bool recording);
 
 	void setActiveTrack(int index);
 
-	void setSynth(te::Plugin* newSynth);
+	void setSynth(std::unique_ptr<IPlugin> newSynth);
 
 private:
 	// The edit that the manager is attached to
@@ -54,9 +56,6 @@ private:
 	te::TrackList* trackList;
 	//List of audio tracks in the Session - only includes MIDI and WAV tracks
 	juce::Array<std::shared_ptr<TrackWrapper>> audioTrackList;
-
-	// List of track midi buffers
-	juce::Array<std::shared_ptr<juce::MidiBuffer>> midiBuffers;
 
 	int activeTrackIndex;
 

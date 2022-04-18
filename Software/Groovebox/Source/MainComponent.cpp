@@ -50,6 +50,34 @@ MainComponent::MainComponent(){
     
     currentComponent = &timeline;
     currentComponent->contextControl({});
+
+    //TODO: Move to Synth Context
+    engine.getPluginManager().createBuiltInType<Wavetable>();
+    //te::Plugin::Ptr wavetablePlugin = edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {});
+    //=========================================================================================================
+    auto& dm = edit->engine.getDeviceManager();
+
+    for (int i = 0; i < dm.getNumMidiInDevices(); i++)
+    {
+        auto dev = dm.getMidiInDevice(i);
+        dev->setEnabled(true);
+        dev->setEndToEndEnabled(true);
+    }
+    // Add the midi input to track 1
+    if (auto t = trackManager->getActiveTrack()->getTrack())
+        if (auto dev = dm.getMidiInDevice(0))
+            for (auto instance : edit->getAllInputDevices())
+                if (&instance->getInputDevice() == dev)
+                    instance->setTargetTrack(*t, 0, true);
+
+    if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
+    {
+        if (auto t = trackManager->getActiveTrack()->getTrack())
+            t->pluginList.insertPlugin(*synth, 0, nullptr);
+    }
+    //=========================================================================================================
+    //trackManager->setSynth(wavetablePlugin);
+    //trackManager->getActiveTrack()->getTrack()->pluginList.insertPlugin(wavetablePlugin, 0, nullptr);
 }
 
 MainComponent::~MainComponent(){
@@ -109,7 +137,6 @@ void MainComponent::timerCallback(int timerId) {
 }
 
 void MainComponent::actionListenerCallback(const juce::String& message) {
-    LOG("Action Callback received: " + message);
     if (message == "MIDI") {
         auto currentTime = edit->getTransport().getCurrentPosition();
         auto currentSampleNumber = (int)(currentTime * sampleRate);
@@ -118,9 +145,10 @@ void MainComponent::actionListenerCallback(const juce::String& message) {
             juce::MidiMessage message = metadata.getMessage();
             auto type = Helpers::getMidiMessageType(message);
             if (type == Helpers::MessageType::Note) {
-                LOG("Sending note " + juce::MidiMessage::getMidiNoteName(message.getNoteNumber(), true, true, 3) 
-                + " to Track " + (juce::String)trackManager->getActiveTrackIndex());
+                //LOG("Sending note " + juce::MidiMessage::getMidiNoteName(message.getNoteNumber(), true, true, 3) 
+                //+ " to Track " + (juce::String)trackManager->getActiveTrackIndex());
                 //Send the midi note to the track's MIDI buffer
+                trackManager->addMidiToBuffer(message, currentSampleNumber, false);
             }
             else if (type == Helpers::MessageType::Universal) {
                 LOG("Universal Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
@@ -205,6 +233,7 @@ void MainComponent::loadEdit(){
     else{
         edit = std::move(te::createEmptyEdit(engine, editFile));
     }
+    edit->playInStopEnabled = true;
 }
 
 /**
@@ -392,42 +421,4 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             break;
     }
     
-    
-    /*
-    switch (controllerValue) {
-        case 1:
-            LOG("Record\n");
-            record();
-            break;
-        case 2:
-            LOG("Mute\n");
-            break;
-        case 3:
-            LOG("Solo\n");
-            break;
-        case 4:
-            LOG("Timeline\n");
-            disableAllStates();
-            timeline.setEnabled(true);
-            timeline.setVisible(true);
-            timeline.setAllComponents(true);
-            currentComponent = &timeline;
-            break;
-        case 5:
-            LOG("Synth\n");
-            disableAllStates();
-            break;
-        case 6:
-            LOG("Settings\n");
-            disableAllStates();
-            break;
-        case 7:
-            LOG("Plugins\n");
-            disableAllStates();
-            break;
-        default:
-            LOG("None called or Play/Pause called\n");
-            break;
-    }
-    */
 }
