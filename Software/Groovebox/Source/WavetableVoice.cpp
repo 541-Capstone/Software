@@ -20,6 +20,10 @@ void WavetableVoice::startNote(int midiNoteNumber, float velocity, juce::Synthes
 }
 void WavetableVoice::stopNote(float velocity, bool allowTrailOff) {
     adsr.noteOff();
+    
+    if (!allowTrailOff || !adsr.isActive()) {
+        clearCurrentNote();
+    }
 }
 void WavetableVoice::controllerMoved(int controllerNumber, int newControllerValue) {
 
@@ -37,6 +41,13 @@ void WavetableVoice::prepareToPlay(double sampleRate, int samplesPerBlock) {
 
     gain.setGainLinear(0.1f);
 
+    adsrParams.attack = 0.8f;
+    adsrParams.decay = 0.8f;
+    adsrParams.sustain = 1.0f;
+    adsrParams.release = 1.5f;
+
+    adsr.setParameters(adsrParams);
+
     isPrepared = true;
 
 }
@@ -44,11 +55,25 @@ void WavetableVoice::prepareToPlay(double sampleRate, int samplesPerBlock) {
 void WavetableVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) {
     jassert(isPrepared);
 
-    juce::dsp::AudioBlock<float> audioBlock{ outputBuffer };
+    if (!isVoiceActive()) {
+        return;
+    }
+
+    synthBuffer.setSize(outputBuffer.getNumChannels(), numSamples, false, false, true);
+    synthBuffer.clear();
+
+    juce::dsp::AudioBlock<float> audioBlock{ synthBuffer };
     osc.process(juce::dsp::ProcessContextReplacing<float> {audioBlock});
     gain.process(juce::dsp::ProcessContextReplacing<float> {audioBlock});
 
-    adsr.applyEnvelopeToBuffer(outputBuffer, startSample, numSamples);
+    adsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumChannels());
+
+    for (int i = 0; i < outputBuffer.getNumChannels(); i++) {
+        outputBuffer.addFrom(i, startSample, synthBuffer, i, 0, numSamples);
+        if (!adsr.isActive()) {
+            clearCurrentNote();
+        }
+    }
 }
 
 void WavetableVoice::pitchWheelMoved(int newPitchWheelValue) {

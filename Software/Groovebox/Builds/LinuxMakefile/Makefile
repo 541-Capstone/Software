@@ -69,7 +69,6 @@ endif
 
 OBJECTS_APP := \
   $(JUCE_OBJDIR)/FileBrowser_6c4b9e6d.o \
-  $(JUCE_OBJDIR)/IPlugin_75e41b5d.o \
   $(JUCE_OBJDIR)/Wavetable_df08ef56.o \
   $(JUCE_OBJDIR)/WavetableEditor_76c6b1a3.o \
   $(JUCE_OBJDIR)/WavetableVoice_355fbac6.o \
@@ -131,7 +130,7 @@ $(JUCE_OBJDIR)/FileBrowser_6c4b9e6d.o: ../../Source/FileBrowser.cpp
 	@echo "Compiling FileBrowser.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/IPlugin_75e41b5d.o: ../../Source/IPlugin.cpp
+$(JUCE_OBJDIR)/Wavetable_df08ef56.o: ../../Source/Wavetable.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling Wavetable.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"

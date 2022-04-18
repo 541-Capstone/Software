@@ -5418,9 +5418,6 @@
     <ClInclude Include="..\..\Source\FileBrowser.h">
       <Filter>Groovebox\FileBrowser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\IPlugin.h">
-      <Filter>Groovebox\Plugins</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Source\Wavetable.h">
       <Filter>Groovebox\Plugins\Wavetable</Filter>
     </ClInclude>

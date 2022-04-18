@@ -156,7 +156,7 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="../../Source/IPlugin.cpp">
+    <Unit filename="../../Source/Wavetable.cpp">
       <Option target="App | Debug"/>
       <Option target="App | Release"/>
     </Unit>

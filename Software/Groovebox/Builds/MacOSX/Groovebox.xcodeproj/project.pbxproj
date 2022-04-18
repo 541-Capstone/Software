@@ -118,7 +118,6 @@
 		8BF564DC82EF7166D3CFA4FC /* Wavetable.cpp */ /* Wavetable.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Wavetable.cpp; path = ../../Source/Wavetable.cpp; sourceTree = SOURCE_ROOT; };
 		8D41786046D813C323824941 /* include_juce_osc.cpp */ /* include_juce_osc.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_juce_osc.cpp; path = ../../JuceLibraryCode/include_juce_osc.cpp; sourceTree = SOURCE_ROOT; };
 		9457D956EA36BC3054E0311E /* include_juce_dsp.mm */ /* include_juce_dsp.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_dsp.mm; path = ../../JuceLibraryCode/include_juce_dsp.mm; sourceTree = SOURCE_ROOT; };
-		955CD6E069FDDB6A98636E03 /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = /Users/petertso/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
 		9BE02E3D2882C0CA9DD49EFF /* FileBrowser.cpp */ /* FileBrowser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileBrowser.cpp; path = ../../Source/FileBrowser.cpp; sourceTree = SOURCE_ROOT; };
 		9C35CABD254A82331336413E /* App */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Groovebox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C9E88DC6EE82ECCFA7D924F /* AudioVisualizer.cpp */ /* AudioVisualizer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AudioVisualizer.cpp; path = ../../Source/AudioVisualizer.cpp; sourceTree = SOURCE_ROOT; };
@@ -542,7 +541,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1699E275ABCACAE5A593B492,
-				EE7085365D630C46598F2DA1,
 				0FD3B0B6C790BDCEC5DFE48C,
 				E596F5B0D3F3B5AF6273BC9D,
 				7F43CB1B057F8C171CBD6910,

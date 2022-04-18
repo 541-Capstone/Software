@@ -10,14 +10,14 @@
 
 #include <JuceHeader.h>
 #include "Wavetable.h"
+#include "WavetableEditor.h"
 
 //==============================================================================
 Wavetable::Wavetable(te::PluginCreationInfo info) : te::Plugin(info)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
-    auto um = getUndoManager();
-    paramState = new juce::AudioProcessorValueTreeState(*this, um, "Params", createParameters());
+    //paramState = juce::AudioProcessorValueTreeState(*this, getUndoManager(), "Parameters", createParameters());
 }
 
 Wavetable::~Wavetable()
@@ -29,7 +29,9 @@ void Wavetable::setSampleRate(int newSampleRate) {
     sampleRate = newSampleRate;
 }
 
+//const juce::String Wavetable::getName() const           { return getPluginName(); }
 juce::String Wavetable::getName()                       { return getPluginName(); }
+//juce::StringArray Wavetable::getAlternateDisplayNames() const { return juce::StringArray((juce::String)"WT"); }
 juce::String Wavetable::getPluginType()                 { return xmlTypeName; }
 bool Wavetable::needsConstantBufferSize()               { return false; }
 juce::String Wavetable::getSelectableDescription()      { return getName(); }
@@ -48,6 +50,26 @@ void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
 }
 void Wavetable::deinitialise() {}
 
+//void Wavetable::prepareToPlay(double sampleRate, int samplesPerBlock) {}
+//void Wavetable::releaseResources() {}
+//#ifndef JucePlugin_PreferredChannelConfigurations
+//bool Wavetable::isBusesLayoutSupported(const BusesLayout& layouts) const {
+//    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+//        return false;
+//
+//    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
+//        return false;
+//
+//    return true;
+//}
+//#endif
+//
+//void Wavetable::processBlock(juce::AudioBuffer<float>& ab, juce::MidiBuffer& mb) {
+//    //applyToBuffer(ab, mb);
+//}
+
+//juce::AudioProcessorEditor* Wavetable::createEditor() { return new WavetableEditor(*this); }
+//bool Wavetable::hasEditor() const { return true; }
 
 //Functions similarly to the processBlock of a standalone plugin
 
@@ -114,6 +136,53 @@ void Wavetable::applyToBuffer(juce::AudioBuffer<float>&buffer, juce::MidiBuffer 
 
 }
 
+//bool Wavetable::acceptsMidi() const
+//{
+//    return true;
+//}
+//
+//bool Wavetable::producesMidi() const
+//{
+//    return true;
+//}
+//
+//bool Wavetable::isMidiEffect() const
+//{
+//    return false;
+//}
+//
+//double Wavetable::getTailLengthSeconds() const
+//{
+//    return 0.0;
+//}
+//
+//int Wavetable::getNumPrograms()
+//{
+//    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
+//                // so this should be at least 1, even if you're not really implementing programs.
+//}
+//
+//int Wavetable::getCurrentProgram()
+//{
+//    return 0;
+//}
+//
+//void Wavetable::setCurrentProgram(int index)
+//{
+//}
+//
+//const juce::String Wavetable::getProgramName(int index)
+//{
+//    return {};
+//}
+//
+//void Wavetable::changeProgramName(int index, const juce::String& newName)
+//{
+//}
+//
+//void Wavetable::getStateInformation(juce::MemoryBlock& destData) {}
+//void Wavetable::setStateInformation(const void* data, int sizeInBytes) {}
+
 
 void Wavetable::handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record) {
     Helpers::MessageType type = Helpers::getMidiMessageType(msg);
@@ -126,6 +195,10 @@ void Wavetable::handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool re
         }
     }
 }
+
+//juce::AudioProcessorValueTreeState& Wavetable::getValueTreeState() {
+//    return paramState;
+//}
 
 void Wavetable::addMessageToBuffer(const juce::MidiMessage& msg, int sampleNumber) {
     midiBuffer->addEvent(msg, sampleNumber);
@@ -177,11 +250,11 @@ Wavetable::VTS::ParameterLayout Wavetable::createParameters() {
     // Sustain - float
     // Release - float
 
-    params.push_back(std::make_unique<juce::AudioParameterInt>("OSCILLATOR", "Oscillator", 0, numOscillators - 1, 0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", juce::NormalisableRange<float> {0.1f, 1.0f, }, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", juce::NormalisableRange<float> {0.1f, 1.0f, },0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", juce::NormalisableRange<float> {0.1f, 1.0f, }, 1.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", juce::NormalisableRange<float> {0.1f, 3.0f, }, 0.4f));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("OSCILLATOR", "Oscillator", 0, 2, 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", juce::NormalisableRange<float> {0.1f, 1.0f, 0.1f}, 0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", juce::NormalisableRange<float> {0.1f, 1.0f, 0.1f}, 0.1f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", juce::NormalisableRange<float> {0.1f, 1.0f, 0.1f}, 1.0f));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", juce::NormalisableRange<float> {0.1f, 3.0f, 0.1f}, 0.4f));
 
     return { params.begin(), params.end() };
 }
