@@ -27,13 +27,22 @@ public:
     void renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
     void pitchWheelMoved(int newPitchWheelValue) override;
 
+    //==============================================
+    // Custom functions
+    //==============================================
+    WavetableVoice(te::ExpEnvelope& ampAdsr);
+
 private:
     juce::ADSR adsr;
     juce::ADSR::Parameters adsrParams;
-
-    juce::dsp::Oscillator<float> osc{ [](float x) {return std::sin(x); }};
+    te::Oscillator osc;
+    te::ExpEnvelope& ampAdsr;
+    //juce::dsp::Oscillator<float> osc{ [](float x) {return std::sin(x); }};
     juce::dsp::Gain<float> gain;
     juce::AudioBuffer<float> synthBuffer;
+
+    //Track if a note is currently playing, so adsr can be reset
+    bool isPlaying;
 
     bool isPrepared { false };
 };

@@ -40,7 +40,7 @@ void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
     sampleRate = info.sampleRate;
     synth.setCurrentPlaybackSampleRate(sampleRate);
     synth.addSound(new WavetableSound());
-    synth.addVoice(new WavetableVoice());
+    synth.addVoice(new WavetableVoice(ampAdsr));
 
     for (int i = 0; i < synth.getNumVoices(); i++) {
         if (auto voice = dynamic_cast<WavetableVoice*>(synth.getVoice(i))) {
@@ -49,27 +49,6 @@ void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
     }
 }
 void Wavetable::deinitialise() {}
-
-//void Wavetable::prepareToPlay(double sampleRate, int samplesPerBlock) {}
-//void Wavetable::releaseResources() {}
-//#ifndef JucePlugin_PreferredChannelConfigurations
-//bool Wavetable::isBusesLayoutSupported(const BusesLayout& layouts) const {
-//    if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
-//        return false;
-//
-//    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-//        return false;
-//
-//    return true;
-//}
-//#endif
-//
-//void Wavetable::processBlock(juce::AudioBuffer<float>& ab, juce::MidiBuffer& mb) {
-//    //applyToBuffer(ab, mb);
-//}
-
-//juce::AudioProcessorEditor* Wavetable::createEditor() { return new WavetableEditor(*this); }
-//bool Wavetable::hasEditor() const { return true; }
 
 //Functions similarly to the processBlock of a standalone plugin
 
@@ -119,7 +98,6 @@ void Wavetable::applyToBuffer(const te::PluginRenderContext& fc) {
             //Start on next block
             todo -= thisBlock;
             pos += thisBlock;
-            //synth.renderNextBlock(*fc.destBuffer, *midiBuffer, 0, fc.destBuffer->getNumSamples());
         }
     }
     
@@ -135,53 +113,6 @@ void Wavetable::applyToBuffer(juce::AudioBuffer<float>&buffer, juce::MidiBuffer 
     synth.renderNextBlock(buffer, midi, 0, buffer.getNumSamples());
 
 }
-
-//bool Wavetable::acceptsMidi() const
-//{
-//    return true;
-//}
-//
-//bool Wavetable::producesMidi() const
-//{
-//    return true;
-//}
-//
-//bool Wavetable::isMidiEffect() const
-//{
-//    return false;
-//}
-//
-//double Wavetable::getTailLengthSeconds() const
-//{
-//    return 0.0;
-//}
-//
-//int Wavetable::getNumPrograms()
-//{
-//    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-//                // so this should be at least 1, even if you're not really implementing programs.
-//}
-//
-//int Wavetable::getCurrentProgram()
-//{
-//    return 0;
-//}
-//
-//void Wavetable::setCurrentProgram(int index)
-//{
-//}
-//
-//const juce::String Wavetable::getProgramName(int index)
-//{
-//    return {};
-//}
-//
-//void Wavetable::changeProgramName(int index, const juce::String& newName)
-//{
-//}
-//
-//void Wavetable::getStateInformation(juce::MemoryBlock& destData) {}
-//void Wavetable::setStateInformation(const void* data, int sizeInBytes) {}
 
 
 void Wavetable::handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record) {
@@ -241,20 +172,10 @@ void Wavetable::resized()
 
 const char* Wavetable::getPluginName() { return NEEDS_TRANS("Wavetable"); }
 
-Wavetable::VTS::ParameterLayout Wavetable::createParameters() {
-    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+void Wavetable::setAmpAdsr(te::ExpEnvelope adsr) {
+    ampAdsr = adsr;
+}
 
-    //Parameters: Oscillator - int
-    // Attack - float
-    // Decay - float
-    // Sustain - float
-    // Release - float
-
-    params.push_back(std::make_unique<juce::AudioParameterInt>("OSCILLATOR", "Oscillator", 0, 2, 0));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("ATTACK", "Attack", juce::NormalisableRange<float> {0.1f, 1.0f, 0.1f}, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("DECAY", "Decay", juce::NormalisableRange<float> {0.1f, 1.0f, 0.1f}, 0.1f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("SUSTAIN", "Sustain", juce::NormalisableRange<float> {0.1f, 1.0f, 0.1f}, 1.0f));
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("RELEASE", "Release", juce::NormalisableRange<float> {0.1f, 3.0f, 0.1f}, 0.4f));
-
-    return { params.begin(), params.end() };
+te::ExpEnvelope& Wavetable::getAmpsAdsr() {
+    return ampAdsr;
 }
