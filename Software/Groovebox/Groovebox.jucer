@@ -25,7 +25,6 @@
               file="Source/WavetableVoice.h"/>
       </GROUP>
       <FILE id="IbJwZl" name="IPlugin.h" compile="0" resource="0" file="Source/IPlugin.h"/>
-      <FILE id="DTE3l6" name="ISynthVoice.h" compile="0" resource="0" file="Source/ISynthVoice.h"/>
       <FILE id="HxFCa4" name="Sampler.cpp" compile="1" resource="0" file="Source/Sampler.cpp"/>
       <FILE id="o8eEWs" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
     </GROUP>
@@ -63,6 +62,10 @@
       <FILE id="Jdqkr6" name="TrackManager.h" compile="0" resource="0" file="Source/TrackManager.h"/>
     </GROUP>
     <GROUP id="{5323C0E3-87CC-405B-D6B9-AD58964F1DEF}" name="State">
+      <GROUP id="{73FA9BDD-BA58-5A30-22F5-5CB646727861}" name="Synth">
+        <FILE id="lchleA" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
+        <FILE id="hnYQxI" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
+      </GROUP>
       <GROUP id="{8AF648A0-20F5-57F3-9564-876147F260AD}" name="Setting">
         <FILE id="Jj2Wnp" name="Setting.cpp" compile="1" resource="0" file="Source/Setting.cpp"/>
         <FILE id="THbqQg" name="Setting.h" compile="0" resource="0" file="Source/Setting.h"/>

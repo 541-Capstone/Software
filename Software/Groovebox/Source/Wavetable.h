@@ -65,22 +65,26 @@ public:
     ================================================================================*/
     // Maps contextual control messages to wavetable functions
     void contextControl(const juce::MidiMessageMetadata& metadata) override;
+    IPlugin::Parameter getParameterValue(int index) override;
 
     void addMessageToBuffer(const juce::MidiMessage&, int sampleNumber);
 
     void setMidiBuffer(std::shared_ptr<juce::MidiBuffer>);
     void removeMidiBuffer();
 
-    void handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record);
-
 private:
+    struct ParamMap {
+        juce::String name;
+        std::function<float()> getValue;
+    };
     juce::Array<float> wavetable;
     double sampleRate = 48000.0;
 
     juce::Synthesiser synth;
 
     std::shared_ptr<juce::MidiBuffer> midiBuffer;
-    Helpers::PluginType pluginType = Helpers::PluginType::Synth;
+    //Vector of functions to 
+    std::vector<ParamMap> contextParams;
 
     void applyToBuffer(juce::AudioBuffer<float>&, juce::MidiBuffer&);
 

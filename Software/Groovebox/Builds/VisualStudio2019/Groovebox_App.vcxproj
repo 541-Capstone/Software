@@ -153,6 +153,7 @@
     <ClCompile Include="..\..\Source\Utilities.cpp"/>
     <ClCompile Include="..\..\Source\FileManager.cpp"/>
     <ClCompile Include="..\..\Source\TrackManager.cpp"/>
+    <ClCompile Include="..\..\Source\Synth.cpp"/>
     <ClCompile Include="..\..\Source\Setting.cpp"/>
     <ClCompile Include="..\..\Source\Timeline.cpp"/>
     <ClCompile Include="..\..\Source\viewObjects.cpp"/>
@@ -4148,7 +4149,6 @@
     <ClInclude Include="..\..\Source\WavetableSound.h"/>
     <ClInclude Include="..\..\Source\WavetableVoice.h"/>
     <ClInclude Include="..\..\Source\IPlugin.h"/>
-    <ClInclude Include="..\..\Source\ISynthVoice.h"/>
     <ClInclude Include="..\..\Source\Sampler.h"/>
     <ClInclude Include="..\..\Source\AudioVisualizer.h"/>
     <ClInclude Include="..\..\Source\Cursors.h"/>
@@ -4159,6 +4159,7 @@
     <ClInclude Include="..\..\Source\Utilities.h"/>
     <ClInclude Include="..\..\Source\FileManager.h"/>
     <ClInclude Include="..\..\Source\TrackManager.h"/>
+    <ClInclude Include="..\..\Source\Synth.h"/>
     <ClInclude Include="..\..\Source\Setting.h"/>
     <ClInclude Include="..\..\Source\Timeline.h"/>
     <ClInclude Include="..\..\Source\ContextComponent.h"/>

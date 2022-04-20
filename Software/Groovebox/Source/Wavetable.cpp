@@ -21,6 +21,24 @@ Wavetable::Wavetable(te::PluginCreationInfo info) : te::Plugin(info)
     for (int i = 1; i < 6; i++) {
         waves.push_back(static_cast<te::Oscillator::Waves>(i));
     }
+    std::function<float()> func[] = {
+        [&]() { return ampParams.attack; },
+        [&]() { return ampParams.decay; },
+        [&]() { return ampParams.sustain; },
+        [&]() { return ampParams.release; },
+        [&]() { for (int i = 0; i < waves.size(); i++) { if (waveShape == waves.at(i)) { return (float)i; } } return 0.0f; },
+        [&]() { return 0.0f; },
+        [&]() { return 0.0f; },
+        [&]() { return 0.0f; }
+    };
+    contextParams.push_back({ "Attack", func[0]});
+    contextParams.push_back({ "Decay", func[1]});
+    contextParams.push_back({ "Sustain", func[2]});
+    contextParams.push_back({ "Release", func[3]});
+    contextParams.push_back({ "Wave", func[4]});
+    contextParams.push_back({ "Attack", func[5]});
+    contextParams.push_back({ "Attack", func[6]});
+    contextParams.push_back({ "Attack", func[7]});
 }
 
 Wavetable::~Wavetable()
@@ -148,6 +166,11 @@ void Wavetable::contextControl(const juce::MidiMessageMetadata& metadata) {
     return;
 }
 
+IPlugin::Parameter Wavetable::getParameterValue(int index) {
+    ParamMap& pm = contextParams.at(index);
+    return { pm.name, pm.getValue()};
+}
+
 void Wavetable::addMessageToBuffer(const juce::MidiMessage& msg, int sampleNumber) {
     midiBuffer->addEvent(msg, sampleNumber);
 }
@@ -241,3 +264,4 @@ void Wavetable::changeWave(bool next) {
         }
     }
 }
+
