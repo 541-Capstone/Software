@@ -19,7 +19,7 @@
 #include "FileBrowser.h"
 
 namespace te = tracktion_engine;
-class Setting : public juce::Component, public ContextComponent {
+class Setting : public juce::Component, public ContextComponent, public juce::ActionListener {
 public:
     Setting();
     ~Setting() override;
@@ -33,6 +33,7 @@ public:
     void toggleFirstStartToFalse();
     void setLoadEditFunction(std::function<void(std::string)> func);
     void setSaveEditFunction(std::function<void(std::string)> func);
+    void actionListenerCallback (const juce::String &message) override;
     
 private:
     te::Edit *edit;
@@ -61,7 +62,11 @@ private:
     int cursorHeight = 0;
     const int cursorWidth  = 10;
     juce::Rectangle<int> cursor;
+    const int carretImageWidth = 25;
+    const int carretImageHeight = 25;
+    juce::Image carret;
     juce::Colour cursorColor = juce::Colours::red;
     void updateCursorLocation();
+    void drawCarret();
 };
 #endif

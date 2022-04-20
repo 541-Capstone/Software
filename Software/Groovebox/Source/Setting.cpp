@@ -27,12 +27,12 @@ Setting::Setting(){
     
     std::function<void()> testFunctionScrollUp = [&]()->void{
         browser.scrollUp(scrollAmount);
-        updateCursorLocation();
+        //updateCursorLocation();
     };
     
     std::function<void()> testFunctionScrollDown = [&]()->void{
         browser.scrollDown(scrollAmount);
-        updateCursorLocation();
+        //updateCursorLocation();
     };
     
     loadEdit.onClick = testFunctionScrollUp;
@@ -43,6 +43,8 @@ Setting::Setting(){
     
     addAndMakeVisible(browser);
     browser.startThread(3);
+    
+    browser.addActionListener(this);
 }
 
 Setting::~Setting(){
@@ -185,15 +187,32 @@ void Setting::setSaveEditFunction(std::function<void (std::string)> func){
 
 void Setting::updateCursorLocation(){
     int maxHeight  = browser.getHeight();
-    const int oldCursorLocation = cursorLocation;
-    cursorLocation = browser.getItemIndex();
     cursorHeight   = browser.getItemHeight();
     
     int newYCoord = cursorHeight * cursorLocation;
     if (newYCoord < maxHeight) {
         cursor.setBounds(0, cursorLocation * cursorHeight, cursorWidth*2, cursorHeight);
     }
+}
+
+void Setting::actionListenerCallback(const juce::String &message){
+    int movedAmount = message.getIntValue();
+    const int newCursorLocation = movedAmount + cursorLocation;
+    if (newCursorLocation < 0 || newCursorLocation >= 10) {
+        return;
+    }
     else {
-        cursorLocation = oldCursorLocation;
+        cursorLocation = newCursorLocation;
+        updateCursorLocation();
+    }
+    
+}
+
+void Setting::drawCarret(){
+    const double inc = 0.01;
+    for (float y = 0; y < 1; y += inc) {
+        for (float x = 0; x < 1; x += inc) {
+            
+        }
     }
 }
