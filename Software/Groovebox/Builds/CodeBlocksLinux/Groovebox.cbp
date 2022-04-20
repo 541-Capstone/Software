@@ -192,11 +192,13 @@
       <Option compile="0"/>
       <Option link="0"/>
     </Unit>
-    <Unit filename="../../Source/IPlugin.cpp">
+    <Unit filename="../../Source/IPlugin.h">
       <Option target="App | Debug"/>
       <Option target="App | Release"/>
+      <Option compile="0"/>
+      <Option link="0"/>
     </Unit>
-    <Unit filename="../../Source/IPlugin.h">
+    <Unit filename="../../Source/ISynthVoice.h">
       <Option target="App | Debug"/>
       <Option target="App | Release"/>
       <Option compile="0"/>

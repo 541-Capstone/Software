@@ -143,7 +143,6 @@
     <ClCompile Include="..\..\Source\Wavetable.cpp"/>
     <ClCompile Include="..\..\Source\WavetableEditor.cpp"/>
     <ClCompile Include="..\..\Source\WavetableVoice.cpp"/>
-    <ClCompile Include="..\..\Source\IPlugin.cpp"/>
     <ClCompile Include="..\..\Source\Sampler.cpp"/>
     <ClCompile Include="..\..\Source\AudioVisualizer.cpp"/>
     <ClCompile Include="..\..\Source\Cursors.cpp"/>
@@ -4149,6 +4148,7 @@
     <ClInclude Include="..\..\Source\WavetableSound.h"/>
     <ClInclude Include="..\..\Source\WavetableVoice.h"/>
     <ClInclude Include="..\..\Source\IPlugin.h"/>
+    <ClInclude Include="..\..\Source\ISynthVoice.h"/>
     <ClInclude Include="..\..\Source\Sampler.h"/>
     <ClInclude Include="..\..\Source\AudioVisualizer.h"/>
     <ClInclude Include="..\..\Source\Cursors.h"/>

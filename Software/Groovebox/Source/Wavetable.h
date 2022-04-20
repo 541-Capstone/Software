@@ -15,12 +15,14 @@
 #include "IPlugin.h"
 #include "WavetableSound.h"
 #include "WavetableVoice.h"
+#include "ISynthVoice.h"
 
 //==============================================================================
 /*
 */
 class Wavetable : public juce::Component,
-    public te::Plugin
+    public te::Plugin,
+    public IPlugin
     //public juce::AudioProcessor
 {
     //using VTS = juce::AudioProcessorValueTreeState;
@@ -59,15 +61,18 @@ public:
     bool isSynth() override { return true; }
     bool producesAudioWhenNoAudioInput() override { return true; }
 
+    /*=================================================================================
+    * IPlugin overrides
+    ================================================================================*/
+    // Maps contextual control messages to wavetable functions
+    void contextControl(const juce::MidiMessageMetadata& metadata) override;
+
     void addMessageToBuffer(const juce::MidiMessage&, int sampleNumber);
 
     void setMidiBuffer(std::shared_ptr<juce::MidiBuffer>);
     void removeMidiBuffer();
 
     void handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record);
-
-    void setAmpAdsr(te::ExpEnvelope adsr);
-    te::ExpEnvelope& getAmpsAdsr();
 
 private:
     juce::Array<float> wavetable;
@@ -81,10 +86,24 @@ private:
     void applyToBuffer(juce::AudioBuffer<float>&, juce::MidiBuffer&);
 
     te::ExpEnvelope ampAdsr;
+    te::ExpEnvelope::Parameters ampParams;
+    te::Oscillator::Waves waveShape{ te::Oscillator::Waves::sine };
+    std::vector<te::Oscillator::Waves> waves;
 
-    juce::CachedValue<int> waveShape;
+    //=========================================================
+    // Contextual input functions
+    //=========================================================
 
-    enum Oscillators {Sine, Saw, Square };
-    int numOscillators = 3; //Enums don't have a length method...
+    void incrementAttack(float amount);
+    void incrementDecay(float amount);
+    void incrementSustain(float amount);
+    void incrementRelease(float amount);
+    //Change wave shape. Pass "true" to pick next value in enum, "false" for previous
+    void changeWave(bool next);
+
+    // Updates all adsr parameters after flushing out samples. Should only be accessed by updateParams call
+    void updateParams(int numSamples);
+    void setVoice(const te::Oscillator::Waves& newWave);
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Wavetable)
 };

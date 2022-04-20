@@ -28,6 +28,24 @@
 #define CONTEXTUAL_CC_CHANNEL 17
 #define NOTE_CHANNEL          1
 
+// Encoder values
+#define ENC_1_CW	7
+#define ENC_1_CCW	8
+#define ENC_2_CW	9
+#define ENC_2_CCW	10
+#define ENC_3_CW	11
+#define ENC_3_CCW	12
+#define ENC_4_CW	13
+#define ENC_4_CCW	14
+#define ENC_5_CW	15
+#define ENC_5_CCW	16
+#define ENC_6_CW	17
+#define ENC_6_CCW	18
+#define ENC_7_CW	19
+#define ENC_7_CCW	20
+#define ENC_8_CW	21
+#define ENC_8_CCW	22
+
 
 namespace te = tracktion_engine;
 

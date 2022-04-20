@@ -12,10 +12,17 @@
 
 #include <JuceHeader.h>
 #include "WavetableSound.h"
+#include "ISynthVoice.h"
 #include "Utilities.h"
 
 class WavetableVoice : public juce::SynthesiserVoice {
 public:
+    //Container for all voice parameters
+    struct VoiceParams {
+        te::ExpEnvelope& ampAdsr;
+        te::ExpEnvelope::Parameters& ampParams;
+        te::Oscillator::Waves& waveShape;
+    };
     //==============================================
     // SynthesizerVoice virtual functions
     //==============================================
@@ -30,19 +37,23 @@ public:
     //==============================================
     // Custom functions
     //==============================================
-    WavetableVoice(te::ExpEnvelope& ampAdsr);
+    WavetableVoice(VoiceParams p);
 
 private:
-    juce::ADSR adsr;
-    juce::ADSR::Parameters adsrParams;
     te::Oscillator osc;
     te::ExpEnvelope& ampAdsr;
+    te::ExpEnvelope::Parameters& ampParams;
     //juce::dsp::Oscillator<float> osc{ [](float x) {return std::sin(x); }};
     juce::dsp::Gain<float> gain;
     juce::AudioBuffer<float> synthBuffer;
+    te::Oscillator::Waves& waveShape;
 
     //Track if a note is currently playing, so adsr can be reset
     bool isPlaying;
 
     bool isPrepared { false };
+
+    // Updates all adsr parameters after flushing out samples. Should only be accessed by updateParams call
+    void updateParams(int numSamples);
+
 };

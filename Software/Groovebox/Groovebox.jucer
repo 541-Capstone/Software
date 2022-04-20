@@ -24,8 +24,8 @@
         <FILE id="vsjN8P" name="WavetableVoice.h" compile="0" resource="0"
               file="Source/WavetableVoice.h"/>
       </GROUP>
-      <FILE id="tODL9G" name="IPlugin.cpp" compile="1" resource="0" file="Source/IPlugin.cpp"/>
       <FILE id="IbJwZl" name="IPlugin.h" compile="0" resource="0" file="Source/IPlugin.h"/>
+      <FILE id="DTE3l6" name="ISynthVoice.h" compile="0" resource="0" file="Source/ISynthVoice.h"/>
       <FILE id="HxFCa4" name="Sampler.cpp" compile="1" resource="0" file="Source/Sampler.cpp"/>
       <FILE id="o8eEWs" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
     </GROUP>

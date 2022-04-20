@@ -1213,9 +1213,6 @@
     <ClCompile Include="..\..\Source\WavetableVoice.cpp">
       <Filter>Groovebox\Plugins\Wavetable</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\IPlugin.cpp">
-      <Filter>Groovebox\Plugins</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Sampler.cpp">
       <Filter>Groovebox\Plugins</Filter>
     </ClCompile>
@@ -5431,6 +5428,9 @@
       <Filter>Groovebox\Plugins\Wavetable</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\IPlugin.h">
+      <Filter>Groovebox\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ISynthVoice.h">
       <Filter>Groovebox\Plugins</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Sampler.h">

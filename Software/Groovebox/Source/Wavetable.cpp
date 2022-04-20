@@ -15,9 +15,12 @@
 //==============================================================================
 Wavetable::Wavetable(te::PluginCreationInfo info) : te::Plugin(info)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
-    //paramState = juce::AudioProcessorValueTreeState(*this, getUndoManager(), "Parameters", createParameters());
+    // Fill the waves vector with the possible waves we can use
+    // We don't want to keep 'none' as a voice right now so we start the loop from 1
+    // There are five other kinds of waves built into te::Oscillator that we can use
+    for (int i = 1; i < 6; i++) {
+        waves.push_back(static_cast<te::Oscillator::Waves>(i));
+    }
 }
 
 Wavetable::~Wavetable()
@@ -29,18 +32,23 @@ void Wavetable::setSampleRate(int newSampleRate) {
     sampleRate = newSampleRate;
 }
 
-//const juce::String Wavetable::getName() const           { return getPluginName(); }
 juce::String Wavetable::getName()                       { return getPluginName(); }
-//juce::StringArray Wavetable::getAlternateDisplayNames() const { return juce::StringArray((juce::String)"WT"); }
 juce::String Wavetable::getPluginType()                 { return xmlTypeName; }
 bool Wavetable::needsConstantBufferSize()               { return false; }
 juce::String Wavetable::getSelectableDescription()      { return getName(); }
 
 void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
     sampleRate = info.sampleRate;
+
+    ampParams.attack = 0.25f;
+    ampParams.decay = 0.25f;
+    ampParams.sustain = 0.05f;
+    ampParams.release = 0.01f;
+
+
     synth.setCurrentPlaybackSampleRate(sampleRate);
     synth.addSound(new WavetableSound());
-    synth.addVoice(new WavetableVoice(ampAdsr));
+    synth.addVoice(new WavetableVoice({ ampAdsr, ampParams, waveShape }));
 
     for (int i = 0; i < synth.getNumVoices(); i++) {
         if (auto voice = dynamic_cast<WavetableVoice*>(synth.getVoice(i))) {
@@ -115,21 +123,30 @@ void Wavetable::applyToBuffer(juce::AudioBuffer<float>&buffer, juce::MidiBuffer 
 }
 
 
-void Wavetable::handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record) {
-    Helpers::MessageType type = Helpers::getMidiMessageType(msg);
-    LOG(Helpers::getMidiMessageDescription(msg) + "\n");
-    if (type == Helpers::MessageType::Note) {
-        
-        
-        if (record) {
-            addMessageToBuffer(msg, sampleNumber);
-        }
+void Wavetable::contextControl(const juce::MidiMessageMetadata& metadata) {
+    auto msg = metadata.getMessage();
+    if (!msg.isController() || msg.getControllerNumber() != CONTEXTUAL_CC_CHANNEL) {
+        return;
     }
-}
+    int value = msg.getControllerValue();
+    switch (value)
+    {
+    case ENC_1_CW:  incrementAttack(0.1f);   break;
+    case ENC_1_CCW: incrementAttack(-0.1f);  break;
+    case ENC_2_CW:  incrementDecay(0.1f);    break;
+    case ENC_2_CCW: incrementDecay(-0.1f);   break;
+    case ENC_3_CW:  incrementSustain(0.1f);  break;
+    case ENC_3_CCW: incrementSustain(-0.1f); break;
+    case ENC_4_CW:  incrementRelease(0.1f);  break;
+    case ENC_4_CCW: incrementRelease(-0.1f); break;
+    case ENC_5_CW:  changeWave(true);        break;
+    case ENC_5_CCW: changeWave(false);       break;
 
-//juce::AudioProcessorValueTreeState& Wavetable::getValueTreeState() {
-//    return paramState;
-//}
+    default:
+        return;
+    }
+    return;
+}
 
 void Wavetable::addMessageToBuffer(const juce::MidiMessage& msg, int sampleNumber) {
     midiBuffer->addEvent(msg, sampleNumber);
@@ -172,10 +189,55 @@ void Wavetable::resized()
 
 const char* Wavetable::getPluginName() { return NEEDS_TRANS("Wavetable"); }
 
-void Wavetable::setAmpAdsr(te::ExpEnvelope adsr) {
-    ampAdsr = adsr;
+void Wavetable::incrementAttack(float amt) {
+    if (ampParams.attack + amt > 1.0f || ampParams.attack + amt < 0.0f) { return; }
+    ampParams.attack += amt;
+    ampAdsr.setParameters(ampParams);
 }
 
-te::ExpEnvelope& Wavetable::getAmpsAdsr() {
-    return ampAdsr;
+void Wavetable::incrementDecay(float amt) {
+    if (ampParams.decay + amt > 1.0f || ampParams.decay + amt < 0.0f) { return; }
+    ampParams.decay += amt;
+    ampAdsr.setParameters(ampParams);
+}
+
+void Wavetable::incrementSustain(float amt) {
+    if (ampParams.sustain + amt > 1.0f || ampParams.sustain + amt < 0.0f) { return; }
+    ampParams.sustain += amt;
+    ampAdsr.setParameters(ampParams);
+}
+
+void Wavetable::incrementRelease(float amt) {
+    if (ampParams.release + amt > 1.0f || ampParams.release + amt < 0.0f) { return; }
+    ampParams.release += amt;
+    ampAdsr.setParameters(ampParams);
+}
+
+void Wavetable::changeWave(bool next) {
+    if (next) {
+        if (waveShape == waves.back()) {
+            waveShape = waves.at(0);
+        }
+        else {
+            for (int i = 0; i < waves.size() - 1; i++) {
+                if (waves.at(i) == waveShape) {
+                    waveShape = waves.at(i + 1);
+                    break;
+                }
+            }
+        }
+    }
+    else {
+        if (waveShape == waves.at(0)) {
+            waveShape = waves.at(waves.size() - 1);
+        }
+        else {
+            for (int i = 1; i < waves.size(); i++) {
+                if (waves.at(i) == waveShape) {
+                    waveShape = waves.at(i - 1);
+                    break;
+                }
+            }
+        }
+    }
 }

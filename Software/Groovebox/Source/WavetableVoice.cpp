@@ -10,7 +10,10 @@
 
 #include "WavetableVoice.h"
 
-WavetableVoice::WavetableVoice(te::ExpEnvelope& amp) : ampAdsr(amp) {}
+WavetableVoice::WavetableVoice(VoiceParams p) 
+    : ampAdsr(p.ampAdsr), ampParams(p.ampParams), waveShape(p.waveShape) {
+    isPlaying = false;
+}
 
 bool WavetableVoice::canPlaySound(juce::SynthesiserSound* sound) {
     return dynamic_cast<juce::SynthesiserSound*>(sound) != nullptr;
@@ -48,8 +51,6 @@ void WavetableVoice::stopNote(float velocity, bool allowTrailOff) {
         clearCurrentNote();
         isPlaying = false;
     }
-
-    //ampAdsr.noteOff();
  
 }
 void WavetableVoice::controllerMoved(int controllerNumber, int newControllerValue) {
@@ -57,7 +58,7 @@ void WavetableVoice::controllerMoved(int controllerNumber, int newControllerValu
 }
 
 void WavetableVoice::prepareToPlay(double sampleRate, int samplesPerBlock) {
-    adsr.setSampleRate(sampleRate);
+    ampAdsr.setSampleRate(sampleRate);
 
     juce::dsp::ProcessSpec spec;
     spec.maximumBlockSize = samplesPerBlock;
@@ -68,14 +69,10 @@ void WavetableVoice::prepareToPlay(double sampleRate, int samplesPerBlock) {
 
     gain.setGainLinear(0.1f);
 
-    te::ExpEnvelope::Parameters ampParams;
-    ampParams.attack = 0.1f;
-    ampParams.decay = 0.1f;
-    ampParams.sustain = 0.1f;
-    ampParams.release = 0.1f;
-
     ampAdsr.setSampleRate(sampleRate);
     ampAdsr.setParameters(ampParams);
+
+    osc.setWave(te::Oscillator::Waves::square);
 
     isPrepared = true;
 
@@ -97,7 +94,7 @@ void WavetableVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int
 
     osc.process(synthBuffer,startSample,numSamples);
     juce::dsp::AudioBlock<float> audioBlock{ synthBuffer };
-    gain.process(juce::dsp::ProcessContextReplacing<float> {audioBlock});
+    //gain.process(juce::dsp::ProcessContextReplacing<float> {audioBlock});
 
     ampAdsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumChannels());
 
@@ -111,4 +108,8 @@ void WavetableVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int
 
 void WavetableVoice::pitchWheelMoved(int newPitchWheelValue) {
 
+}
+
+void WavetableVoice::updateParams(int numSamples) {
+    ampAdsr.setParameters(ampParams);
 }
