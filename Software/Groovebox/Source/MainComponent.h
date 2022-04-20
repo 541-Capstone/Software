@@ -159,7 +159,8 @@ private:
     FileManager fileManager;
     tracktion_engine::SelectionManager selectionmanager {engine};
 
-    //actMidiService midiService;
+    //Number of octaves to shift incoming notes by
+    std::shared_ptr<int> octaveShift = 0;
     
     /* State functions below! */
     

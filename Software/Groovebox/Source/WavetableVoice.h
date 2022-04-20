@@ -12,7 +12,6 @@
 
 #include <JuceHeader.h>
 #include "WavetableSound.h"
-#include "ISynthVoice.h"
 #include "Utilities.h"
 
 class WavetableVoice : public juce::SynthesiserVoice {

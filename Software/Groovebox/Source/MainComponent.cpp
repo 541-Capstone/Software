@@ -56,7 +56,7 @@ MainComponent::MainComponent(){
     
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
-    midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
+    midiService = std::make_unique<MidiService>(edit->engine, inputMidiBuffer);
     midiService->addActionListener(this);
     
     // Setup save and load functions for setting
@@ -74,12 +74,6 @@ MainComponent::MainComponent(){
     //=========================================================================================================
     auto& dm = edit->engine.getDeviceManager();
 
-    for (int i = 0; i < dm.getNumMidiInDevices(); i++)
-    {
-        auto dev = dm.getMidiInDevice(i);
-        dev->setEnabled(true);
-        dev->setEndToEndEnabled(true);
-    }
     // Add the midi input to track 1
     if (auto t = trackManager->getActiveTrack()->getTrack())
         if (auto dev = dm.getMidiInDevice(0))
@@ -92,6 +86,7 @@ MainComponent::MainComponent(){
         if (auto t = trackManager->getActiveTrack()->getTrack())
             t->pluginList.insertPlugin(*synth, 0, nullptr);
     }
+    octaveShift = std::make_shared<int>(0);
     //=========================================================================================================
     //trackManager->setSynth(wavetablePlugin);
     //trackManager->getActiveTrack()->getTrack()->pluginList.insertPlugin(wavetablePlugin, 0, nullptr);
@@ -114,7 +109,6 @@ void MainComponent::paint(juce::Graphics &g){
         setting.setVisible(true);
         setting.setEnabled(true);
     }
-    //midiService.paint(g);
 
 }
 
@@ -123,7 +117,6 @@ void MainComponent::resized() {
     timeline.resized();
     setting.resized();
     juce::Rectangle<int> midiRect = getLocalBounds().removeFromBottom(300);
-    //midiService.resize(midiRect);
 }
 
 /* button listener */

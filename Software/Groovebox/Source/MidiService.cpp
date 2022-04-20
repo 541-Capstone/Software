@@ -1,70 +1,29 @@
 #include "MidiService.h"
 
-MidiService::MidiService(int rate, std::shared_ptr<juce::MidiBuffer> buffer) {
-    addAndMakeVisible(midiInputList);
-    midiInputList.setTextWhenNoChoicesAvailable("No MIDI Inputs Enabled");
+MidiService::MidiService(te::Engine& engine, std::shared_ptr<juce::MidiBuffer> buffer) : teDeviceManager(engine.getDeviceManager()) {
+    sampleRate = teDeviceManager.getSampleRate();
+    midiBuffer = buffer;
+    enableAllDevices();
+
+    //Set up callbacks using plain juce
     auto midiInputs = juce::MidiInput::getAvailableDevices();
 
-    sampleRate = rate;
-    midiBuffer = buffer;
-
-    juce::StringArray midiInputNames;
-
-    for (auto input : midiInputs) {
-        midiInputNames.add(input.name);
-        LOG("MIDI Device detected: " + input.name);
+    for (auto dev : midiInputs) {
+        if (!juceDeviceManager.isMidiInputDeviceEnabled(dev.identifier))
+            juceDeviceManager.setMidiInputDeviceEnabled(dev.identifier, true);
+        juceDeviceManager.addMidiInputDeviceCallback(dev.identifier, this);
     }
-
-    midiInputList.addItemList(midiInputNames, 1);
-    midiInputList.onChange = [this] { setMidiInput(midiInputList.getSelectedItemIndex()); };
-
-    // find the first enabled device and use that by default
-    for (auto input : midiInputs)
-    {
-        if (deviceManager.isMidiInputDeviceEnabled(input.identifier))
-        {
-            setMidiInput(midiInputs.indexOf(input));
-            break;
-        }
-    }
-
-    // if no enabled devices were found just use the first one in the list
-    if (midiInputList.getSelectedId() == 0)
-        setMidiInput(0);
-
-#ifdef __MACH__
-    //TODO: Delete this
-    setMidiInput(1);
-#endif
     
-
-    midiInputList.onChange = [this] { setMidiInput(midiInputList.getSelectedItemIndex()); };
+    
 }
 
-void MidiService::setMidiInput(int index)
-{
-    auto list = juce::MidiInput::getAvailableDevices();
-
-    deviceManager.removeMidiInputDeviceCallback(list[lastInputIndex].identifier, this);
-
-    auto newInput = list[index];
-
-    if (!deviceManager.isMidiInputDeviceEnabled(newInput.identifier))
-        deviceManager.setMidiInputDeviceEnabled(newInput.identifier, true);
-
-    deviceManager.addMidiInputDeviceCallback(newInput.identifier, this);
-    midiInputList.setSelectedId(index + 1, juce::dontSendNotification);
-
-    lastInputIndex = index;
-}
-
-void MidiService::setSampleRate(int newRate) {
-    LOG("New sample rate: " + std::to_string(newRate));
-    sampleRate = newRate;
-}
-
-void MidiService::setSampleRateFromTransport(te::TransportControl& t) {
-
+void MidiService::enableAllDevices() {
+    for (int i = 0; i < teDeviceManager.getNumMidiInDevices(); i++) {
+        auto dev = teDeviceManager.getMidiInDevice(i);
+        dev->setEnabled(true);
+        dev->setEndToEndEnabled(true);
+             
+    }
 }
 
 void MidiService::handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) {
@@ -99,29 +58,6 @@ void MidiService::addMessageToList(const juce::MidiMessage& message, const juce:
         midiBuffer->addEvent(message, sampleNumber);
         sendActionMessage("MIDI");
     }
-}
-
-void MidiService::paint(juce::Graphics &g) {
-    g.fillAll(juce::Colours::grey);
-}
-
-void MidiService::resized(){
-    repaint();
-}
-
-void MidiService::resize(juce::Rectangle<int> rect) {
-    juce::Rectangle<int> area = rect;
-
-    juce::FlexBox renderBox{ juce::FlexBox::Direction::column,
-                           juce::FlexBox::Wrap::noWrap,
-                           juce::FlexBox::AlignContent::flexStart,
-                           juce::FlexBox::AlignItems::flexStart,
-                           juce::FlexBox::JustifyContent::flexEnd
-    };
-
-    renderBox.items.add(midiInputListLabel); 
-    renderBox.items.add(midiInputList);
-    renderBox.performLayout(area);
 
 }
 

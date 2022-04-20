@@ -15,7 +15,6 @@
 #include "IPlugin.h"
 #include "WavetableSound.h"
 #include "WavetableVoice.h"
-#include "ISynthVoice.h"
 
 //==============================================================================
 /*
