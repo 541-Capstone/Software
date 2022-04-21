@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\FileBrowser.cpp"/>
+    <ClCompile Include="..\..\Source\FileBrowserHandler.cpp"/>
     <ClCompile Include="..\..\Source\IPlugin.cpp"/>
     <ClCompile Include="..\..\Source\Wavetable.cpp"/>
     <ClCompile Include="..\..\Source\WavetableVoice.cpp"/>
@@ -4136,6 +4137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\FileBrowser.h"/>
+    <ClInclude Include="..\..\Source\FileBrowserHandler.h"/>
     <ClInclude Include="..\..\Source\IPlugin.h"/>
     <ClInclude Include="..\..\Source\Wavetable.h"/>
     <ClInclude Include="..\..\Source\WavetableSound.h"/>

@@ -1201,6 +1201,9 @@
     <ClCompile Include="..\..\Source\FileBrowser.cpp">
       <Filter>Groovebox\FileBrowser</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\FileBrowserHandler.cpp">
+      <Filter>Groovebox\FileBrowser</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\IPlugin.cpp">
       <Filter>Groovebox\Plugins</Filter>
     </ClCompile>
@@ -5401,6 +5404,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\FileBrowser.h">
+      <Filter>Groovebox\FileBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FileBrowserHandler.h">
       <Filter>Groovebox\FileBrowser</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\IPlugin.h">
