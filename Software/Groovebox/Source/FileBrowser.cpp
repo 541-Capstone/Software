@@ -40,6 +40,7 @@ void FileBrowser::scrollUp(const int amount){
     const int newItemSelection = amount + itemSelection;
     if (newItemSelection < 0 || newItemSelection >= numItems) return;
     juce::File file = directoryList.getFile(newItemSelection);
+    currentFile = file;
     fileTreeComp.setSelectedFile(file);
     auto treeItem = fileTreeComp.getItemOnRow(newItemSelection);
     fileTreeComp.scrollToKeepItemVisible(treeItem);
@@ -105,4 +106,8 @@ int FileBrowser::getItemIndex()const{
 
 int FileBrowser::getItemHeight()const{
     return fileTreeComp.getItemHeight();
+}
+
+juce::File FileBrowser::getFileAtIndex(){
+    return currentFile;
 }

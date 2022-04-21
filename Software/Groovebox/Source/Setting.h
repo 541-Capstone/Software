@@ -71,6 +71,6 @@ private:
     void drawCarret();
     
     // FileBrowserHandler
-    FileBrowserHandler<te::Edit> fileBrowserHandler;
+    FileBrowserHandler<juce::File> fileBrowserHandler;
 };
 #endif

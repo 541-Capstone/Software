@@ -34,10 +34,20 @@ Setting::Setting(){
     
     std::function<void()> testFunctionScrollDown = [&]()->void{
         //browser.scrollDown(scrollAmount);
-        fileBrowserHandler.scrollDown();
+        //fileBrowserHandler.scrollDown();
         
         //updateCursorLocation();
+        fileBrowserHandler.doAction();
     };
+    
+    std::function<juce::File*()> testLoadFunction = [&]()->juce::File*{
+        juce::File file = fileBrowserHandler.getFileAtIndex();
+        std::cout<<"testLoadFunction: filename: ";
+        std::cout<<file.getFileName()<<'\n';
+        return nullptr;
+    };
+    
+    fileBrowserHandler.setAction(testLoadFunction);
     
     loadEdit.onClick = testFunctionScrollUp;
     loadWav.onClick = testFunctionScrollDown;

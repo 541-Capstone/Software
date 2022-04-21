@@ -94,6 +94,10 @@ public:
         return ret;
     };
     
+    juce::File getFileAtIndex(){
+        return fileBrowser.getFileAtIndex();
+    };
+    
     // Functions to be removed later
     void scrollUp() {
         fileBrowser.scrollUp(scrollAmount);
@@ -101,6 +105,11 @@ public:
     void scrollDown() {
         fileBrowser.scrollDown(scrollAmount);
     };
+    
+    T *doAction(){
+        return action();
+    };
+    
 private:
     std::function<T*()> action;
     FileBrowser fileBrowser;
