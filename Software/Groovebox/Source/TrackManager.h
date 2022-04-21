@@ -12,15 +12,28 @@
 
 #include "Utilities.h"
 
+
+
 class TrackManager {
+	
 public:
+	struct TrackWrapper {
+		te::AudioTrack* track;
+		std::unique_ptr<juce::MidiBuffer> midiBuffer;
+		std::unique_ptr<IPlugin> synth;
+		juce::Array<te::Plugin*> effects;
+		juce::String getName();
+		te::AudioTrack* getTrack();
+		void addMidiMessage(const juce::MidiMessage&, int sampleNumber);
+	};
+
 	TrackManager(std::shared_ptr<te::Edit> edit);
 
 	~TrackManager();
 
-	juce::Array<te::AudioTrack*> getAudioTrackList();
+	juce::Array<std::shared_ptr<TrackWrapper>> getAudioTrackList();
 
-	te::AudioTrack* getActiveTrack();
+	std::shared_ptr<TrackWrapper> getActiveTrack();
 
 	int getActiveTrackIndex();
 
@@ -30,9 +43,11 @@ public:
 
 	void createTrack();
 
-	void addMidiToBuffer(const juce::MidiBuffer&);
+	void addMidiToBuffer(const juce::MidiMessage&, int sampleNumber, bool recording);
 
 	void setActiveTrack(int index);
+
+	void setSynth(std::unique_ptr<IPlugin> newSynth);
 
 private:
 	// The edit that the manager is attached to
@@ -40,12 +55,10 @@ private:
 	//Iterable list of all tracks in the edit
 	te::TrackList* trackList;
 	//List of audio tracks in the Session - only includes MIDI and WAV tracks
-	juce::Array<te::AudioTrack*> audioTrackList;
-
-	// List of track midi buffers
-	juce::Array<std::shared_ptr<juce::MidiBuffer>> midiBuffers;
+	juce::Array<std::shared_ptr<TrackWrapper>> audioTrackList;
 
 	int activeTrackIndex;
-	te::AudioTrack* activeTrack;
+
+	//Plugins on a track
 
 };

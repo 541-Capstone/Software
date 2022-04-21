@@ -10,13 +10,35 @@
 
 #include <JuceHeader.h>
 #include "Wavetable.h"
+#include "WavetableEditor.h"
 
 //==============================================================================
 Wavetable::Wavetable(te::PluginCreationInfo info) : te::Plugin(info)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
-    auto um = getUndoManager();
+    // Fill the waves vector with the possible waves we can use
+    // We don't want to keep 'none' as a voice right now so we start the loop from 1
+    // There are five other kinds of waves built into te::Oscillator that we can use
+    for (int i = 1; i < 6; i++) {
+        waves.push_back(static_cast<te::Oscillator::Waves>(i));
+    }
+    std::function<float()> func[] = {
+        [&]() { return ampParams.attack; },
+        [&]() { return ampParams.decay; },
+        [&]() { return ampParams.sustain; },
+        [&]() { return ampParams.release; },
+        [&]() { for (int i = 0; i < waves.size(); i++) { if (waveShape == waves.at(i)) { return (float)i; } } return 0.0f; },
+        [&]() { return 0.0f; },
+        [&]() { return 0.0f; },
+        [&]() { return 0.0f; }
+    };
+    contextParams.push_back({ "Attack", func[0]});
+    contextParams.push_back({ "Decay", func[1]});
+    contextParams.push_back({ "Sustain", func[2]});
+    contextParams.push_back({ "Release", func[3]});
+    contextParams.push_back({ "Wave", func[4]});
+    contextParams.push_back({ "Attack", func[5]});
+    contextParams.push_back({ "Attack", func[6]});
+    contextParams.push_back({ "Attack", func[7]});
 }
 
 Wavetable::~Wavetable()
@@ -35,9 +57,16 @@ juce::String Wavetable::getSelectableDescription()      { return getName(); }
 
 void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
     sampleRate = info.sampleRate;
+
+    ampParams.attack = 0.25f;
+    ampParams.decay = 0.25f;
+    ampParams.sustain = 0.05f;
+    ampParams.release = 0.01f;
+
+
     synth.setCurrentPlaybackSampleRate(sampleRate);
     synth.addSound(new WavetableSound());
-    synth.addVoice(new WavetableVoice());
+    synth.addVoice(new WavetableVoice({ ampAdsr, ampParams, waveShape }));
 
     for (int i = 0; i < synth.getNumVoices(); i++) {
         if (auto voice = dynamic_cast<WavetableVoice*>(synth.getVoice(i))) {
@@ -47,47 +76,99 @@ void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
 }
 void Wavetable::deinitialise() {}
 
-
 //Functions similarly to the processBlock of a standalone plugin
 
 void Wavetable::applyToBuffer(const te::PluginRenderContext& fc) {
-
-    for (int channel = 0; channel < fc.destBuffer->getNumChannels(); ++channel)
+    if (fc.destBuffer != nullptr)
     {
-        auto dest = fc.destBuffer->getWritePointer(channel);
+        // First handle MIDI messages
+        // Handle all notes first
+        if (fc.bufferForMidiMessages != nullptr)
+            if (fc.bufferForMidiMessages->isAllNotesOff)
+                synth.allNotesOff(NOTE_CHANNEL, true);
+        // Chop the buffer in 32 sample blocks so modulation is smooth
+        int todo = fc.bufferNumSamples;
+        int pos = fc.bufferStartSample;
 
-        //Fill output buffer here
-        /*for (int i = 0; i < fc.bufferNumSamples; ++i)
-            dest[i] = std::tanh(gainValue * dest[i]);*/
-        for (int i = 0; i < fc.bufferNumSamples; i++) {
-            
-        }
+        while (todo > 0)
+        {
+            int thisBlock = std::min(32, todo);
 
-        //Check if user has updated settings
-        for (int i = 0; i < synth.getNumVoices(); i++) {
-            if (auto voice = dynamic_cast<juce::SynthesiserVoice*>(synth.getVoice(i))) {
-                //Update settings here
-                //ADSR
+            te::AudioScratchBuffer workBuffer(2, thisBlock);
+            workBuffer.buffer.clear();
+
+            juce::MidiBuffer midi;
+            if (fc.bufferForMidiMessages != nullptr)
+            {
+                for (auto m : *fc.bufferForMidiMessages)
+                {
+                    int midiPos = int(m.getTimeStamp());
+                    if (midiPos >= pos && midiPos < pos + thisBlock)
+                        midi.addEvent(m, midiPos - pos);
+                }
             }
-        }
+            //Then process synth
+            applyToBuffer(workBuffer.buffer, midi);
 
-        synth.renderNextBlock(*fc.destBuffer, *midiBuffer, 0, fc.destBuffer->getNumSamples());
+            //Copy buffer into output
+            if (fc.destBuffer->getNumChannels() == 1)
+            {
+                fc.destBuffer->copyFrom(0, pos, workBuffer.buffer, 0, 0, thisBlock);
+            }
+            else
+            {
+                fc.destBuffer->copyFrom(0, pos, workBuffer.buffer, 0, 0, thisBlock);
+                fc.destBuffer->copyFrom(1, pos, workBuffer.buffer, 1, 0, thisBlock);
+            }
+
+            //Start on next block
+            todo -= thisBlock;
+            pos += thisBlock;
+        }
     }
+    
+   
 
     
 }
 
+void Wavetable::applyToBuffer(juce::AudioBuffer<float>&buffer, juce::MidiBuffer & midi)
+{
+    // update buffer params;
+    // Render synth into working buffer
+    synth.renderNextBlock(buffer, midi, 0, buffer.getNumSamples());
 
-void Wavetable::handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record) {
-    Helpers::MessageType type = Helpers::getMidiMessageType(msg);
-    LOG(Helpers::getMidiMessageDescription(msg) + "\n");
-    if (type == Helpers::MessageType::Note) {
-        
-        
-        if (record) {
-            addMessageToBuffer(msg, sampleNumber);
-        }
+}
+
+
+void Wavetable::contextControl(const juce::MidiMessageMetadata& metadata) {
+    auto msg = metadata.getMessage();
+    if (!msg.isController() || msg.getControllerNumber() != CONTEXTUAL_CC_CHANNEL) {
+        return;
     }
+    int value = msg.getControllerValue();
+    switch (value)
+    {
+    case ENC_1_CW:  incrementAttack(0.1f);   break;
+    case ENC_1_CCW: incrementAttack(-0.1f);  break;
+    case ENC_2_CW:  incrementDecay(0.1f);    break;
+    case ENC_2_CCW: incrementDecay(-0.1f);   break;
+    case ENC_3_CW:  incrementSustain(0.1f);  break;
+    case ENC_3_CCW: incrementSustain(-0.1f); break;
+    case ENC_4_CW:  incrementRelease(0.1f);  break;
+    case ENC_4_CCW: incrementRelease(-0.1f); break;
+    case ENC_5_CW:  changeWave(true);        break;
+    case ENC_5_CCW: changeWave(false);       break;
+
+    default:
+        return;
+    }
+    return;
+}
+
+IPlugin::Parameter Wavetable::getParameterValue(int index) {
+    ParamMap& pm = contextParams.at(index);
+    return { pm.name, pm.getValue()};
 }
 
 void Wavetable::addMessageToBuffer(const juce::MidiMessage& msg, int sampleNumber) {
@@ -130,3 +211,57 @@ void Wavetable::resized()
 }
 
 const char* Wavetable::getPluginName() { return NEEDS_TRANS("Wavetable"); }
+
+void Wavetable::incrementAttack(float amt) {
+    if (ampParams.attack + amt > 1.0f || ampParams.attack + amt < 0.0f) { return; }
+    ampParams.attack += amt;
+    ampAdsr.setParameters(ampParams);
+}
+
+void Wavetable::incrementDecay(float amt) {
+    if (ampParams.decay + amt > 1.0f || ampParams.decay + amt < 0.0f) { return; }
+    ampParams.decay += amt;
+    ampAdsr.setParameters(ampParams);
+}
+
+void Wavetable::incrementSustain(float amt) {
+    if (ampParams.sustain + amt > 1.0f || ampParams.sustain + amt < 0.0f) { return; }
+    ampParams.sustain += amt;
+    ampAdsr.setParameters(ampParams);
+}
+
+void Wavetable::incrementRelease(float amt) {
+    if (ampParams.release + amt > 1.0f || ampParams.release + amt < 0.0f) { return; }
+    ampParams.release += amt;
+    ampAdsr.setParameters(ampParams);
+}
+
+void Wavetable::changeWave(bool next) {
+    if (next) {
+        if (waveShape == waves.back()) {
+            waveShape = waves.at(0);
+        }
+        else {
+            for (int i = 0; i < waves.size() - 1; i++) {
+                if (waves.at(i) == waveShape) {
+                    waveShape = waves.at(i + 1);
+                    break;
+                }
+            }
+        }
+    }
+    else {
+        if (waveShape == waves.at(0)) {
+            waveShape = waves.at(waves.size() - 1);
+        }
+        else {
+            for (int i = 1; i < waves.size(); i++) {
+                if (waves.at(i) == waveShape) {
+                    waveShape = waves.at(i - 1);
+                    break;
+                }
+            }
+        }
+    }
+}
+

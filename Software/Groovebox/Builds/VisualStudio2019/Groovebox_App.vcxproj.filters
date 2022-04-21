@@ -5,6 +5,9 @@
     <Filter Include="Groovebox\FileBrowser">
       <UniqueIdentifier>{4107A70F-25CC-F778-F19C-A190EB6D99D0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Groovebox\Plugins\Wavetable">
+      <UniqueIdentifier>{3607A0A5-DED4-97A6-4164-A079D5F3BF7B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\Plugins">
       <UniqueIdentifier>{A15B104A-8D1B-E649-E118-225D4C8A5E66}</UniqueIdentifier>
     </Filter>
@@ -22,6 +25,9 @@
     </Filter>
     <Filter Include="Groovebox\TrackManager">
       <UniqueIdentifier>{6D5C4969-00E1-D743-6C03-ACF410F3B97F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Groovebox\State\Synth">
+      <UniqueIdentifier>{825C7B3B-6F89-212C-4BE0-2446BFD8503D}</UniqueIdentifier>
     </Filter>
     <Filter Include="Groovebox\State\Setting">
       <UniqueIdentifier>{F81A9B22-D882-0E16-3862-4564DF8012D4}</UniqueIdentifier>
@@ -1204,13 +1210,16 @@
     <ClCompile Include="..\..\Source\FileBrowserHandler.cpp">
       <Filter>Groovebox\FileBrowser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\IPlugin.cpp">
-      <Filter>Groovebox\Plugins</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Wavetable.cpp">
-      <Filter>Groovebox\Plugins</Filter>
+      <Filter>Groovebox\Plugins\Wavetable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\WavetableEditor.cpp">
+      <Filter>Groovebox\Plugins\Wavetable</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\WavetableVoice.cpp">
+      <Filter>Groovebox\Plugins\Wavetable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Sampler.cpp">
       <Filter>Groovebox\Plugins</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\AudioVisualizer.cpp">
@@ -1239,6 +1248,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\TrackManager.cpp">
       <Filter>Groovebox\TrackManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Synth.cpp">
+      <Filter>Groovebox\State\Synth</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Setting.cpp">
       <Filter>Groovebox\State\Setting</Filter>
@@ -5409,16 +5421,22 @@
     <ClInclude Include="..\..\Source\FileBrowserHandler.h">
       <Filter>Groovebox\FileBrowser</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\Wavetable.h">
+      <Filter>Groovebox\Plugins\Wavetable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WavetableEditor.h">
+      <Filter>Groovebox\Plugins\Wavetable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WavetableSound.h">
+      <Filter>Groovebox\Plugins\Wavetable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WavetableVoice.h">
+      <Filter>Groovebox\Plugins\Wavetable</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\IPlugin.h">
       <Filter>Groovebox\Plugins</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Wavetable.h">
-      <Filter>Groovebox\Plugins</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\WavetableSound.h">
-      <Filter>Groovebox\Plugins</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\WavetableVoice.h">
+    <ClInclude Include="..\..\Source\Sampler.h">
       <Filter>Groovebox\Plugins</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\AudioVisualizer.h">
@@ -5447,6 +5465,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\TrackManager.h">
       <Filter>Groovebox\TrackManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Synth.h">
+      <Filter>Groovebox\State\Synth</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Setting.h">
       <Filter>Groovebox\State\Setting</Filter>

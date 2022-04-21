@@ -16,6 +16,7 @@
 #include "Cursors.h"
 #include "MidiService.h"
 #include "Setting.h"
+#include "Wavetable.h"
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
  reside within their own source code/header file
@@ -158,7 +159,8 @@ private:
     FileManager fileManager;
     tracktion_engine::SelectionManager selectionmanager {engine};
 
-    //actMidiService midiService;
+    //Number of octaves to shift incoming notes by
+    std::shared_ptr<int> octaveShift = 0;
     
     /* State functions below! */
     

@@ -70,9 +70,10 @@ endif
 OBJECTS_APP := \
   $(JUCE_OBJDIR)/FileBrowser_6c4b9e6d.o \
   $(JUCE_OBJDIR)/FileBrowserHandler_a14e6227.o \
-  $(JUCE_OBJDIR)/IPlugin_75e41b5d.o \
   $(JUCE_OBJDIR)/Wavetable_df08ef56.o \
+  $(JUCE_OBJDIR)/WavetableEditor_76c6b1a3.o \
   $(JUCE_OBJDIR)/WavetableVoice_355fbac6.o \
+  $(JUCE_OBJDIR)/Sampler_e764c69.o \
   $(JUCE_OBJDIR)/AudioVisualizer_1a49b7b5.o \
   $(JUCE_OBJDIR)/Cursors_a7d171be.o \
   $(JUCE_OBJDIR)/Scrollable_5c72b7b0.o \
@@ -82,6 +83,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/Utilities_707bb76b.o \
   $(JUCE_OBJDIR)/FileManager_9cd5b872.o \
   $(JUCE_OBJDIR)/TrackManager_37b32b6b.o \
+  $(JUCE_OBJDIR)/Synth_d919089d.o \
   $(JUCE_OBJDIR)/Setting_fd0db6b1.o \
   $(JUCE_OBJDIR)/Timeline_dfee064a.o \
   $(JUCE_OBJDIR)/viewObjects_2d75c1b0.o \
@@ -134,19 +136,24 @@ $(JUCE_OBJDIR)/FileBrowserHandler_a14e6227.o: ../../Source/FileBrowserHandler.cp
 	@echo "Compiling FileBrowserHandler.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
-$(JUCE_OBJDIR)/IPlugin_75e41b5d.o: ../../Source/IPlugin.cpp
-	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
-	@echo "Compiling IPlugin.cpp"
-	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
-
 $(JUCE_OBJDIR)/Wavetable_df08ef56.o: ../../Source/Wavetable.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling Wavetable.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
+$(JUCE_OBJDIR)/WavetableEditor_76c6b1a3.o: ../../Source/WavetableEditor.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling WavetableEditor.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
 $(JUCE_OBJDIR)/WavetableVoice_355fbac6.o: ../../Source/WavetableVoice.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling WavetableVoice.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/Sampler_e764c69.o: ../../Source/Sampler.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling Sampler.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/AudioVisualizer_1a49b7b5.o: ../../Source/AudioVisualizer.cpp
@@ -192,6 +199,11 @@ $(JUCE_OBJDIR)/FileManager_9cd5b872.o: ../../Source/FileManager.cpp
 $(JUCE_OBJDIR)/TrackManager_37b32b6b.o: ../../Source/TrackManager.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling TrackManager.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/Synth_d919089d.o: ../../Source/Synth.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling Synth.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Setting_fd0db6b1.o: ../../Source/Setting.cpp

@@ -141,9 +141,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\FileBrowser.cpp"/>
     <ClCompile Include="..\..\Source\FileBrowserHandler.cpp"/>
-    <ClCompile Include="..\..\Source\IPlugin.cpp"/>
     <ClCompile Include="..\..\Source\Wavetable.cpp"/>
+    <ClCompile Include="..\..\Source\WavetableEditor.cpp"/>
     <ClCompile Include="..\..\Source\WavetableVoice.cpp"/>
+    <ClCompile Include="..\..\Source\Sampler.cpp"/>
     <ClCompile Include="..\..\Source\AudioVisualizer.cpp"/>
     <ClCompile Include="..\..\Source\Cursors.cpp"/>
     <ClCompile Include="..\..\Source\Scrollable.cpp"/>
@@ -153,6 +154,7 @@
     <ClCompile Include="..\..\Source\Utilities.cpp"/>
     <ClCompile Include="..\..\Source\FileManager.cpp"/>
     <ClCompile Include="..\..\Source\TrackManager.cpp"/>
+    <ClCompile Include="..\..\Source\Synth.cpp"/>
     <ClCompile Include="..\..\Source\Setting.cpp"/>
     <ClCompile Include="..\..\Source\Timeline.cpp"/>
     <ClCompile Include="..\..\Source\viewObjects.cpp"/>
@@ -4138,10 +4140,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\FileBrowser.h"/>
     <ClInclude Include="..\..\Source\FileBrowserHandler.h"/>
-    <ClInclude Include="..\..\Source\IPlugin.h"/>
     <ClInclude Include="..\..\Source\Wavetable.h"/>
+    <ClInclude Include="..\..\Source\WavetableEditor.h"/>
     <ClInclude Include="..\..\Source\WavetableSound.h"/>
     <ClInclude Include="..\..\Source\WavetableVoice.h"/>
+    <ClInclude Include="..\..\Source\IPlugin.h"/>
+    <ClInclude Include="..\..\Source\Sampler.h"/>
     <ClInclude Include="..\..\Source\AudioVisualizer.h"/>
     <ClInclude Include="..\..\Source\Cursors.h"/>
     <ClInclude Include="..\..\Source\Scrollable.h"/>
@@ -4151,6 +4155,7 @@
     <ClInclude Include="..\..\Source\Utilities.h"/>
     <ClInclude Include="..\..\Source\FileManager.h"/>
     <ClInclude Include="..\..\Source\TrackManager.h"/>
+    <ClInclude Include="..\..\Source\Synth.h"/>
     <ClInclude Include="..\..\Source\Setting.h"/>
     <ClInclude Include="..\..\Source\Timeline.h"/>
     <ClInclude Include="..\..\Source\ContextComponent.h"/>

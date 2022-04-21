@@ -4,7 +4,11 @@
 
 class IPlugin {
 public:
-	virtual void handleMidiEvent(juce::MidiMessage msg, int sampleNumber, bool record);
-	//virtual Helpers::PluginType getPluginType();
+	struct Parameter {
+		juce::String name;
+		float value;
+	};
+	virtual void contextControl(const juce::MidiMessageMetadata& metadata) = 0;
+	virtual Parameter getParameterValue(const int index) = 0;
 private:
 };

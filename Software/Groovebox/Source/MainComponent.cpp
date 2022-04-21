@@ -56,7 +56,7 @@ MainComponent::MainComponent(){
     
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
-    midiService = std::make_unique<MidiService>(sampleRate, inputMidiBuffer);
+    midiService = std::make_unique<MidiService>(edit->engine, inputMidiBuffer);
     midiService->addActionListener(this);
     
     // Setup save and load functions for setting
@@ -64,10 +64,34 @@ MainComponent::MainComponent(){
     
     // Setup splash screen
     disableAllStates();
-    WState = WindowStates::Settings;
-    setting.displaySplashScreen();
-    currentComponent = &setting;
+    WState = WindowStates::TrackView;
+    //setting.displaySplashScreen();
+    currentComponent = &timeline;
     //currentComponent->contextControl({});
+    //TODO: Move to Synth Context
+    engine.getPluginManager().createBuiltInType<Wavetable>();
+    //te::Plugin::Ptr wavetablePlugin = edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {});
+    //=========================================================================================================
+    auto& dm = edit->engine.getDeviceManager();
+
+    // Add the midi input to track 1
+    if (auto t = trackManager->getActiveTrack()->getTrack())
+        if (auto dev = dm.getMidiInDevice(0))
+            for (auto instance : edit->getAllInputDevices())
+                if (&instance->getInputDevice() == dev)
+                    instance->setTargetTrack(*t, 0, true);
+
+    if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
+    {
+        if (auto t = trackManager->getActiveTrack()->getTrack())
+            t->pluginList.insertPlugin(*synth, 0, nullptr);
+    }
+    octaveShift = std::make_shared<int>(0);
+    //=========================================================================================================
+    //trackManager->setSynth(wavetablePlugin);
+    //trackManager->getActiveTrack()->getTrack()->pluginList.insertPlugin(wavetablePlugin, 0, nullptr);
+    
+    
 }
 
 MainComponent::~MainComponent(){
@@ -87,7 +111,6 @@ void MainComponent::paint(juce::Graphics &g){
         setting.setVisible(true);
         setting.setEnabled(true);
     }
-    //midiService.paint(g);
 
 }
 
@@ -96,7 +119,6 @@ void MainComponent::resized() {
     timeline.resized();
     setting.resized();
     juce::Rectangle<int> midiRect = getLocalBounds().removeFromBottom(300);
-    //midiService.resize(midiRect);
 }
 
 /* button listener */
@@ -132,7 +154,6 @@ void MainComponent::timerCallback(int timerId) {
 }
 
 void MainComponent::actionListenerCallback(const juce::String& message) {
-    LOG("Action Callback received: " + message);
     if (message == "MIDI") {
         auto currentTime = edit->getTransport().getCurrentPosition();
         auto currentSampleNumber = (int)(currentTime * sampleRate);
@@ -141,9 +162,10 @@ void MainComponent::actionListenerCallback(const juce::String& message) {
             juce::MidiMessage message = metadata.getMessage();
             auto type = Helpers::getMidiMessageType(message);
             if (type == Helpers::MessageType::Note) {
-                LOG("Sending note " + juce::MidiMessage::getMidiNoteName(message.getNoteNumber(), true, true, 3) 
-                + " to Track " + (juce::String)trackManager->getActiveTrackIndex());
+                //LOG("Sending note " + juce::MidiMessage::getMidiNoteName(message.getNoteNumber(), true, true, 3) 
+                //+ " to Track " + (juce::String)trackManager->getActiveTrackIndex());
                 //Send the midi note to the track's MIDI buffer
+                trackManager->addMidiToBuffer(message, currentSampleNumber, false);
             }
             else if (type == Helpers::MessageType::Universal) {
                 LOG("Universal Control Change: Controller: " + (juce::String)metadata.getMessage().getControllerNumber() +
@@ -227,6 +249,7 @@ void MainComponent::loadEdit(std::string filename){
     else{
         edit = std::move(te::createEmptyEdit(engine, editFile));
     }
+    edit->playInStopEnabled = true;
 }
 
 /**
@@ -300,7 +323,7 @@ void MainComponent::createAudioTrack() {
     //TODO: Remove this line!
     //Helpers::insertClipFromFile(trackManager->getActiveTrack(), &edit->getTransport(), TESTAUDIOPATH);
     LOG("Added track " + (juce::String)trackManager->getAudioTrackList().size() +
-        "\nNumber of clips in track: " + (juce::String)trackManager->getActiveTrack()->getClips().size() +
+        "\nNumber of clips in track: " + (juce::String)trackManager->getActiveTrack()->track->getClips().size() +
         "\nNumber of tracks in edit: " + (juce::String)trackManager->getNumTracks());
 }
 
@@ -320,7 +343,7 @@ void MainComponent::prevTrack() {
 
 void MainComponent::addClipToTrack() {
     auto track = trackManager->getActiveTrack();
-    Helpers::insertClipToTrack(track, &edit->getTransport(), TESTAUDIOPATH);
+    Helpers::insertClipToTrack(track->getTrack(), &edit->getTransport(), TESTAUDIOPATH);
     //waveforms.showEdit();
 }
 

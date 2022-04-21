@@ -14,16 +14,23 @@
             file="Source/FileBrowserHandler.h"/>
     </GROUP>
     <GROUP id="{16B81334-D32E-8B3B-630D-3407478ED327}" name="Plugins">
-      <FILE id="tODL9G" name="IPlugin.cpp" compile="1" resource="0" file="Source/IPlugin.cpp"/>
+      <GROUP id="{33D574E0-7D0C-6A5F-6739-86BE38FEF494}" name="Wavetable">
+        <FILE id="s3dfo6" name="Wavetable.cpp" compile="1" resource="0" file="Source/Wavetable.cpp"/>
+        <FILE id="tJxUo2" name="Wavetable.h" compile="0" resource="0" file="Source/Wavetable.h"/>
+        <FILE id="wR299d" name="WavetableEditor.cpp" compile="1" resource="0"
+              file="Source/WavetableEditor.cpp"/>
+        <FILE id="mFbT0n" name="WavetableEditor.h" compile="0" resource="0"
+              file="Source/WavetableEditor.h"/>
+        <FILE id="rOmGkl" name="WavetableSound.h" compile="0" resource="0"
+              file="Source/WavetableSound.h"/>
+        <FILE id="FjeFRb" name="WavetableVoice.cpp" compile="1" resource="0"
+              file="Source/WavetableVoice.cpp"/>
+        <FILE id="vsjN8P" name="WavetableVoice.h" compile="0" resource="0"
+              file="Source/WavetableVoice.h"/>
+      </GROUP>
       <FILE id="IbJwZl" name="IPlugin.h" compile="0" resource="0" file="Source/IPlugin.h"/>
-      <FILE id="s3dfo6" name="Wavetable.cpp" compile="1" resource="0" file="Source/Wavetable.cpp"/>
-      <FILE id="tJxUo2" name="Wavetable.h" compile="0" resource="0" file="Source/Wavetable.h"/>
-      <FILE id="rOmGkl" name="WavetableSound.h" compile="0" resource="0"
-            file="Source/WavetableSound.h"/>
-      <FILE id="FjeFRb" name="WavetableVoice.cpp" compile="1" resource="0"
-            file="Source/WavetableVoice.cpp"/>
-      <FILE id="vsjN8P" name="WavetableVoice.h" compile="0" resource="0"
-            file="Source/WavetableVoice.h"/>
+      <FILE id="HxFCa4" name="Sampler.cpp" compile="1" resource="0" file="Source/Sampler.cpp"/>
+      <FILE id="o8eEWs" name="Sampler.h" compile="0" resource="0" file="Source/Sampler.h"/>
     </GROUP>
     <GROUP id="{F91CA04B-82C4-EEE3-5037-6BA7E851FC29}" name="WaveformClasses">
       <FILE id="uvsOft" name="AudioVisualizer.cpp" compile="1" resource="0"
@@ -59,6 +66,10 @@
       <FILE id="Jdqkr6" name="TrackManager.h" compile="0" resource="0" file="Source/TrackManager.h"/>
     </GROUP>
     <GROUP id="{5323C0E3-87CC-405B-D6B9-AD58964F1DEF}" name="State">
+      <GROUP id="{73FA9BDD-BA58-5A30-22F5-5CB646727861}" name="Synth">
+        <FILE id="lchleA" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
+        <FILE id="hnYQxI" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
+      </GROUP>
       <GROUP id="{8AF648A0-20F5-57F3-9564-876147F260AD}" name="Setting">
         <FILE id="Jj2Wnp" name="Setting.cpp" compile="1" resource="0" file="Source/Setting.cpp"/>
         <FILE id="THbqQg" name="Setting.h" compile="0" resource="0" file="Source/Setting.h"/>

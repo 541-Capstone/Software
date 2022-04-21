@@ -3,22 +3,26 @@
 TrackManager::TrackManager(std::shared_ptr<te::Edit> edit) {
     this->edit = edit;
     trackList = &edit->getTrackList();
-	//Add all existing edit tracks to the 
-	audioTrackList.add((te::AudioTrack*)trackList->objects[edit->getTrackList().objects.size() - 1]);
+	//Add the default audio track to the list
+
+    std::shared_ptr<TrackWrapper> sp (new TrackWrapper{ (te::AudioTrack*)trackList->objects[trackList->objects.size() - 1],
+        std::make_unique<juce::MidiBuffer>(), nullptr, nullptr});
+	audioTrackList.add(std::move(sp));
     activeTrackIndex = 0;
-    activeTrack = audioTrackList[0];
+
+    
 }
 
 TrackManager::~TrackManager() {
-
+    
 }
 
-juce::Array<te::AudioTrack*> TrackManager::getAudioTrackList() {
+juce::Array<std::shared_ptr<TrackManager::TrackWrapper>> TrackManager::getAudioTrackList() {
     return audioTrackList;
 }
 
-te::AudioTrack* TrackManager::getActiveTrack() {
-    return activeTrack;
+std::shared_ptr<TrackManager::TrackWrapper> TrackManager::getActiveTrack() {
+    return audioTrackList[activeTrackIndex];
 }
 
 int TrackManager::getActiveTrackIndex() {
@@ -36,21 +40,38 @@ void TrackManager::createTrack(int index) {
 void TrackManager::createTrack() {
     edit->ensureNumberOfAudioTracks(audioTrackList.size() + 1);
     auto tracks = &edit->getTrackList();
-    audioTrackList.add((te::AudioTrack*)tracks->objects[edit->getTrackList().objects.size() - 1]);
+    std::shared_ptr<TrackWrapper> sp ( new TrackWrapper { (te::AudioTrack*)tracks->objects[edit->getTrackList().objects.size() - 1],
+        std::make_unique<juce::MidiBuffer>(), nullptr, nullptr});
+    audioTrackList.add(std::move(sp));
 }
 
 /*Copy the source MIDI buffer to the active track's input MIDI buffer,
 * then tell the active track to check the buffer
 */
-void TrackManager::addMidiToBuffer(const juce::MidiBuffer& buffer) {
-    auto midiBuffer = midiBuffers[activeTrackIndex];
-    midiBuffer->addEvents(buffer, 0, buffer.getNumEvents(), 0);
+void TrackManager::addMidiToBuffer(const juce::MidiMessage& msg, int sampleNumber, bool recording) {
+    auto midiBuffer = audioTrackList[activeTrackIndex];
+    midiBuffer->addMidiMessage(msg, sampleNumber);
     //TODO: Should alert active plugin to check MIDI buffer
 }
 
 void TrackManager::setActiveTrack(int index) {
     jassert(index >= 0 && index < audioTrackList.size());
-
-    activeTrack = audioTrackList[index];
     activeTrackIndex = index;
+}
+
+void TrackManager::setSynth(std::unique_ptr<IPlugin> newSynth) {
+    audioTrackList[activeTrackIndex]->synth = std::move(newSynth);
+}
+
+
+juce::String TrackManager::TrackWrapper::getName() {
+    return track->getName();
+}
+
+te::AudioTrack* TrackManager::TrackWrapper::getTrack() {
+    return track;
+}
+
+void TrackManager::TrackWrapper::addMidiMessage(const juce::MidiMessage& msg, int sampleNumber) {
+    midiBuffer->addEvent(msg, sampleNumber);
 }
