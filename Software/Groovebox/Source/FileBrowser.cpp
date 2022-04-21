@@ -47,6 +47,8 @@ void FileBrowser::scrollUp(const int amount){
     std::cout<<"Index: "<<newItemSelection<<'\n';
     itemSelection = newItemSelection;
     getNumberofItems();
+    std::string action = std::to_string(amount);
+    sendActionMessage(action);
 }
 
 void FileBrowser::scrollDown(const int amount){

@@ -8,6 +8,10 @@
     <GROUP id="{0414150A-2682-5E9D-EB2A-3A2AA9DD631F}" name="FileBrowser">
       <FILE id="iLCK1b" name="FileBrowser.cpp" compile="1" resource="0" file="Source/FileBrowser.cpp"/>
       <FILE id="LsU0X8" name="FileBrowser.h" compile="0" resource="0" file="Source/FileBrowser.h"/>
+      <FILE id="JUzKcw" name="FileBrowserHandler.cpp" compile="1" resource="0"
+            file="Source/FileBrowserHandler.cpp"/>
+      <FILE id="OI2QuF" name="FileBrowserHandler.h" compile="0" resource="0"
+            file="Source/FileBrowserHandler.h"/>
     </GROUP>
     <GROUP id="{16B81334-D32E-8B3B-630D-3407478ED327}" name="Plugins">
       <GROUP id="{33D574E0-7D0C-6A5F-6739-86BE38FEF494}" name="Wavetable">

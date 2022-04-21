@@ -81,7 +81,20 @@ MainComponent::MainComponent(){
     disableAllStates();
     WState = WindowStates::Synthesizer;
     //setting.displaySplashScreen();
-    currentComponent = &synthWindow;
+    
+    // Setup timeline view
+    //timeline.setEnabled(true);
+    //timeline.setVisible(true);
+    //timeline.setAllComponents(true);
+    
+    // Setup Setting view
+    setting.setEnabled(true);
+    setting.setVisible(true);
+    setting.setAllComponents(true);
+    
+    setting.displaySplashScreen();
+    currentComponent = &setting;
+    
     //currentComponent->contextControl({});
     //TODO: Move to Synth Context
     //te::Plugin::Ptr wavetablePlugin = edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {});
@@ -90,6 +103,8 @@ MainComponent::MainComponent(){
     //=========================================================================================================
     //trackManager->setSynth(wavetablePlugin);
     //trackManager->getActiveTrack()->getTrack()->pluginList.insertPlugin(wavetablePlugin, 0, nullptr);
+    
+    
 }
 
 MainComponent::~MainComponent(){
