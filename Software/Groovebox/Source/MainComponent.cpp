@@ -1,5 +1,7 @@
 #include "MainComponent.h"
-
+#define TIMELINE_IDX 0
+#define SETTINGS_IDX 1
+#define SYNTH_IDX    2
 //==============================================================================
 MainComponent::MainComponent(){
     /* set the window size */
@@ -53,6 +55,19 @@ MainComponent::MainComponent(){
     setting.setBounds(this->getBounds());
     addAndMakeVisible(setting);
     setting.setEdit(edit.get());
+
+    //Setup synth
+    engine.getPluginManager().createBuiltInType<Wavetable>();
+    if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
+    {
+        if (auto t = trackManager->getActiveTrack()) {
+            t->getTrack()->pluginList.insertPlugin(*synth, 0, nullptr);
+            t->hasSynth = true;
+        }
+    }
+    synthWindow.loadTrack(*(trackManager->getTrackWrapper()));
+    synthWindow.setBounds(this->getBounds());
+    addAndMakeVisible(synthWindow);
     
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
@@ -64,29 +79,14 @@ MainComponent::MainComponent(){
     
     // Setup splash screen
     disableAllStates();
-    WState = WindowStates::TrackView;
+    WState = WindowStates::Synthesizer;
     //setting.displaySplashScreen();
-    currentComponent = &timeline;
+    currentComponent = &synthWindow;
     //currentComponent->contextControl({});
     //TODO: Move to Synth Context
-    engine.getPluginManager().createBuiltInType<Wavetable>();
     //te::Plugin::Ptr wavetablePlugin = edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {});
     //=========================================================================================================
-    auto& dm = edit->engine.getDeviceManager();
-
-    // Add the midi input to track 1
-    if (auto t = trackManager->getActiveTrack()->getTrack())
-        if (auto dev = dm.getMidiInDevice(0))
-            for (auto instance : edit->getAllInputDevices())
-                if (&instance->getInputDevice() == dev)
-                    instance->setTargetTrack(*t, 0, true);
-
-    if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
-    {
-        if (auto t = trackManager->getActiveTrack()->getTrack())
-            t->pluginList.insertPlugin(*synth, 0, nullptr);
-    }
-    octaveShift = std::make_shared<int>(0);
+    trackManager->setActiveTrack(0);
     //=========================================================================================================
     //trackManager->setSynth(wavetablePlugin);
     //trackManager->getActiveTrack()->getTrack()->pluginList.insertPlugin(wavetablePlugin, 0, nullptr);
@@ -108,6 +108,10 @@ void MainComponent::paint(juce::Graphics &g){
     if (WState == WindowStates::Settings){
         setting.setVisible(true);
         setting.setEnabled(true);
+    }
+    if (WState == WindowStates::Synthesizer) {
+        synthWindow.setVisible(true);
+        synthWindow.setEnabled(true);
     }
 
 }
@@ -160,8 +164,6 @@ void MainComponent::actionListenerCallback(const juce::String& message) {
             juce::MidiMessage message = metadata.getMessage();
             auto type = Helpers::getMidiMessageType(message);
             if (type == Helpers::MessageType::Note) {
-                //LOG("Sending note " + juce::MidiMessage::getMidiNoteName(message.getNoteNumber(), true, true, 3) 
-                //+ " to Track " + (juce::String)trackManager->getActiveTrackIndex());
                 //Send the midi note to the track's MIDI buffer
                 trackManager->addMidiToBuffer(message, currentSampleNumber, false);
             }
@@ -318,8 +320,6 @@ void MainComponent::record(){
 
 void MainComponent::createAudioTrack() {
     trackManager->createTrack();
-    //TODO: Remove this line!
-    //Helpers::insertClipFromFile(trackManager->getActiveTrack(), &edit->getTransport(), TESTAUDIOPATH);
     LOG("Added track " + (juce::String)trackManager->getAudioTrackList().size() +
         "\nNumber of clips in track: " + (juce::String)trackManager->getActiveTrack()->track->getClips().size() +
         "\nNumber of tracks in edit: " + (juce::String)trackManager->getNumTracks());
@@ -354,6 +354,10 @@ void MainComponent::disableAllStates(){
     setting.setAllComponents(false);
     setting.setVisible(false);
     setting.setEnabled(false);
+
+    //synthWindow.setAllComponents(false);
+    synthWindow.setVisible(false);
+    synthWindow.setEnabled(false);
 }
 
 /* This assumes that the type of messaegs are of type UNIVERSAL */

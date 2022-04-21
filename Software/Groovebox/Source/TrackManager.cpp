@@ -6,7 +6,7 @@ TrackManager::TrackManager(std::shared_ptr<te::Edit> edit) {
 	//Add the default audio track to the list
 
     std::shared_ptr<TrackWrapper> sp (new TrackWrapper{ (te::AudioTrack*)trackList->objects[trackList->objects.size() - 1],
-        std::make_unique<juce::MidiBuffer>(), nullptr, nullptr});
+        false, false});
 	audioTrackList.add(std::move(sp));
     activeTrackIndex = 0;
 
@@ -41,7 +41,8 @@ void TrackManager::createTrack() {
     edit->ensureNumberOfAudioTracks(audioTrackList.size() + 1);
     auto tracks = &edit->getTrackList();
     std::shared_ptr<TrackWrapper> sp ( new TrackWrapper { (te::AudioTrack*)tracks->objects[edit->getTrackList().objects.size() - 1],
-        std::make_unique<juce::MidiBuffer>(), nullptr, nullptr});
+        false,
+        false});
     audioTrackList.add(std::move(sp));
 }
 
@@ -50,19 +51,29 @@ void TrackManager::createTrack() {
 */
 void TrackManager::addMidiToBuffer(const juce::MidiMessage& msg, int sampleNumber, bool recording) {
     auto midiBuffer = audioTrackList[activeTrackIndex];
-    midiBuffer->addMidiMessage(msg, sampleNumber);
     //TODO: Should alert active plugin to check MIDI buffer
 }
 
 void TrackManager::setActiveTrack(int index) {
+    //Check that the index is valid
     jassert(index >= 0 && index < audioTrackList.size());
+
+    //Move active index
     activeTrackIndex = index;
+
+    // Add the midi input devices to the new track
+    auto& deviceManager = edit->engine.getDeviceManager();
+    auto track = getActiveTrack()->getTrack();
+    for(int i = 0; i < deviceManager.getNumInputDevices(); i++)
+        if (auto dev = deviceManager.getMidiInDevice(i))
+            for (auto instance : edit->getAllInputDevices())
+                if (&instance->getInputDevice() == dev)
+                    instance->setTargetTrack(*track, 0, true);
 }
 
-void TrackManager::setSynth(std::unique_ptr<IPlugin> newSynth) {
-    audioTrackList[activeTrackIndex]->synth = std::move(newSynth);
+std::shared_ptr<TrackManager::TrackWrapper> TrackManager::getTrackWrapper() {
+    return audioTrackList[activeTrackIndex];
 }
-
 
 juce::String TrackManager::TrackWrapper::getName() {
     return track->getName();
@@ -70,8 +81,4 @@ juce::String TrackManager::TrackWrapper::getName() {
 
 te::AudioTrack* TrackManager::TrackWrapper::getTrack() {
     return track;
-}
-
-void TrackManager::TrackWrapper::addMidiMessage(const juce::MidiMessage& msg, int sampleNumber) {
-    midiBuffer->addEvent(msg, sampleNumber);
 }

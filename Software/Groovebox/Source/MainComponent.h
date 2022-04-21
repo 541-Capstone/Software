@@ -17,6 +17,7 @@
 #include "MidiService.h"
 #include "Setting.h"
 #include "Wavetable.h"
+#include "Synth.h"
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
  reside within their own source code/header file
@@ -80,19 +81,24 @@ private:
     std::unique_ptr<MidiService> midiService;
     
     /* This contains the states needed to switch between timeline, mixer, etc. */
-    enum WindowStates {
+    enum class WindowStates {
         TrackView,
         Mixer,
-        Generator,
+        Synthesizer,
         Effects,
         Settings
     };
     
     /* This is the state of the views */
     WindowStates WState = WindowStates::TrackView;
+
+    //Container for referencing all of our renderable contexts
+    std::vector<std::unique_ptr<ContextComponent>> windows;
+    //THe currently selected context
+    int activeWindowIndex = 0;
     
     /* This contains the states needed to play and pause */
-    enum PlayStates {
+    enum class PlayStates {
         Play,
         Pause,
         Record
@@ -154,13 +160,13 @@ private:
 
     bool isPlaying;
     
-    /* this is the timeline object */
+    /* these are the state objects */
     Timeline timeline;
+    Setting setting;
+    Synth synthWindow;
+
     FileManager fileManager;
     tracktion_engine::SelectionManager selectionmanager {engine};
-
-    //Number of octaves to shift incoming notes by
-    std::shared_ptr<int> octaveShift = 0;
     
     /* State functions below! */
     
@@ -230,7 +236,6 @@ private:
     
     ContextComponent *currentComponent = nullptr;
     
-    Setting setting;
     void setupSetting();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

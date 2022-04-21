@@ -36,9 +36,11 @@ Wavetable::Wavetable(te::PluginCreationInfo info) : te::Plugin(info)
     contextParams.push_back({ "Sustain", func[2]});
     contextParams.push_back({ "Release", func[3]});
     contextParams.push_back({ "Wave", func[4]});
-    contextParams.push_back({ "Attack", func[5]});
-    contextParams.push_back({ "Attack", func[6]});
-    contextParams.push_back({ "Attack", func[7]});
+    contextParams.push_back({ "Unused", func[5]});
+    contextParams.push_back({ "Unused", func[6]});
+    contextParams.push_back({ "Unused", func[7]});
+
+    numVoices = 5;
 }
 
 Wavetable::~Wavetable()
@@ -58,15 +60,15 @@ juce::String Wavetable::getSelectableDescription()      { return getName(); }
 void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
     sampleRate = info.sampleRate;
 
-    ampParams.attack = 0.25f;
-    ampParams.decay = 0.25f;
-    ampParams.sustain = 0.05f;
-    ampParams.release = 0.01f;
-
-
     synth.setCurrentPlaybackSampleRate(sampleRate);
+    
+    for (int i = 0; i < numVoices; i++) {
+        //{Attack, Decay, Sustain, Release}
+        ampParams = { 0.25f, 0.25f, 0.05f, 0.01f };
+        ampAdsrs.add(ampAdsrs[i]);
+        synth.addVoice(new WavetableVoice({ ampAdsrs[i], ampParams, waveShape }));
+    }
     synth.addSound(new WavetableSound());
-    synth.addVoice(new WavetableVoice({ ampAdsr, ampParams, waveShape }));
 
     for (int i = 0; i < synth.getNumVoices(); i++) {
         if (auto voice = dynamic_cast<WavetableVoice*>(synth.getVoice(i))) {
@@ -136,6 +138,10 @@ void Wavetable::applyToBuffer(juce::AudioBuffer<float>&buffer, juce::MidiBuffer 
 {
     // update buffer params;
     // Render synth into working buffer
+    /*LOG("Num voices: " + (juce::String)synth.getNumVoices());
+    LOG("notes: [0]" + (juce::String)synth.getVoice(0)->getCurrentlyPlayingNote() + "\n[1]" +
+        (juce::String)synth.getVoice(1)->getCurrentlyPlayingNote() + "\n[2]" +
+        (juce::String)synth.getVoice(2)->getCurrentlyPlayingNote());*/
     synth.renderNextBlock(buffer, midi, 0, buffer.getNumSamples());
 
 }
@@ -215,25 +221,25 @@ const char* Wavetable::getPluginName() { return NEEDS_TRANS("Wavetable"); }
 void Wavetable::incrementAttack(float amt) {
     if (ampParams.attack + amt > 1.0f || ampParams.attack + amt < 0.0f) { return; }
     ampParams.attack += amt;
-    ampAdsr.setParameters(ampParams);
+    updateParams(0);
 }
 
 void Wavetable::incrementDecay(float amt) {
     if (ampParams.decay + amt > 1.0f || ampParams.decay + amt < 0.0f) { return; }
     ampParams.decay += amt;
-    ampAdsr.setParameters(ampParams);
+    updateParams(0);
 }
 
 void Wavetable::incrementSustain(float amt) {
     if (ampParams.sustain + amt > 1.0f || ampParams.sustain + amt < 0.0f) { return; }
     ampParams.sustain += amt;
-    ampAdsr.setParameters(ampParams);
+    updateParams(0);
 }
 
 void Wavetable::incrementRelease(float amt) {
     if (ampParams.release + amt > 1.0f || ampParams.release + amt < 0.0f) { return; }
     ampParams.release += amt;
-    ampAdsr.setParameters(ampParams);
+    updateParams(0);
 }
 
 void Wavetable::changeWave(bool next) {
@@ -262,6 +268,12 @@ void Wavetable::changeWave(bool next) {
                 }
             }
         }
+    }
+}
+
+void Wavetable::updateParams(int /*numSamples*/) {
+    for (auto& voice : ampAdsrs) {
+        voice.setParameters(ampParams);
     }
 }
 
