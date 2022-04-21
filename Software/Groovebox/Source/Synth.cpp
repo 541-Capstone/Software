@@ -49,3 +49,8 @@ void Synth::resized()
     // components that your component contains..
 
 }
+
+void Synth::contextControl(const juce::MidiMessageMetadata &metadata)
+{
+    
+}

@@ -28,7 +28,7 @@ public:
     void setAllComponents(bool state);
     void startThread(const int threadID);
     void resized() override;
-    void setDirectory(const juce::File::SpecialLocationType type);
+    void setDirectory(const juce::File &directory);
     int getItemIndex()const;
     int getItemHeight()const;
 private:

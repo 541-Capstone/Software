@@ -42,6 +42,9 @@ Setting::Setting(){
     setAllComponents(false);
     
     addAndMakeVisible(browser);
+    
+    //TODO: We may need to change directories later
+    browser.setDirectory(juce::File::getCurrentWorkingDirectory());
     browser.startThread(3);
     
     browser.addActionListener(this);

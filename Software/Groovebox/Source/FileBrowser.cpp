@@ -63,8 +63,8 @@ void FileBrowser::showFiles(){
     
 }
 
-void FileBrowser::setDirectory(const juce::File::SpecialLocationType type){
-    directoryList.setDirectory(juce::File::getSpecialLocation(type), true, true);
+void FileBrowser::setDirectory(const juce::File &directory){
+    directoryList.setDirectory(directory, true, true);
 }
 
 void FileBrowser::setAllComponents(bool state){

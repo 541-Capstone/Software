@@ -11,12 +11,13 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ContextComponent.h"
 #include "Utilities.h"
 
 //==============================================================================
 /*
 */
-class Synth  : public juce::Component
+class Synth  : public juce::Component, public ContextComponent
 {
 public:
     Synth(int& octaveShiftRef);
@@ -25,7 +26,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    virtual void contextControl(const juce::MidiMessageMetadata& metadata) = 0;
+    void contextControl(const juce::MidiMessageMetadata& metadata) override;
 
 private:
     int& octaveShift;
