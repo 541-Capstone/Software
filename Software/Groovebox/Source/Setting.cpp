@@ -26,12 +26,16 @@ Setting::Setting(){
     
     
     std::function<void()> testFunctionScrollUp = [&]()->void{
-        browser.scrollUp(scrollAmount);
+        //browser.scrollUp(scrollAmount);
+        fileBrowserHandler.scrollUp();
+        
         //updateCursorLocation();
     };
     
     std::function<void()> testFunctionScrollDown = [&]()->void{
-        browser.scrollDown(scrollAmount);
+        //browser.scrollDown(scrollAmount);
+        fileBrowserHandler.scrollDown();
+        
         //updateCursorLocation();
     };
     
@@ -41,13 +45,15 @@ Setting::Setting(){
     /* hide all buttons */
     setAllComponents(false);
     
-    addAndMakeVisible(browser);
+    //addAndMakeVisible(browser);
+    addAndMakeVisible(fileBrowserHandler);
     
     //TODO: We may need to change directories later
-    browser.setDirectory(juce::File::getCurrentWorkingDirectory());
-    browser.startThread(3);
+    //browser.setDirectory(juce::File::getCurrentWorkingDirectory());
+    //browser.startThread(3);
+    fileBrowserHandler.setDirectory(juce::File::getCurrentWorkingDirectory());
     
-    browser.addActionListener(this);
+    //browser.addActionListener(this);
 }
 
 Setting::~Setting(){
@@ -63,7 +69,8 @@ void Setting::paint(juce::Graphics &g){
 
 void Setting::resized(){
     const int browserHeight = numItemsOnScreen * browser.getItemHeight();
-    browser.setBounds(cursorWidth, 0, this->getWidth()-cursorWidth, browserHeight);
+    //browser.setBounds(cursorWidth, 0, this->getWidth()-cursorWidth, browserHeight);
+    fileBrowserHandler.setBounds(0, 0, this->getWidth(), browserHeight);
     
     loadEdit.setBounds(this->getWidth()/2-bsize, this->getHeight()-bsize, bsize, bsize);
     
@@ -147,6 +154,10 @@ void Setting::setAllComponents(bool state){
     browser.setAllComponents(state);
     browser.setEnabled(state);
     browser.setVisible(state);
+    
+    fileBrowserHandler.setEnabled(state);
+    fileBrowserHandler.setVisible(state);
+    fileBrowserHandler.setAllComponent(state);
 }
 
 void Setting::setStartFunction(std::function<void ()> func) {

@@ -17,6 +17,7 @@
 #include "ContextComponent.h"
 #include "Utilities.h"
 #include "FileBrowser.h"
+#include "FileBrowserHandler.h"
 
 namespace te = tracktion_engine;
 class Setting : public juce::Component, public ContextComponent, public juce::ActionListener {
@@ -68,5 +69,8 @@ private:
     juce::Colour cursorColor = juce::Colours::red;
     void updateCursorLocation();
     void drawCarret();
+    
+    // FileBrowserHandler
+    FileBrowserHandler<te::Edit> fileBrowserHandler;
 };
 #endif
