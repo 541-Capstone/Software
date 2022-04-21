@@ -71,8 +71,15 @@ MainComponent::MainComponent(){
     //timeline.setEnabled(true);
     //timeline.setVisible(true);
     //timeline.setAllComponents(true);
+    
+    // Setup Setting view
+    setting.setEnabled(true);
+    setting.setVisible(true);
+    setting.setAllComponents(true);
+    
     setting.displaySplashScreen();
     currentComponent = &setting;
+    
     //currentComponent->contextControl({});
     //TODO: Move to Synth Context
     engine.getPluginManager().createBuiltInType<Wavetable>();

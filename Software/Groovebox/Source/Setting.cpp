@@ -128,6 +128,7 @@ void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
 }
 
 void Setting::displaySplashScreen(){
+    setAllComponents(false);
     addAndMakeVisible(start);
     start.setEnabled(true);
     start.setVisible(true);
