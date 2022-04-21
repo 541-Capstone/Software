@@ -66,7 +66,13 @@ MainComponent::MainComponent(){
     disableAllStates();
     WState = WindowStates::TrackView;
     //setting.displaySplashScreen();
-    currentComponent = &timeline;
+    
+    // Setup timeline view
+    //timeline.setEnabled(true);
+    //timeline.setVisible(true);
+    //timeline.setAllComponents(true);
+    setting.displaySplashScreen();
+    currentComponent = &setting;
     //currentComponent->contextControl({});
     //TODO: Move to Synth Context
     engine.getPluginManager().createBuiltInType<Wavetable>();
