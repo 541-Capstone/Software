@@ -497,7 +497,7 @@ void MainComponent::saveEdit(std::string filename){
     auto res = file.create();
     if (res.wasOk()) {
         tracktion_engine::Edit *e = edit.get();
-        tracktion_engine::EditFileOperations edo(nullptr);
+        tracktion_engine::EditFileOperations edo(*e);
     }
     else {
         std::cout<<"Saving did not work!\n";
