@@ -60,8 +60,10 @@ MainComponent::MainComponent(){
     engine.getPluginManager().createBuiltInType<Wavetable>();
     if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
     {
+        auto fx = dynamic_cast<te::DelayPlugin*> (edit->getPluginCache().createNewPlugin(te::DelayPlugin::xmlTypeName, {}).get());
         if (auto t = trackManager->getActiveTrack()) {
             t->getTrack()->pluginList.insertPlugin(*synth, 0, nullptr);
+            t->getTrack()->pluginList.insertPlugin(*fx, 1, nullptr);
             t->hasSynth = true;
         }
     }
@@ -79,7 +81,7 @@ MainComponent::MainComponent(){
     
     // Setup splash screen
     disableAllStates();
-    WState = WindowStates::Synthesizer;
+    WState = WindowStates::Settings;
     //setting.displaySplashScreen();
     
     // Setup timeline view
@@ -95,15 +97,7 @@ MainComponent::MainComponent(){
     setting.displaySplashScreen();
     currentComponent = &setting;
     
-    //currentComponent->contextControl({});
-    //TODO: Move to Synth Context
-    //te::Plugin::Ptr wavetablePlugin = edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {});
-    //=========================================================================================================
     trackManager->setActiveTrack(0);
-    //=========================================================================================================
-    //trackManager->setSynth(wavetablePlugin);
-    //trackManager->getActiveTrack()->getTrack()->pluginList.insertPlugin(wavetablePlugin, 0, nullptr);
-    
     
 }
 
