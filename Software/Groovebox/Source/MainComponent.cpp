@@ -488,18 +488,17 @@ void MainComponent::setupSetting(){
 }
 
 void MainComponent::saveEdit(std::string filename){
-    juce::String filenameWithPath = filename + APATH;
+    juce::String filenameWithPath = APATH;
+    filenameWithPath = filenameWithPath + "/edits/" + filename + ".edit";
     // Set the current working directory
     juce::File cwd(APATH);
     cwd.setAsCurrentWorkingDirectory();
     
-    juce::File file;
-    auto res = file.create();
-    if (res.wasOk()) {
-        tracktion_engine::Edit *e = edit.get();
-        tracktion_engine::EditFileOperations edo(*e);
-    }
-    else {
-        std::cout<<"Saving did not work!\n";
-    }
+    juce::File savefile(filenameWithPath);
+    auto res = savefile.create();
+    std::cout<<"Save to "<<savefile.getFullPathName()<<'\n';
+    tracktion_engine::Edit *e = edit.get();
+    tracktion_engine::EditFileOperations edo(*e);
+    edo.writeToFile(savefile, false);
+    std::cout<<"Saving did not work!\n";
 }

@@ -30,6 +30,7 @@ Setting::Setting(){
         fileBrowserHandler.scrollUp();
         
         //updateCursorLocation();
+        loadEditFromFile();
     };
     
     std::function<void()> testFunctionScrollDown = [&]()->void{
@@ -37,7 +38,9 @@ Setting::Setting(){
         //fileBrowserHandler.scrollDown();
         
         //updateCursorLocation();
-        fileBrowserHandler.doAction();
+        //fileBrowserHandler.doAction();
+        saveEditToFile();
+        
     };
     
     std::function<juce::File*()> testLoadFunction = [&]()->juce::File*{
