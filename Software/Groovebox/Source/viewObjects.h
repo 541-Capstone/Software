@@ -13,14 +13,6 @@
 #ifndef viewobjects_h
 #define viewobjects_h
 
-#ifdef __MACH__
-    #define APATH "~/Documents/GitHub/Software/Software/Groovebox"
-#endif
-
-#ifdef _WIN64
-    #define APATH "C:\\Users\\Dima\\Dev\\EECS542\\Software\\Software\\Groovebox"
-#endif
-
 #include <JuceHeader.h>
 #include <vector>
 #include "Waveforms.h"

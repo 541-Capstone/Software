@@ -24,6 +24,14 @@
 #define LOG(x) DBG(x)
 #endif
 
+#ifdef __MACH__
+    #define APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox"
+#endif
+
+#ifdef _WIN64
+    #define APATH "C:\\Users\\Dima\\Dev\\EECS542\\Software\\Software\\Groovebox"
+#endif
+
 #define UNIVERSAL_CC_CHANNEL  16
 #define CONTEXTUAL_CC_CHANNEL 17
 #define NOTE_CHANNEL          1
@@ -46,6 +54,14 @@
 #define ENC_8_CW	21
 #define ENC_8_CCW	22
 
+// Contextual Command Values
+#define CUT         1
+#define PASTE       2
+#define SAVE        3
+#define LOAD        4
+#define ADD         5
+#define DELETE      6
+
 
 namespace te = tracktion_engine;
 
@@ -54,6 +70,7 @@ namespace Helpers
 {
 	void insertClipFromFile(te::AudioTrack* track, te::TransportControl* transport, juce::String filePath);
     void insertClipToTrack(te::AudioTrack* track, te::TransportControl *transport, juce::String filePath);
+void insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file);
 
 	//===========================================================================
 	/* 

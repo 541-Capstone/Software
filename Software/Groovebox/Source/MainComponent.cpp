@@ -2,6 +2,7 @@
 
 //==============================================================================
 MainComponent::MainComponent(){
+    
     /* set the window size */
     setSize(window[0], window[1]);
     
@@ -479,8 +480,26 @@ void MainComponent::setupSetting(){
     
     std::function<void(std::string)> giveSave = [&](std::string filename)->void{
       // no save for now!
+        saveEdit(filename);
     };
     setting.setSaveEditFunction(giveSave);
     
     
+}
+
+void MainComponent::saveEdit(std::string filename){
+    juce::String filenameWithPath = filename + APATH;
+    // Set the current working directory
+    juce::File cwd(APATH);
+    cwd.setAsCurrentWorkingDirectory();
+    
+    juce::File file;
+    auto res = file.create();
+    if (res.wasOk()) {
+        tracktion_engine::Edit *e = edit.get();
+        tracktion_engine::EditFileOperations edo(nullptr);
+    }
+    else {
+        std::cout<<"Saving did not work!\n";
+    }
 }

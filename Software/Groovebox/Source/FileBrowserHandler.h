@@ -14,6 +14,7 @@
 #include <JuceHeader.h>
 #include "FileBrowser.h"
 #include "Utilities.h"
+
 namespace te = tracktion_engine;
 
 template <class T>

@@ -72,5 +72,8 @@ private:
     
     // FileBrowserHandler
     FileBrowserHandler<juce::File> fileBrowserHandler;
+    const std::string aPath    = APATH;
+    const std::string editPath = aPath + "/edits";
+    
 };
 #endif

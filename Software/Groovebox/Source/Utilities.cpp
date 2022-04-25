@@ -71,6 +71,11 @@ void Helpers::insertClipToTrack(te::AudioTrack *track, te::TransportControl *tra
 
 }
 
+void Helpers::insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file){
+    juce::String filePath = file.getFullPathName();
+    insertClipToTrack(track, transport, filePath);
+}
+
 Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
     if (msg.isNoteOnOrOff()) {
         return Helpers::MessageType::Note;
@@ -87,21 +92,21 @@ Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
 
 Helpers::Encoders Helpers::getEncoderType(const juce::MidiMessage &message) {
     switch (message.getControllerValue()) {
-        case 7:
+        case ENC_1_CW:
             return Helpers::Encoders::CW1;
-        case 8:
+        case ENC_1_CCW:
             return Helpers::Encoders::CCW1;
-        case 9:
+        case ENC_2_CW:
             return Helpers::Encoders::CW2;
-        case 10:
+        case ENC_2_CCW:
             return Helpers::Encoders::CCW2;
-        case 11:
+        case ENC_3_CW:
             return Helpers::Encoders::CW3;
-        case 12:
+        case ENC_3_CCW:
             return Helpers::Encoders::CCW3;
-        case 13:
+        case ENC_4_CW:
             return Helpers::Encoders::CW4;
-        case 14:
+        case ENC_4_CCW:
             return Helpers::Encoders::CCW4;
         default:
             return Helpers::Encoders::NOTASSIGNED;
@@ -110,17 +115,17 @@ Helpers::Encoders Helpers::getEncoderType(const juce::MidiMessage &message) {
 
 Helpers::ContextualCommands Helpers::getContextualCmdType(const juce::MidiMessage &message){
     switch (message.getControllerValue()) {
-        case 1:
+        case CUT:
             return Helpers::ContextualCommands::Cut;
-        case 2:
+        case PASTE:
             return Helpers::ContextualCommands::Paste;
-        case 3:
+        case SAVE:
             return Helpers::ContextualCommands::Save;
-        case 4:
+        case LOAD:
             return Helpers::ContextualCommands::Load;
-        case 5:
+        case ADD:
             return Helpers::ContextualCommands::Add;
-        case 6:
+        case DELETE:
             return Helpers::ContextualCommands::Delete;
         default:
             return Helpers::ContextualCommands::Encoder;

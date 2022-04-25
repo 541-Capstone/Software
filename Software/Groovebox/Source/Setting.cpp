@@ -61,7 +61,11 @@ Setting::Setting(){
     //TODO: We may need to change directories later
     //browser.setDirectory(juce::File::getCurrentWorkingDirectory());
     //browser.startThread(3);
-    fileBrowserHandler.setDirectory(juce::File::getCurrentWorkingDirectory());
+    //fileBrowserHandler.setDirectory(juce::File::getCurrentWorkingDirectory());
+    std::cout<<"edit path: "<<editPath<<'\n';
+    juce::File dir(editPath);
+    if (dir.isDirectory()) std::cout<<"\nHello, World!\n";
+    fileBrowserHandler.setDirectory(dir);
     
     //browser.addActionListener(this);
 }
