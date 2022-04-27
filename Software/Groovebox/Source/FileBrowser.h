@@ -32,6 +32,7 @@ public:
     int getItemIndex()const;
     int getItemHeight()const;
     juce::File getFileAtIndex();
+    void updateFileBrowser();
 private:
     void selectionChanged() override;
     void fileClicked(const juce::File &file, const juce::MouseEvent &event) override;
@@ -44,6 +45,6 @@ private:
     juce::FileTreeComponent fileTreeComp {directoryList};
     int numItems = 0;
     int itemSelection = 0;
-    juce::File currentFile;
+    juce::File currentFile, dir;
 };
 #endif

@@ -111,6 +111,10 @@ public:
         return action();
     };
     
+    void updateFileBrowser(){
+        fileBrowser.updateFileBrowser();
+    };
+    
 private:
     std::function<T*()> action;
     FileBrowser fileBrowser;

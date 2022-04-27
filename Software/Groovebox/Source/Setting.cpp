@@ -204,14 +204,18 @@ void Setting::loadEditFromFile(){
 
 void Setting::saveEditToFile(){
     /* get the time */
-    juce::Time saveFileTimename;
+    juce::Time saveFileTimename(juce::Time::getCurrentTime());
     
     /* save edit with function defined in MainComponent */
     /* update the filename */
-    juce::String saveFilename = saveFileTimename.formatted("YYYY-mm-DD:HH:MM:SS");
+    juce::String saveFilename = saveFileTimename.toString(true, true);
     saveFilename += "-edit";
     const std::string ss = saveFilename.toStdString();
     saveToFileLambda(ss);
+    
+    /* now, since we modified the folder
+       we should update the file browser */
+    fileBrowserHandler.updateFileBrowser();
 }
 
 void Setting::setLoadEditFunction(std::function<void (std::string)> func){

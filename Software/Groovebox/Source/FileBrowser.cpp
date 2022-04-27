@@ -13,7 +13,8 @@
 FileBrowser::FileBrowser(){
     edit = nullptr;
     addAndMakeVisible(fileTreeComp);
-    directoryList.setDirectory(juce::File::getSpecialLocation(juce::File::userDesktopDirectory), true, true);
+    dir = juce::File::getSpecialLocation(juce::File::userDesktopDirectory);
+    directoryList.setDirectory(dir, true, true);
     fileTreeComp.setTitle("Files");
     fileTreeComp.setColour(juce::FileTreeComponent::backgroundColourId, juce::Colours::wheat);
     fileTreeComp.addListener(this);
@@ -66,6 +67,7 @@ void FileBrowser::showFiles(){
 
 void FileBrowser::setDirectory(const juce::File &directory){
     directoryList.setDirectory(directory, true, true);
+    dir = directory;
 }
 
 void FileBrowser::setAllComponents(bool state){
@@ -110,4 +112,11 @@ int FileBrowser::getItemHeight()const{
 
 juce::File FileBrowser::getFileAtIndex(){
     return currentFile;
+}
+
+void FileBrowser::updateFileBrowser(){
+    /* lousy way of updating, but
+       it works for now */
+    directoryList.setDirectory(juce::File::getSpecialLocation(juce::File::userDesktopDirectory), true, true);
+    directoryList.setDirectory(dir, true, true);
 }
