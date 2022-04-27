@@ -30,7 +30,7 @@ MainComponent::MainComponent(){
     Helpers::insertClipFromFile(tracktion_engine::getAudioTracks(*edit)[0], &edit->getTransport(), TESTAUDIOPATH);
 
     // Initialize TrackManager
-    trackManager = std::make_shared<TrackManager>(edit);
+    trackManager = std::make_unique<TrackManager>(edit);
 
     // set current track to zero (testing purposes for now)
     trackManager->createTrack();
@@ -252,11 +252,12 @@ void MainComponent::setMaxTracks(int n){
 }
 
 void MainComponent::loadEdit(std::string filename){
-    const juce::String editFilePath = editPath + filename;
+    const juce::String editFilePath = filename;
     const juce::File editFile (editFilePath);
     
     // get the edit if it exists
     if (editFile.existsAsFile()) {
+        DBG("load edit called");
         edit = std::move(te::loadEditFromFile(engine, editFile));
     }
     // else create a new, empty edit if it doesn't exist
@@ -264,6 +265,8 @@ void MainComponent::loadEdit(std::string filename){
         edit = std::move(te::createEmptyEdit(engine, editFile));
     }
     edit->playInStopEnabled = true;
+    timeline.setEdit(edit.get());
+    setting.setEdit(edit.get());
 }
 
 /**
