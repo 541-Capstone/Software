@@ -265,6 +265,9 @@ void MainComponent::loadEdit(std::string filename){
         edit = std::move(te::createEmptyEdit(engine, editFile));
     }
     edit->playInStopEnabled = true;
+    
+    /* we want the timeline and
+       setting edits to point to correct location */
     timeline.setEdit(edit.get());
     setting.setEdit(edit.get());
 }
