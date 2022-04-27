@@ -39,7 +39,11 @@ void FileBrowser::setEdit(te::Edit *edit){
 
 void FileBrowser::scrollUp(const int amount){
     const int newItemSelection = amount + itemSelection;
-    if (newItemSelection < 0 || newItemSelection >= numItems) return;
+    numItems = directoryList.getNumFiles();
+    if (newItemSelection < 0 || newItemSelection >= numItems) {
+        DBG("Invalid index!\n");
+        return;
+    }
     juce::File file = directoryList.getFile(newItemSelection);
     currentFile = file;
     fileTreeComp.setSelectedFile(file);
@@ -68,6 +72,8 @@ void FileBrowser::showFiles(){
 void FileBrowser::setDirectory(const juce::File &directory){
     directoryList.setDirectory(directory, true, true);
     dir = directory;
+    updateFileBrowser();
+    setToFirstIndexOnUpdate();
 }
 
 void FileBrowser::setAllComponents(bool state){
@@ -86,7 +92,7 @@ void FileBrowser::selectionChanged(){
 }
 
 void FileBrowser::fileClicked(const juce::File &file, const juce::MouseEvent &event){
-    
+    currentFile = fileTreeComp.getSelectedFile();
 }
 
 void FileBrowser::fileDoubleClicked(const juce::File &file){
@@ -103,6 +109,7 @@ void FileBrowser::getNumberofItems(){
 }
 
 int FileBrowser::getItemIndex()const{
+    std::cout<<"Filebrowser item index: "<<itemSelection<<'\n';
     return itemSelection;
 }
 
@@ -119,4 +126,15 @@ void FileBrowser::updateFileBrowser(){
        it works for now */
     directoryList.setDirectory(juce::File::getSpecialLocation(juce::File::userDesktopDirectory), true, true);
     directoryList.setDirectory(dir, true, true);
+}
+
+void FileBrowser::setToFirstIndexOnUpdate(){
+    if (directoryList.getNumFiles() == 0) {
+        DBG("setToFirstIndexOnUpdate: 0 files\n");
+    }
+    juce::File file = directoryList.getFile(0);
+    DBG("setToFirstIndexOnUpdate success\n");
+    fileTreeComp.setSelectedFile(file);
+    DBG("Current File: "+file.getFullPathName().toStdString()+"\n");
+    currentFile = file;
 }

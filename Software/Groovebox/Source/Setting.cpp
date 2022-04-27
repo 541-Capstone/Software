@@ -19,6 +19,7 @@ Setting::Setting(){
        usefull for testing */
     addAndMakeVisible(loadEdit);
     addAndMakeVisible(saveEdit);
+    addAndMakeVisible(exit);
     
     /* set size of buttons */
     start.setBounds(this->getWidth()/2-half, this->getHeight()/2-half, bsize, bsize);
@@ -26,9 +27,6 @@ Setting::Setting(){
     
     
     std::function<void()> testFunctionScrollUp = [&]()->void{
-        //browser.scrollUp(scrollAmount);
-        fileBrowserHandler.scrollUp();
-        
         //updateCursorLocation();
         loadEditFromFile();
     };
@@ -61,16 +59,13 @@ Setting::Setting(){
     //addAndMakeVisible(browser);
     addAndMakeVisible(fileBrowserHandler);
     
-    //TODO: We may need to change directories later
-    //browser.setDirectory(juce::File::getCurrentWorkingDirectory());
-    //browser.startThread(3);
-    //fileBrowserHandler.setDirectory(juce::File::getCurrentWorkingDirectory());
     std::cout<<"edit path: "<<editPath<<'\n';
     juce::File dir(editPath);
     if (dir.isDirectory()) std::cout<<"\nHello, World!\n";
     fileBrowserHandler.setDirectory(dir);
     
     //browser.addActionListener(this);
+    //updateCursorLocation();
 }
 
 Setting::~Setting(){
@@ -92,6 +87,8 @@ void Setting::resized(){
     loadEdit.setBounds(this->getWidth()/2-bsize, this->getHeight()-bsize, bsize, bsize);
     
     saveEdit.setBounds(this->getWidth()/2, this->getHeight()-bsize, bsize, bsize);
+    
+    exit.setBounds(this->getWidth()/2-bsize*2, this->getHeight()-bsize, bsize, bsize);
 }
 
 void Setting::setEdit(te::Edit *edit) {
@@ -168,10 +165,11 @@ void Setting::setAllComponents(bool state){
     loadEdit.setVisible(state);
     saveEdit.setEnabled(state);
     saveEdit.setVisible(state);
+    exit.setVisible(state);
+    exit.setEnabled(state);
     browser.setAllComponents(state);
     browser.setEnabled(state);
     browser.setVisible(state);
-    
     fileBrowserHandler.setEnabled(state);
     fileBrowserHandler.setVisible(state);
     fileBrowserHandler.setAllComponent(state);
@@ -188,18 +186,23 @@ void Setting::toggleFirstStartToFalse(){
 }
 
 void Setting::loadEditFromFile(){
+    /* get the filename */
+    juce::File fileToLoadFrom = fileBrowserHandler.getFileAtIndex();
+    const std::string filenameFromFile = fileToLoadFrom.getFullPathName().toStdString();
+    
+    DBG("Save to "+filenameFromFile+"\n");
+    
     /* check if valid file name (not "") */
-    if (filename == "" || filename == " ") {
+    if (filenameFromFile == "" || filenameFromFile == " ") {
         std::cout<<"Filename not set!\n";
         return;
     }
     
-    /* now, check if file exists */
-    
-    
     /* load into edit with function defined in MainComponent */
-    loadFromFileLambda(filename);
+    loadFromFileLambda(filenameFromFile);
     
+    /* now, exit the settings */
+    exitAfterLoadingEditLambda();
 }
 
 void Setting::saveEditToFile(){
@@ -256,4 +259,9 @@ void Setting::drawCarret(){
             
         }
     }
+}
+
+void Setting::setExitFunction(std::function<void ()> func){
+    exitAfterLoadingEditLambda = func;
+    exit.onClick = func;
 }

@@ -470,6 +470,7 @@ void MainComponent::setupSetting(){
         setting.setAllComponents(true);
         setting.setVisible(true);
         setting.setEnabled(true);
+        setting.updateCursorLocation();
     };
     setting.setStartFunction(onStartup);
     
@@ -484,6 +485,14 @@ void MainComponent::setupSetting(){
     };
     setting.setSaveEditFunction(giveSave);
     
+    std::function<void()> giveExit = [&]()->void{
+        WState = WindowStates::TrackView;
+        disableAllStates();
+        timeline.setAllComponents(true);
+        timeline.setVisible(true);
+        timeline.setEnabled(true);
+    };
+    setting.setExitFunction(giveExit);
     
 }
 
@@ -498,8 +507,8 @@ void MainComponent::saveEdit(std::string filename){
     filenameWithPath = filenameWithPath + "/edits/" + filename + ".edit";
     
     // Set the current working directory
-    juce::File cwd(APATH);
-    cwd.setAsCurrentWorkingDirectory();
+    //juce::File cwd(APATH);
+    //cwd.setAsCurrentWorkingDirectory();
     
     
     // Get the savefile and create it

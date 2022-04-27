@@ -34,7 +34,9 @@ public:
     void toggleFirstStartToFalse();
     void setLoadEditFunction(std::function<void(std::string)> func);
     void setSaveEditFunction(std::function<void(std::string)> func);
+    void setExitFunction(std::function<void()> func);
     void actionListenerCallback (const juce::String &message) override;
+    void updateCursorLocation();
     
 private:
     te::Edit *edit;
@@ -44,6 +46,7 @@ private:
     // File components/functions
     std::function<void(std::string)> loadFromFileLambda;
     std::function<void(std::string)> saveToFileLambda;
+    std::function<void()> exitAfterLoadingEditLambda;
     void loadEditFromFile();
     void saveEditToFile();
     std::string filename = "";
@@ -53,7 +56,8 @@ private:
     // button sizes
     juce::TextButton loadEdit {"load edit from file"};
     juce::TextButton saveEdit {"save edit to file"};
-    juce::TextButton start {"Start!"};
+    juce::TextButton exit     {"exit settings"};
+    juce::TextButton start    {"Start!"};
     const int bsize = 100;
     const int half  = bsize/2;
     
@@ -67,7 +71,6 @@ private:
     const int carretImageHeight = 25;
     juce::Image carret;
     juce::Colour cursorColor = juce::Colours::red;
-    void updateCursorLocation();
     void drawCarret();
     
     // FileBrowserHandler

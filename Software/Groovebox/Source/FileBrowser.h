@@ -39,6 +39,7 @@ private:
     void fileDoubleClicked (const juce::File &file) override;
     void browserRootChanged (const juce::File &newRoot) override;
     void getNumberofItems();
+    void setToFirstIndexOnUpdate();
     te::Edit *edit;
     juce::TimeSliceThread thread {"file browser"};
     juce::DirectoryContentsList directoryList {nullptr, thread};
