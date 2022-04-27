@@ -15,10 +15,12 @@
 #include "IPlugin.h"
 #include "WavetableSound.h"
 #include "WavetableVoice.h"
+#include "WavetableEditor.h"
 
 //==============================================================================
 /*
 */
+namespace te = tracktion_engine;
 class Wavetable : public juce::Component,
     public te::Plugin,
     public IPlugin

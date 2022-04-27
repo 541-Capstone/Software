@@ -7,10 +7,7 @@
 
   ==============================================================================
 */
-
-#include <JuceHeader.h>
 #include "Wavetable.h"
-#include "WavetableEditor.h"
 
 //==============================================================================
 Wavetable::Wavetable(te::PluginCreationInfo info) : te::Plugin(info)
@@ -66,7 +63,12 @@ void Wavetable::initialise(const te::PluginInitialisationInfo& info)    {
         //{Attack, Decay, Sustain, Release}
         ampParams = { 0.25f, 0.25f, 0.05f, 0.01f };
         ampAdsrs.add(ampAdsrs[i]);
-        synth.addVoice(new WavetableVoice({ ampAdsrs[i], ampParams, waveShape }));
+        synth.addVoice(new WavetableVoice(WavetableVoice::VoiceParams{
+                ampAdsrs.getReference(i),
+                ampParams,
+                waveShape})
+        );
+        
     }
     synth.addSound(new WavetableSound());
 
