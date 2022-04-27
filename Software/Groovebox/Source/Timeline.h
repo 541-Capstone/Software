@@ -24,6 +24,7 @@
 #include "Cursors.h"
 #include "Scrollable.h"
 #include "ContextComponent.h"
+#include "FileBrowserHandler.h"
 
 class Timeline : public juce::ActionBroadcaster, public juce::ActionListener, public juce::Component, public juce::Timer, public juce::Button::Listener, public ContextComponent {
 public:
@@ -124,6 +125,16 @@ private:
     
     void setupWaveformDisplay();
     void redrawWaveform();
+    
+    /* File browser Variables */
+    const int scrollAmount = 1;
+    int cursorLocation     = 0;
+    int cursorHeight       = 0;
+    const int cursorWidth  = 10;
+    juce::Rectangle<int> cursor;
+    juce::Colour cursorColor = juce::Colours::red;
+    FileBrowserHandler<juce::File> fileBrowserHandler;
+    juce::File dir;
     
 };
 
