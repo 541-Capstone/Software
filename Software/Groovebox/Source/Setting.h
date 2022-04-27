@@ -52,7 +52,7 @@ private:
     
     // button sizes
     juce::TextButton loadEdit {"load edit from file"};
-    juce::TextButton loadWav  {"load .wav from file"};
+    juce::TextButton saveEdit {"save edit to file"};
     juce::TextButton start {"Start!"};
     const int bsize = 100;
     const int half  = bsize/2;

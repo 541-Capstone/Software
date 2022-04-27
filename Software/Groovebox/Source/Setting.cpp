@@ -18,7 +18,7 @@ Setting::Setting(){
        will be removed later, but
        usefull for testing */
     addAndMakeVisible(loadEdit);
-    addAndMakeVisible(loadWav);
+    addAndMakeVisible(saveEdit);
     
     /* set size of buttons */
     start.setBounds(this->getWidth()/2-half, this->getHeight()/2-half, bsize, bsize);
@@ -53,7 +53,7 @@ Setting::Setting(){
     fileBrowserHandler.setAction(testLoadFunction);
     
     loadEdit.onClick = testFunctionScrollUp;
-    loadWav.onClick = testFunctionScrollDown;
+    saveEdit.onClick = testFunctionScrollDown;
     
     /* hide all buttons */
     setAllComponents(false);
@@ -91,7 +91,7 @@ void Setting::resized(){
     
     loadEdit.setBounds(this->getWidth()/2-bsize, this->getHeight()-bsize, bsize, bsize);
     
-    loadWav.setBounds(this->getWidth()/2, this->getHeight()-bsize, bsize, bsize);
+    saveEdit.setBounds(this->getWidth()/2, this->getHeight()-bsize, bsize, bsize);
 }
 
 void Setting::setEdit(te::Edit *edit) {
@@ -166,8 +166,8 @@ void Setting::displaySplashScreen(){
 void Setting::setAllComponents(bool state){
     loadEdit.setEnabled(state);
     loadEdit.setVisible(state);
-    loadWav.setEnabled(state);
-    loadWav.setVisible(state);
+    saveEdit.setEnabled(state);
+    saveEdit.setVisible(state);
     browser.setAllComponents(state);
     browser.setEnabled(state);
     browser.setVisible(state);
