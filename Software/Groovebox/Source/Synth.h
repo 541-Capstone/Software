@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "ContextComponent.h"
 #include "Utilities.h"
 #include "ContextComponent.h"
 #include "TrackManager.h"

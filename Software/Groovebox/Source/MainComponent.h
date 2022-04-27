@@ -199,6 +199,7 @@ private:
     
     // Function to load the edit
     void loadEdit(std::string filename);
+    void saveEdit(std::string filename);
     // temporary button for loading (can get rid later for phy buttons !)
     juce::ImageButton load;
     

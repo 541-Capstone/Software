@@ -26,14 +26,31 @@ Setting::Setting(){
     
     
     std::function<void()> testFunctionScrollUp = [&]()->void{
-        browser.scrollUp(scrollAmount);
+        //browser.scrollUp(scrollAmount);
+        fileBrowserHandler.scrollUp();
+        
         //updateCursorLocation();
+        loadEditFromFile();
     };
     
     std::function<void()> testFunctionScrollDown = [&]()->void{
-        browser.scrollDown(scrollAmount);
+        //browser.scrollDown(scrollAmount);
+        //fileBrowserHandler.scrollDown();
+        
         //updateCursorLocation();
+        //fileBrowserHandler.doAction();
+        saveEditToFile();
+        
     };
+    
+    std::function<juce::File*()> testLoadFunction = [&]()->juce::File*{
+        juce::File file = fileBrowserHandler.getFileAtIndex();
+        std::cout<<"testLoadFunction: filename: ";
+        std::cout<<file.getFileName()<<'\n';
+        return nullptr;
+    };
+    
+    fileBrowserHandler.setAction(testLoadFunction);
     
     loadEdit.onClick = testFunctionScrollUp;
     loadWav.onClick = testFunctionScrollDown;
@@ -41,10 +58,19 @@ Setting::Setting(){
     /* hide all buttons */
     setAllComponents(false);
     
-    addAndMakeVisible(browser);
-    browser.startThread(3);
+    //addAndMakeVisible(browser);
+    addAndMakeVisible(fileBrowserHandler);
     
-    browser.addActionListener(this);
+    //TODO: We may need to change directories later
+    //browser.setDirectory(juce::File::getCurrentWorkingDirectory());
+    //browser.startThread(3);
+    //fileBrowserHandler.setDirectory(juce::File::getCurrentWorkingDirectory());
+    std::cout<<"edit path: "<<editPath<<'\n';
+    juce::File dir(editPath);
+    if (dir.isDirectory()) std::cout<<"\nHello, World!\n";
+    fileBrowserHandler.setDirectory(dir);
+    
+    //browser.addActionListener(this);
 }
 
 Setting::~Setting(){
@@ -60,7 +86,8 @@ void Setting::paint(juce::Graphics &g){
 
 void Setting::resized(){
     const int browserHeight = numItemsOnScreen * browser.getItemHeight();
-    browser.setBounds(cursorWidth, 0, this->getWidth()-cursorWidth, browserHeight);
+    //browser.setBounds(cursorWidth, 0, this->getWidth()-cursorWidth, browserHeight);
+    fileBrowserHandler.setBounds(0, 0, this->getWidth(), browserHeight);
     
     loadEdit.setBounds(this->getWidth()/2-bsize, this->getHeight()-bsize, bsize, bsize);
     
@@ -144,6 +171,10 @@ void Setting::setAllComponents(bool state){
     browser.setAllComponents(state);
     browser.setEnabled(state);
     browser.setVisible(state);
+    
+    fileBrowserHandler.setEnabled(state);
+    fileBrowserHandler.setVisible(state);
+    fileBrowserHandler.setAllComponent(state);
 }
 
 void Setting::setStartFunction(std::function<void ()> func) {

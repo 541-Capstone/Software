@@ -17,6 +17,7 @@
 #include "ContextComponent.h"
 #include "Utilities.h"
 #include "FileBrowser.h"
+#include "FileBrowserHandler.h"
 
 class Setting : public ContextComponent, public juce::ActionListener {
 public:
@@ -67,5 +68,11 @@ private:
     juce::Colour cursorColor = juce::Colours::red;
     void updateCursorLocation();
     void drawCarret();
+    
+    // FileBrowserHandler
+    FileBrowserHandler<juce::File> fileBrowserHandler;
+    const std::string aPath    = APATH;
+    const std::string editPath = aPath + "/edits";
+    
 };
 #endif

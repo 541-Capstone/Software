@@ -270,81 +270,49 @@ void Timeline::actionListenerCallback (const juce::String &message) {
 void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
     
     printf("\nTimeline says Hello!\n");
-    return;
     
     /* get the MidiMessage from metadata */
     const juce::MidiMessage message = metadata.getMessage();
     
-    /* This part is just for testing */
-#define TIMELINE_CC_DBG 1
-#if TIMELINE_CC_DBG == 1
-    /* read from encoders */
-    const int controllerNumber = message.getControllerNumber();
+    Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(message);
     
-    const int controllerValue = message.getControllerValue();
-    
-    /* this is the value to scroll by, only used by scrollable */
-    const int scrollAmount = controllerValue/scrollScale;
-    
-    /* scroll the scrollable class if scroll channel is changed  */
-    if (controllerNumber == scrollControllerValueX) {
-        scrollable.scrollXAmount(scrollAmount);
-        return;
+    if (cmd == Helpers::ContextualCommands::Encoder) {
+        Helpers::Encoders enc = Helpers::getEncoderType(message);
+        switch (enc) {
+            case Helpers::Encoders::CW1:
+                
+                break;
+            case Helpers::Encoders::CCW1:
+                
+                break;
+            default:
+                break;
+        }
     }
-    if (controllerNumber == scrollControllerValueY) {
-        scrollable.scrollYAmount(scrollAmount);
-        return;
+    else {
+        switch (cmd) {
+            case Helpers::ContextualCommands::Cut:
+                
+                break;
+            case Helpers::ContextualCommands::Paste:
+                
+                break;
+            case Helpers::ContextualCommands::Save:
+                
+                break;
+            case Helpers::ContextualCommands::Load:
+                
+                break;
+            case Helpers::ContextualCommands::Add:
+                
+                break;
+            case Helpers::ContextualCommands::Delete:
+                
+                break;
+            default:
+                break;
+        }
     }
-#else
-    const int controllerValue = message.getControllerValue();
-
-    switch (controllerValue) {
-        /* Cut */
-        case 1:
-            
-            break;
-        /* paste */
-        case 2:
-            
-            break;
-        /* left */
-        case 3:
-            
-            break;
-        /* right */
-        case 4:
-            
-            break;
-        /* save */
-        case 5:
-            
-            break;
-        /* load */
-        case 6:
-            
-            break;
-        /* add */
-        case 7:
-            
-            break;
-        /* delete */
-        case 8:
-            
-            break;
-        /* used for encoders */
-        default:
-            
-            /* scroll the scrollbars*/
-            if (controllerValue == scrollControllerValueX) {
-                scrollable.scrollXAmount(scrollAmt);
-            }
-            else if (controllerValue == scrollControllerValueY) {
-                scrollable.scrollYAmount(scrollAmt);
-            }
-            
-            break;
-    }
-#endif
 
 }
 

@@ -28,9 +28,10 @@ public:
     void setAllComponents(bool state);
     void startThread(const int threadID);
     void resized() override;
-    void setDirectory(const juce::File::SpecialLocationType type);
+    void setDirectory(const juce::File &directory);
     int getItemIndex()const;
     int getItemHeight()const;
+    juce::File getFileAtIndex();
 private:
     void selectionChanged() override;
     void fileClicked(const juce::File &file, const juce::MouseEvent &event) override;
@@ -43,5 +44,6 @@ private:
     juce::FileTreeComponent fileTreeComp {directoryList};
     int numItems = 0;
     int itemSelection = 0;
+    juce::File currentFile;
 };
 #endif
