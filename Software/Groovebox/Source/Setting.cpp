@@ -203,10 +203,15 @@ void Setting::loadEditFromFile(){
 }
 
 void Setting::saveEditToFile(){
-    
+    /* get the time */
+    juce::Time saveFileTimename;
     
     /* save edit with function defined in MainComponent */
-    saveToFileLambda(filename);
+    /* update the filename */
+    juce::String saveFilename = saveFileTimename.formatted("YYYY-mm-DD:HH:MM:SS");
+    saveFilename += "-edit";
+    const std::string ss = saveFilename.toStdString();
+    saveToFileLambda(ss);
 }
 
 void Setting::setLoadEditFunction(std::function<void (std::string)> func){
