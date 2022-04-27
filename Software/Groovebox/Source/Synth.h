@@ -13,24 +13,39 @@
 #include <JuceHeader.h>
 #include "ContextComponent.h"
 #include "Utilities.h"
+#include "ContextComponent.h"
+#include "TrackManager.h"
 
 //==============================================================================
 /*
 */
-class Synth  : public juce::Component, public ContextComponent
+class Synth  : public ContextComponent
 {
 public:
-    Synth(int& octaveShiftRef);
+    Synth();
     ~Synth() override;
 
-    void paint (juce::Graphics&) override;
+    void paint (juce::Graphics&);
+    void paintSynthLoaded(juce::Graphics&);
+    void paintNoSynthLoaded(juce::Graphics&);
+    void paintSelectionDialogue(juce::Graphics&);
     void resized() override;
 
     void contextControl(const juce::MidiMessageMetadata& metadata) override;
 
-private:
-    int& octaveShift;
+    void loadTrack(const TrackManager::TrackWrapper&);
 
-    std::vector<IPlugin> synth;
+    void cut();
+    void paste();
+    void save();
+    void load();
+    void add();
+    void del();
+
+private:
+
+    IPlugin* activeSynth;
+    std::vector<juce::Rectangle<int>> paramCells;
+    bool synthLoadedOnTrack, addingSynth;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Synth)
 };

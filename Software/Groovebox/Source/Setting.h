@@ -19,8 +19,7 @@
 #include "FileBrowser.h"
 #include "FileBrowserHandler.h"
 
-namespace te = tracktion_engine;
-class Setting : public juce::Component, public ContextComponent, public juce::ActionListener {
+class Setting : public ContextComponent, public juce::ActionListener {
 public:
     Setting();
     ~Setting() override;

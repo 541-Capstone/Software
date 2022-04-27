@@ -19,10 +19,11 @@
  *  in MainComponent to utilize context controls!
  *
  */
-class ContextComponent {
+class ContextComponent : virtual public juce::Component {
 public:
     virtual ~ContextComponent() = default;
     virtual void contextControl(const juce::MidiMessageMetadata &metadata) = 0;
+    //virtual void paint(juce::Graphics& g) override = 0;
 private:
 };
 #endif

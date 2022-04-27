@@ -28,15 +28,13 @@ void WavetableVoice::startNote(int midiNoteNumber, float velocity, juce::Synthes
         //Reset adsr(s)
         ampAdsr.reset();
         //Update adsr parameters
+        ampAdsr.setParameters(ampParams);
         //Turn adsr(s) back on
         ampAdsr.noteOn();
         //Set oscillator note and restart
         osc.setNote(midiNoteNumber);
         osc.start();
     }
-    /*osc.setNote(midiNoteNumber);
-    osc.start();
-    ampAdsr.noteOn();*/
     
 }
 void WavetableVoice::stopNote(float velocity, bool allowTrailOff) {
@@ -67,7 +65,7 @@ void WavetableVoice::prepareToPlay(double sampleRate, int samplesPerBlock) {
     osc.setSampleRate(sampleRate);
     gain.prepare(spec);
 
-    gain.setGainLinear(0.1f);
+    gain.setGainLinear(0.2f);
 
     ampAdsr.setSampleRate(sampleRate);
     ampAdsr.setParameters(ampParams);
@@ -94,7 +92,7 @@ void WavetableVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int
 
     osc.process(synthBuffer,startSample,numSamples);
     juce::dsp::AudioBlock<float> audioBlock{ synthBuffer };
-    //gain.process(juce::dsp::ProcessContextReplacing<float> {audioBlock});
+    gain.process(juce::dsp::ProcessContextReplacing<float> {audioBlock});
 
     ampAdsr.applyEnvelopeToBuffer(synthBuffer, 0, synthBuffer.getNumChannels());
 

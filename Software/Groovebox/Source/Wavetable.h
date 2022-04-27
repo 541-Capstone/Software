@@ -88,10 +88,11 @@ private:
 
     void applyToBuffer(juce::AudioBuffer<float>&, juce::MidiBuffer&);
 
-    te::ExpEnvelope ampAdsr;
+    juce::Array<te::ExpEnvelope> ampAdsrs;
     te::ExpEnvelope::Parameters ampParams;
     te::Oscillator::Waves waveShape{ te::Oscillator::Waves::sine };
     std::vector<te::Oscillator::Waves> waves;
+    int numVoices;
 
     //=========================================================
     // Contextual input functions
