@@ -40,6 +40,7 @@ Timeline::Timeline() {
     timelineObjects.btns.push_back(&leftBtn);
     timelineObjects.btns.push_back(&rightBtn);
     timelineObjects.btns.push_back(&addClip);
+    timelineObjects.btns.push_back(&save);
     
     /* push labels onto timelineObjects label vector */
     timelineObjects.lbls.push_back(&statusLbl);
@@ -361,7 +362,8 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
                 
                 break;
             case Helpers::ContextualCommands::Save:
-                
+                /* we go to settings */
+                onLoad();
                 break;
             case Helpers::ContextualCommands::Load:
                 
@@ -393,4 +395,9 @@ void Timeline::fileBrowserState(bool state){
     fileBrowserHandler.setEnabled(state);
     addSelClip.setVisible(state);
     addSelClip.setEnabled(state);
+}
+
+void Timeline::setupTimelineSave(std::function<void ()> func){
+    onLoad = func;
+    save.onClick = onLoad;
 }

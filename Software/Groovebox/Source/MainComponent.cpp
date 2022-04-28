@@ -51,6 +51,7 @@ MainComponent::MainComponent(){
     addAndMakeVisible(timeline);
     timeline.setEdit(edit.get());
     timeline.setMainComponentPtr(this);
+    setupTimeline();
     
     // Setup settings
     setting.setBounds(this->getBounds());
@@ -264,6 +265,8 @@ void MainComponent::loadEdit(std::string filename){
     /* we want the timeline and
        setting edits to point to correct location */
     timeline.setEdit(edit.get());
+    trackManager = std::make_unique<TrackManager>(edit);
+    timeline.setTrackManager(trackManager);
     setting.setEdit(edit.get());
 }
 
@@ -465,6 +468,16 @@ void MainComponent::setupSetting(){
     };
     setting.setExitFunction(giveExit);
     
+}
+
+void MainComponent::setupTimeline(){
+    std::function<void()> changeState = [&]()->void {
+        disableAllStates();
+        setting.setAllComponents(true);
+        setting.setVisible(true);
+        setting.setEnabled(true);
+    };
+    timeline.setupTimelineSave(changeState);
 }
 
 void MainComponent::saveEdit(std::string filename){

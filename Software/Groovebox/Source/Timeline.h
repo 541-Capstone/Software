@@ -65,6 +65,7 @@ public:
     void contextControl(const juce::MidiMessageMetadata &metadata) override;
     Waveforms *getWaveformPtr();
     void fileBrowserState(bool state);
+    void setupTimelineSave(std::function<void()> func);
 
 // private member variables go here
 private:
@@ -83,7 +84,8 @@ private:
     juce::TextButton addTrackBtn{ "Add Track" };
     juce::TextButton leftBtn{ "<<<" };
     juce::TextButton rightBtn{ ">>>" };
-        
+    juce::TextButton save{ "save" };
+    
     juce::TextButton addSelClip {"Add selected clip"};
     
     /* Function vector */
@@ -114,6 +116,8 @@ private:
     
     /* For waveforms */
     juce::Rectangle<int> waveform_window = juce::Rectangle<int>();
+    
+    std::function <void()> onLoad;
     
     /* For waveform views */
     Waveforms waveforms;
