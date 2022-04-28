@@ -29,7 +29,7 @@ MainComponent::MainComponent(){
     
     // call fileManager
     fileManager.setEdit(edit.get());
-    Helpers::insertClipFromFile(tracktion_engine::getAudioTracks(*edit)[0], &edit->getTransport(), TESTAUDIOPATH);
+    //Helpers::insertClipFromFile(tracktion_engine::getAudioTracks(*edit)[0], &edit->getTransport(), TESTAUDIOPATH);
 
     // Initialize TrackManager
     trackManager = std::make_unique<TrackManager>(edit);
@@ -301,6 +301,17 @@ void MainComponent::play(){
     if (PState == PlayStates::Pause) {
         PState = PlayStates::Play;
         LOG("Playing\n");
+        if (PStyle == PlayStyle::Mult) {
+            auto tracks = te::getAudioTracks(*edit.get());
+            for (auto track: tracks)
+                track->setSolo(false);
+        }
+        else if (PStyle == PlayStyle::Solo){
+            LOG("Playing solo");
+            auto trackWrapper = trackManager->getActiveTrack();
+            auto track = trackWrapper->getTrack();
+            track->setSolo(true);
+        }
         edit->getTransport().play(false);
         isPlaying = true;
     }
@@ -386,33 +397,6 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
     /* get the message */
     const juce::MidiMessage message = metadata.getMessage();
     
-    const int controllerNumber = metadata.getMessage().getControllerNumber();
-    
-    /* TODO: */
-    /* remove later*/
-    /*======================================*/
-    if (controllerNumber == 1) pause();
-    else if (controllerNumber == 2) play();
-    else if (controllerNumber == 3) disableAllStates();
-    else if (controllerNumber == 4) {
-        timeline.setAllComponents(true);
-        timeline.setEnabled(true);
-        timeline.setVisible(true);
-    }
-    return;
-    /*======================================*/
-    
-    /*---------------------*/
-    /* Functions     Value */
-    /* Record            1 */
-    /* Mute              2 */
-    /* Solo              3 */
-    /* Timeline          4 */
-    /* Synth             5 */
-    /* Settings          6 */
-    /* Plugins           7 */
-    /*---------------------*/
-    
     /* utilize helper function */
     Helpers::UniversalCommands cmd = Helpers::getUniversalCmdType(message);
     
@@ -427,7 +411,7 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             record();
             break;
         case Helpers::UniversalCommands::Solo:
-            
+            solo();
             break;
         case Helpers::UniversalCommands::Timeline:
             disableAllStates();
@@ -512,4 +496,24 @@ void MainComponent::saveEdit(std::string filename){
     tracktion_engine::Edit *e = edit.get();
     tracktion_engine::EditFileOperations edo(*e);
     edo.writeToFile(savefile, false);
+}
+
+void MainComponent::solo(){
+    if (PState == PlayStates::Pause) {
+        switch (PStyle) {
+            case PlayStyle::Solo:
+                PStyle = PlayStyle::Mult;
+                LOG("Changed to multi-track\n");
+                break;
+            case PlayStyle::Mult:
+                PStyle = PlayStyle::Solo;
+                LOG("Changed to solo\n");
+                break;
+            default:
+                break;
+        }
+    }
+    else {
+        LOG("Must be in pause to change\n");
+    }
 }

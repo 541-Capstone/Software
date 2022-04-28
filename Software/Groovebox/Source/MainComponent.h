@@ -101,11 +101,17 @@ private:
     enum class PlayStates {
         Play,
         Pause,
-        Record
+        Record,
+    };
+    
+    enum class PlayStyle : int {
+        Solo = 0,
+        Mult
     };
     
     /* This is the state of the playing */
     PlayStates PState = PlayStates::Pause;
+    PlayStyle  PStyle = PlayStyle::Mult;
     
     //=================================================================
     /**
@@ -231,6 +237,9 @@ private:
     
     // adds a clip to an existing audio track
     void addClipToTrack();
+    
+    // Solo, play just the active track
+    void solo();
     
     /* do something with universal controls */
     void universalControls(const juce::MidiMessageMetadata &metadata);
