@@ -61,36 +61,21 @@ void Waveforms::showEdit() {
         printf("No edit loaded\n");
         return;
     }
+    const int start_val = 1;
     auto audioTracks = te::getAudioTracks(*edit);
     int numAudioTracks = audioTracks.size();
     if (numAudioTracks > numTracks) numAudioTracks = numTracks;
     if (numAudioTracks <= 0) return;
     this->setBounds(this->getX(), this->getY(), this->getWidth(), heightPerTrack * numAudioTracks);
-    for (int i = 0; i < numAudioTracks; ++i) {
+    for (int i = start_val; i < numAudioTracks; ++i) {
         auto clips = audioTracks[i]->getClips();
         int numClips = clips.size();
         if (numClips > numClipsPerTrack) numClips = numClipsPerTrack;
         if (numClips > 0) {
             for (int k = 0; k < numClips; ++k) {
                 auto clip = clips[k];
-                
                 if (clip->isMidi()) drawLine(clip, i, k);
                 else drawWaveform(clip, i, k);
-                /*
-                juce::File file = clip->getSourceFileReference().getFile();
-                juce::URL url(file);
-        
-                double clip_start = clip->getPosition().getStart() * timeScale;
-                double clip_length = clip->getPosition().getLength() * timeScale;
-                waveformManagers[i][k]->setBounds(clip_start, i * heightPerTrack, clip_length, heightPerTrack);
-                    
-                addAndMakeVisible(waveformManagers[i][k]);
-                if (randomIsEnabled){
-                    waveformManagers[i][k]->setForegroundColor(randomColor());
-                    waveformManagers[i][k]->setBackgroundColor(randomColor());
-                }
-                waveformManagers[i][k]->showAudioResource(url);
-                */
             }
         }
     }
