@@ -64,6 +64,7 @@ public:
     /* This assumes that the type of message is CONTEXTUAL and is for TIMELINE */
     void contextControl(const juce::MidiMessageMetadata &metadata) override;
     Waveforms *getWaveformPtr();
+    void fileBrowserState(bool state);
 
 // private member variables go here
 private:
@@ -82,6 +83,8 @@ private:
     juce::TextButton addTrackBtn{ "Add Track" };
     juce::TextButton leftBtn{ "<<<" };
     juce::TextButton rightBtn{ ">>>" };
+        
+    juce::TextButton addSelClip {"Add selected clip"};
     
     /* Function vector */
     std::vector<std::function<void() > > funcs;
@@ -139,7 +142,7 @@ private:
     juce::Colour cursorColor = juce::Colours::red;
     FileBrowserHandler<juce::File> fileBrowserHandler;
     juce::File dir;
-    
+    bool usingFileBrowser = false;
 };
 
 #endif

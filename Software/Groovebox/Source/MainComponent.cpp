@@ -363,6 +363,7 @@ void MainComponent::addClipToTrack() {
 void MainComponent::disableAllStates(){
     /* add states here to disable! */
     timeline.setAllComponents(false);
+    timeline.fileBrowserState(false);
     timeline.setVisible(false);
     timeline.setEnabled(false);
     

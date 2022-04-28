@@ -18,6 +18,13 @@ Timeline::Timeline() {
     
     funcs.clear();
     
+    // Add the filebrowserHandler code. Set the directory
+    addAndMakeVisible(fileBrowserHandler);
+    const std::string pp = std::string(APATH) + "/wavs/";
+    juce::File fbhDir(pp);
+    assert (fbhDir.isDirectory());
+    fileBrowserHandler.setDirectory(fbhDir);
+    
     //waveform_window.setBounds(100, 100, 512, 64);
     waveform_window.setBounds(150, 100, 650, 256);
     
@@ -49,6 +56,23 @@ Timeline::Timeline() {
     for (auto lbl: timelineObjects.lbls){
         addAndMakeVisible(*lbl);
     }
+    
+    addAndMakeVisible(addSelClip);
+    addSelClip.onClick = [&]()->void {
+        // make sure that filebrowser is enabled
+        if (usingFileBrowser) {
+            juce::File ff = fileBrowserHandler.getFileAtIndex();
+            auto track = trackManager->getActiveTrack();
+            Helpers::insertClipFromJuceFile(track->getTrack(), &edit->getTransport(), ff);
+            
+            // After adding clip, revert state
+            fileBrowserState(false);
+            setAllComponents(true);
+            redrawWaveform();
+        }
+    };
+    // We default to not showing filebrowser
+    fileBrowserState(false);
     
     
 }
@@ -95,6 +119,9 @@ void Timeline::resized() {
     buttonBox.performLayout(buttonRect);
     textRect.setY(100);
     textBox.performLayout(textRect);
+    
+    fileBrowserHandler.setBounds(this->getBounds());
+    addSelClip.setBounds(this->getWidth()/2-50, this->getHeight()-100, 100, 100);
 }
 
 void Timeline::paint(juce::Graphics &g) {
@@ -196,7 +223,11 @@ void Timeline::addAudioTrack(){
 
 void Timeline::addClipToTrack(){
     if (funcs.size() < 7) return;
-    funcs[6]();
+    //funcs[6]();
+    usingFileBrowser = true;
+    setAllComponents(false);
+    fileBrowserState(true);
+    
     redrawWaveform();
 }
 
@@ -276,6 +307,22 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
     
     Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(message);
     
+    // We utilize the file browser context control
+    // instead
+    if (usingFileBrowser) {
+        assert(fileBrowserHandler.isVisible());
+        juce::File file = fileBrowserHandler.contextControl(metadata);
+        if (file.exists()) {
+            // We add to active track
+            auto track = trackManager->getActiveTrack();
+            Helpers::insertClipFromJuceFile(track->getTrack(), &edit->getTransport(), file);
+            
+            // We re-enable all other components
+            setAllComponents(true);
+            fileBrowserState(false);
+        } else return;
+    }
+    
     if (cmd == Helpers::ContextualCommands::Encoder) {
         Helpers::Encoders enc = Helpers::getEncoderType(message);
         switch (enc) {
@@ -304,7 +351,10 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
                 
                 break;
             case Helpers::ContextualCommands::Add:
-                
+                // We stop displaying elements,
+                // and display the file browser comp.
+                this->setAllComponents(false);
+                fileBrowserState(true);
                 break;
             case Helpers::ContextualCommands::Delete:
                 
@@ -318,4 +368,13 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
 
 Waveforms *Timeline::getWaveformPtr(){
     return &waveforms;
+}
+
+void Timeline::fileBrowserState(bool state){
+    usingFileBrowser = state;
+    fileBrowserHandler.setAllComponent(state);
+    fileBrowserHandler.setVisible(state);
+    fileBrowserHandler.setEnabled(state);
+    addSelClip.setVisible(state);
+    addSelClip.setEnabled(state);
 }
