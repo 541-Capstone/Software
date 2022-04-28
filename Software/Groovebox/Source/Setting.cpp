@@ -21,17 +21,11 @@ Setting::Setting(){
     addAndMakeVisible(saveEdit);
     addAndMakeVisible(exit);
     
-    std::function<void()> testFunctionScrollUp = [&]()->void{
-        //updateCursorLocation();
+    std::function<void()> testFunctionLoad = [&]()->void{
         loadEditFromFile();
     };
     
-    std::function<void()> testFunctionScrollDown = [&]()->void{
-        //browser.scrollDown(scrollAmount);
-        //fileBrowserHandler.scrollDown();
-        
-        //updateCursorLocation();
-        //fileBrowserHandler.doAction();
+    std::function<void()> testFunctionSave = [&]()->void{
         saveEditToFile();
         
     };
@@ -45,8 +39,8 @@ Setting::Setting(){
     
     fileBrowserHandler.setAction(testLoadFunction);
     
-    loadEdit.onClick = testFunctionScrollUp;
-    saveEdit.onClick = testFunctionScrollDown;
+    loadEdit.onClick = testFunctionLoad;
+    saveEdit.onClick = testFunctionSave;
     
     /* hide all buttons */
     setAllComponents(false);
