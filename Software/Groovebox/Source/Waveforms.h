@@ -33,12 +33,13 @@ public:
     void setEdit (te::Edit *edit);
     void setColorRandomizer(bool set);
     void actionListenerCallback (const juce::String &message) override;
+    void scrollAmount(int ss);
 private:
     WaveformManager ***waveformManagers = nullptr;
     const int cursor_width = 5;
     const double timeScale = 2.0f;
     const int numClipsPerTrack = 25;
-    const int numTracks = 10;
+    const int numTracks = 5;
     const int heightPerTrack = 64;
     te::Edit *edit;
     bool randomIsEnabled = false;
@@ -47,5 +48,6 @@ private:
     void drawWaveform (te::Clip *clip, int i, int k);
     void drawLine (te::Clip *clip, int i, int k);
     juce::Colour randomColor();
+    int scrollAmt = 0;
 };
 #endif

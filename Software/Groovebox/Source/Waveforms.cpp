@@ -61,7 +61,8 @@ void Waveforms::showEdit() {
         printf("No edit loaded\n");
         return;
     }
-    const int start_val = 1;
+    int start_val = 1 + scrollAmt;
+    if (start_val <= 0) start_val = 1;
     auto audioTracks = te::getAudioTracks(*edit);
     int numAudioTracks = audioTracks.size();
     if (numAudioTracks > numTracks) numAudioTracks = numTracks;
@@ -74,8 +75,8 @@ void Waveforms::showEdit() {
         if (numClips > 0) {
             for (int k = 0; k < numClips; ++k) {
                 auto clip = clips[k];
-                if (clip->isMidi()) drawLine(clip, i, k);
-                else drawWaveform(clip, i, k);
+                if (clip->isMidi()) drawLine(clip, i-scrollAmt, k);
+                else drawWaveform(clip, i-scrollAmt, k);
             }
         }
     }
@@ -124,4 +125,10 @@ void Waveforms::drawLine(te::Clip *clip, int i, int k) {
         waveformManagers[i][k]->setBackgroundColor(randomColor());
     }
     waveformManagers[i][k]->showAudioResource();
+}
+
+void Waveforms::scrollAmount(int ss){
+    const int newScrollAmt = scrollAmt + ss;
+    if (newScrollAmt < 0) return;
+    else scrollAmt += ss;
 }
