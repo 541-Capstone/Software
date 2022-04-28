@@ -95,7 +95,6 @@ MainComponent::MainComponent(){
     setting.setVisible(true);
     setting.setAllComponents(true);
     
-    setting.displaySplashScreen();
     currentComponent = &setting;
     
     trackManager->setActiveTrack(0);
@@ -465,19 +464,6 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
 }
 
 void MainComponent::setupSetting(){
-    /* change how this function works to change how
-       splash screen functions */
-    std::function<void()> onStartup = [&](void)->void{
-        setting.toggleFirstStartToFalse();
-        WState = WindowStates::Settings;
-        disableAllStates();
-        setting.setAllComponents(true);
-        setting.setVisible(true);
-        setting.setEnabled(true);
-        setting.updateCursorLocation();
-    };
-    setting.setStartFunction(onStartup);
-    
     std::function<void(std::string)> giveLoad = [&](std::string filename)->void{
         loadEdit(filename);
     };

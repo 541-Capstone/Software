@@ -21,11 +21,6 @@ Setting::Setting(){
     addAndMakeVisible(saveEdit);
     addAndMakeVisible(exit);
     
-    /* set size of buttons */
-    start.setBounds(this->getWidth()/2-half, this->getHeight()/2-half, bsize, bsize);
-    addAndMakeVisible(start);
-    
-    
     std::function<void()> testFunctionScrollUp = [&]()->void{
         //updateCursorLocation();
         loadEditFromFile();
@@ -73,10 +68,8 @@ Setting::~Setting(){
 }
 
 void Setting::paint(juce::Graphics &g){
-    if (!firstStart) {
-        g.setColour(cursorColor);
-        g.fillRect(cursor);
-    }
+    g.setColour(cursorColor);
+    g.fillRect(cursor);
 }
 
 void Setting::resized(){
@@ -151,15 +144,6 @@ void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
     }
 }
 
-void Setting::displaySplashScreen(){
-    setAllComponents(false);
-    addAndMakeVisible(start);
-    start.setEnabled(true);
-    start.setVisible(true);
-    start.setBounds(this->getWidth()/2-50, this->getHeight()/2-50, 100, 100);
-    start.onClick = onStartUpFunction;
-}
-
 void Setting::setAllComponents(bool state){
     loadEdit.setEnabled(state);
     loadEdit.setVisible(state);
@@ -173,16 +157,6 @@ void Setting::setAllComponents(bool state){
     fileBrowserHandler.setEnabled(state);
     fileBrowserHandler.setVisible(state);
     fileBrowserHandler.setAllComponent(state);
-}
-
-void Setting::setStartFunction(std::function<void ()> func) {
-    onStartUpFunction = func;
-}
-
-void Setting::toggleFirstStartToFalse(){
-    firstStart = false;
-    start.setEnabled(false);
-    start.setVisible(false);
 }
 
 void Setting::loadEditFromFile(){

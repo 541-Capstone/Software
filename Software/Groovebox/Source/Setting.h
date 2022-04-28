@@ -27,10 +27,7 @@ public:
     void resized() override;
     void setEdit (te::Edit *edit);
     void contextControl(const juce::MidiMessageMetadata &metadata) override;
-    void displaySplashScreen();
     void setAllComponents(bool state);
-    void setStartFunction(std::function<void()> func);
-    void toggleFirstStartToFalse();
     void setLoadEditFunction(std::function<void(std::string)> func);
     void setSaveEditFunction(std::function<void(std::string)> func);
     void setExitFunction(std::function<void()> func);
@@ -39,8 +36,6 @@ public:
     
 private:
     te::Edit *edit;
-    bool firstStart = true;
-    std::function<void()> onStartUpFunction;
     
     // File components/functions
     std::function<void(std::string)> loadFromFileLambda;
@@ -56,7 +51,6 @@ private:
     juce::TextButton loadEdit {"load edit from file"};
     juce::TextButton saveEdit {"save edit to file"};
     juce::TextButton exit     {"exit settings"};
-    juce::TextButton start    {"Start!"};
     const int bsize = 100;
     const int half  = bsize/2;
     
