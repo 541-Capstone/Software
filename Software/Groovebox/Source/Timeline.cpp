@@ -310,19 +310,35 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
     // We utilize the file browser context control
     // instead
     if (usingFileBrowser) {
-        assert(fileBrowserHandler.isVisible());
-        juce::File file = fileBrowserHandler.contextControl(metadata);
-        if (file.exists()) {
-            // We add to active track
-            auto track = trackManager->getActiveTrack();
-            Helpers::insertClipFromJuceFile(track->getTrack(), &edit->getTransport(), file);
-            
-            // We re-enable all other components
-            setAllComponents(true);
-            fileBrowserState(false);
-        } else return;
+        if (cmd == Helpers::ContextualCommands::Encoder) {
+            Helpers::Encoders enc = Helpers::getEncoderType(message);
+            switch (enc) {
+                case Helpers::Encoders::CW1:
+                    fileBrowserHandler.scrollUp();
+                    break;
+                case Helpers::Encoders::CCW1:
+                    fileBrowserHandler.scrollDown();
+                default:
+                    break;
+            }
+        }
+        else if (cmd == Helpers::ContextualCommands::Add) {
+            assert(fileBrowserHandler.isVisible());
+            juce::File file = fileBrowserHandler.contextControl(metadata);
+            if (file.exists()) {
+                // We add to active track
+                auto track = trackManager->getActiveTrack();
+                Helpers::insertClipFromJuceFile(track->getTrack(), &edit->getTransport(), file);
+                
+                // We re-enable all other components
+                setAllComponents(true);
+                fileBrowserState(false);
+                redrawWaveform();
+            } else return;
+        }
     }
     
+    // We utilize timeline controls.
     if (cmd == Helpers::ContextualCommands::Encoder) {
         Helpers::Encoders enc = Helpers::getEncoderType(message);
         switch (enc) {
