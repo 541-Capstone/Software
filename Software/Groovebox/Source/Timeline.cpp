@@ -207,13 +207,24 @@ void Timeline::record(){
 void Timeline::nextTrack(){
     if (funcs.size() < 4) return;
     funcs[3]();
+    int num = te::getAudioTracks(*edit).size();
+    if (waveformScroll + 1 < num && num > 5) {
+        waveformScroll++;
+        waveforms.scrollAmount(1);
+    }
     redrawWaveform();
 }
 
 void Timeline::prevTrack(){
     if (funcs.size() < 5) return;
     funcs[4]();
+    if (waveformScroll > 0) {
+        waveformScroll--;
+        waveforms.scrollAmount(-1);
+    }
     redrawWaveform();
+    
+    
 }
 
 void Timeline::addAudioTrack(){

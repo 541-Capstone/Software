@@ -136,6 +136,7 @@ private:
     
     void setupWaveformDisplay();
     void redrawWaveform();
+    int waveformScroll = 0;
     
     /* File browser Variables */
     const int scrollAmount = 1;
