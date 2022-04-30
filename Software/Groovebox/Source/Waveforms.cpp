@@ -61,9 +61,9 @@ void Waveforms::showEdit() {
         printf("No edit loaded\n");
         return;
     }
-    int start_val = 1 + scrollAmt;
-    if (start_val <= 0) start_val = 1;
-    auto audioTracks = te::getAudioTracks(*edit);
+    const int start_val = 0;
+    std::cout<<"Start from track: "<<start_val<<"\n";
+    auto audioTracks = returnValidAudioTracks();
     int numAudioTracks = audioTracks.size();
     if (numAudioTracks > numTracks) numAudioTracks = numTracks;
     if (numAudioTracks <= 0) return;
@@ -75,8 +75,8 @@ void Waveforms::showEdit() {
         if (numClips > 0) {
             for (int k = 0; k < numClips; ++k) {
                 auto clip = clips[k];
-                if (clip->isMidi()) drawLine(clip, i-scrollAmt, k);
-                else drawWaveform(clip, i-scrollAmt, k);
+                if (clip->isMidi()) drawLine(clip, i, k);
+                else drawWaveform(clip, i, k);
             }
         }
     }
@@ -131,4 +131,31 @@ void Waveforms::scrollAmount(int ss){
     const int newScrollAmt = scrollAmt + ss;
     if (newScrollAmt < 0) return;
     else scrollAmt += ss;
+}
+
+void Waveforms::setTrackManager(std::shared_ptr<TrackManager> trackManager) {
+    this->trackManager = trackManager;
+}
+
+juce::Array<te::AudioTrack*> Waveforms::returnValidAudioTracks(){
+    juce::Array<te::AudioTrack*> ret;
+    if (trackManager.get() == nullptr) return ret;
+    auto audioTracks = te::getAudioTracks(*edit);
+    auto activeTrack = trackManager->getActiveTrack()->getTrack();
+    if (audioTracks.size() <= numTracks) {
+        return ret;
+    }
+    for (int i = 0; i < audioTracks.size()-5; ++i) {
+        for (int k = i; k < numTracks; k++) {
+            if (audioTracks[i] == activeTrack) {
+                /* we copy to ret */
+                for (int j = 0; j < numTracks; ++j)
+                    ret.add(audioTracks[j]);
+                return ret;
+            }
+        }
+        /* we clear this buffer if not inside */
+        ret.clear();
+    }
+    return ret;
 }

@@ -88,6 +88,7 @@ viewObjects* Timeline::getObjects() {
 
 void Timeline::setTrackManager(std::shared_ptr<TrackManager> trackManager) {
     this->trackManager = trackManager;
+    waveforms.setTrackManager(trackManager);
 }
 
 void Timeline::resized() {
@@ -208,7 +209,7 @@ void Timeline::nextTrack(){
     if (funcs.size() < 4) return;
     funcs[3]();
     int num = te::getAudioTracks(*edit).size();
-    if (waveformScroll + 1 < num && num > 5) {
+    if (waveformScroll + 1 == num-1 && num > 5) {
         waveformScroll++;
         waveforms.scrollAmount(1);
     }

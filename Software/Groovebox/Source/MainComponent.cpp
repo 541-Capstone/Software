@@ -421,6 +421,8 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             break;
         case Helpers::UniversalCommands::Synth:
             disableAllStates();
+            synthWindow.setVisible(true);
+            synthWindow.setEnabled(true);
             break;
         case Helpers::UniversalCommands::Settings:
             disableAllStates();
