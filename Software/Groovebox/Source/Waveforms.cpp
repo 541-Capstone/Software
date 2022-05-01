@@ -128,6 +128,10 @@ void Waveforms::drawWaveform (te::Clip *clip, int i, int k) {
         waveformManagers[i][k]->setForegroundColor(randomColor());
         waveformManagers[i][k]->setBackgroundColor(randomColor());
     }
+    else {
+        waveformManagers[i][k]->setForegroundColor(juce::Colours::lightblue);
+        waveformManagers[i][k]->setBackgroundColor(juce::Colours::darkblue);
+    }
     waveformManagers[i][k]->showAudioResource(url);
 }
 
@@ -140,6 +144,10 @@ void Waveforms::drawLine(te::Clip *clip, int i, int k) {
     if (randomIsEnabled){
         waveformManagers[i][k]->setForegroundColor(randomColor());
         waveformManagers[i][k]->setBackgroundColor(randomColor());
+    }
+    else {
+        waveformManagers[i][k]->setForegroundColor(juce::Colours::lightblue);
+        waveformManagers[i][k]->setBackgroundColor(juce::Colours::darkblue);
     }
     waveformManagers[i][k]->showAudioResource();
 }
