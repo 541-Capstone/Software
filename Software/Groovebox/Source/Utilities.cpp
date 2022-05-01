@@ -76,6 +76,23 @@ void Helpers::insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl
     insertClipToTrack(track, transport, filePath);
 }
 
+void Helpers::renderEditToFile(te::Edit *edit){
+    juce::Time saveFileTimename(juce::Time::getCurrentTime());
+    juce::String saveFilename = saveFileTimename.toString(true, true) + ".wav";
+    juce::String filenameWithPath = APATH;
+    filenameWithPath = filenameWithPath + "/exports/" + saveFilename;
+    juce::File file(filenameWithPath);
+    if (file.exists()) return;
+    auto res = file.create();
+    const juce::String taskDescription = "Export to "+file.getFullPathName();
+    std::cout<<taskDescription<<'\n';
+    juce::BigInteger tracksTodo {0};
+    for (int i = 0; i < te::getAllTracks(*edit).size(); ++i)
+        tracksTodo.setBit(i);
+    te::Renderer::renderToFile(taskDescription, file, *edit, {0.0, edit->getLength()}, tracksTodo);
+    
+}
+
 Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
     if (msg.isNoteOnOrOff()) {
         return Helpers::MessageType::Note;

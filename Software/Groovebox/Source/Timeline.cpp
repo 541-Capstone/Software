@@ -162,7 +162,7 @@ void Timeline::setEdit(te::Edit *edit) {
 }
 
 void Timeline::setupWaveformDisplay(){
-    waveforms.setColorRandomizer(true);
+    waveforms.setColorRandomizer(false);
     
     waveforms.setBounds(waveform_window);
     cursors.setBounds(waveform_window);

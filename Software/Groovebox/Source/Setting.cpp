@@ -20,6 +20,7 @@ Setting::Setting(){
     addAndMakeVisible(loadEdit);
     addAndMakeVisible(saveEdit);
     addAndMakeVisible(exit);
+    addAndMakeVisible(Export);
     
     std::function<void()> testFunctionLoad = [&]()->void{
         loadEditFromFile();
@@ -28,6 +29,11 @@ Setting::Setting(){
     std::function<void()> testFunctionSave = [&]()->void{
         saveEditToFile();
         
+    };
+    
+    std::function<void()> testFunctionExport = [&]()->void{
+        if (edit == nullptr) return;
+        Helpers::renderEditToFile(edit);
     };
     
     std::function<juce::File*()> testLoadFunction = [&]()->juce::File*{
@@ -41,6 +47,7 @@ Setting::Setting(){
     
     loadEdit.onClick = testFunctionLoad;
     saveEdit.onClick = testFunctionSave;
+    Export.onClick   = testFunctionExport;
     
     /* hide all buttons */
     setAllComponents(false);
@@ -76,6 +83,8 @@ void Setting::resized(){
     saveEdit.setBounds(this->getWidth()/2, this->getHeight()-bsize, bsize, bsize);
     
     exit.setBounds(this->getWidth()/2-bsize*2, this->getHeight()-bsize, bsize, bsize);
+    
+    Export.setBounds(this->getWidth()/2+bsize, this->getHeight()-bsize, bsize, bsize);
 }
 
 void Setting::setEdit(te::Edit *edit) {
@@ -151,6 +160,8 @@ void Setting::setAllComponents(bool state){
     fileBrowserHandler.setEnabled(state);
     fileBrowserHandler.setVisible(state);
     fileBrowserHandler.setAllComponent(state);
+    Export.setVisible(state);
+    Export.setEnabled(state);
 }
 
 void Setting::loadEditFromFile(){

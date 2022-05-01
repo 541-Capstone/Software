@@ -493,7 +493,7 @@ void MainComponent::saveEdit(std::string filename){
     filenameWithPath = filenameWithPath + "/edits/" + filename + ".edit";
     
     // Set the current working directory
-    //juce::File cwd(APATH);
+    //juce::File cwd(APATH);x
     //cwd.setAsCurrentWorkingDirectory();
     
     

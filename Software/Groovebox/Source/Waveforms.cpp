@@ -52,11 +52,25 @@ void Waveforms::setup() {
         waveformManagers[i] = new WaveformManager*[numClipsPerTrack];
         for (int j = 0; j < numClipsPerTrack; ++j) {
             waveformManagers[i][j] = new WaveformManager();
+            waveformManagers[i][j]->used = false;
+        }
+    }
+}
+
+void Waveforms::quickClean(){
+    for (int i = 0; i < numTracks; ++i) {
+        for (int j = 0; j < numClipsPerTrack; ++j) {
+            if (waveformManagers[i][j]->used) {
+                delete waveformManagers[i][j];
+                waveformManagers[i][j] = new WaveformManager();
+                waveformManagers[i][j]->used = false;
+            }
         }
     }
 }
 
 void Waveforms::showEdit() {
+    quickClean();
     if (edit == nullptr) {
         printf("No edit loaded\n");
         return;
@@ -64,6 +78,8 @@ void Waveforms::showEdit() {
     const int start_val = 0;
     std::cout<<"Start from track: "<<start_val<<"\n";
     auto audioTracks = returnValidAudioTracks();
+    std::cout<<"Size of ret: "<<audioTracks.size()<<'\n';
+    if (audioTracks.size() == 0) audioTracks = te::getAudioTracks(*edit);
     int numAudioTracks = audioTracks.size();
     if (numAudioTracks > numTracks) numAudioTracks = numTracks;
     if (numAudioTracks <= 0) return;
@@ -75,6 +91,7 @@ void Waveforms::showEdit() {
         if (numClips > 0) {
             for (int k = 0; k < numClips; ++k) {
                 auto clip = clips[k];
+                waveformManagers[i][k]->used = true;
                 if (clip->isMidi()) drawLine(clip, i, k);
                 else drawWaveform(clip, i, k);
             }
@@ -141,21 +158,20 @@ juce::Array<te::AudioTrack*> Waveforms::returnValidAudioTracks(){
     juce::Array<te::AudioTrack*> ret;
     if (trackManager.get() == nullptr) return ret;
     auto audioTracks = te::getAudioTracks(*edit);
-    auto activeTrack = trackManager->getActiveTrack()->getTrack();
+    std::cout<<"Number of tracks: "<<audioTracks.size()<<'\n';
     if (audioTracks.size() <= numTracks) {
         return ret;
     }
-    for (int i = 0; i < audioTracks.size()-5; ++i) {
-        for (int k = i; k < numTracks; k++) {
-            if (audioTracks[i] == activeTrack) {
-                /* we copy to ret */
-                for (int j = 0; j < numTracks; ++j)
-                    ret.add(audioTracks[j]);
+    int activeTrackIndex = trackManager->getActiveTrackIndex();
+    std::cout<<"Active track index: "<<activeTrackIndex<<'\n';
+    for (int i = 0; i <= audioTracks.size()-5; ++i) {
+        for (int j = 0; j < i+5; ++j) {
+            if (j == activeTrackIndex) {
+                for (int k = i; k < i+5; k++)
+                    ret.add(audioTracks[k]);
                 return ret;
             }
         }
-        /* we clear this buffer if not inside */
-        ret.clear();
     }
     return ret;
 }

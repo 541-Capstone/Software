@@ -51,6 +51,7 @@ private:
     juce::TextButton loadEdit {"load edit from file"};
     juce::TextButton saveEdit {"save edit to file"};
     juce::TextButton exit     {"exit settings"};
+    juce::TextButton Export   {"Export as .wav"};
     const int bsize = 100;
     const int half  = bsize/2;
     
