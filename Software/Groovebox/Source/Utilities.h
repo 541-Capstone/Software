@@ -26,7 +26,7 @@
 
 #ifdef __MACH__
     #define APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox"
-    #define EDITPATH "/edit/"
+    #define EDITPATH "/edits/"
     #define WAVSPATH "/wavs/"
     #define EXPORTPATH "/exports/"
     #define AUDIO_FILES_APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox/wavs/"
