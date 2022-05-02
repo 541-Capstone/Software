@@ -39,7 +39,7 @@ public:
 private:
     WaveformManager ***waveformManagers = nullptr;
     const int cursor_width = 5;
-    const double timeScale = 2.0f;
+    const double timeScale = 4.0f;
     const int numClipsPerTrack = 25;
     const int numTracks = 5;
     const int heightPerTrack = 64;
