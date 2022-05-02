@@ -56,20 +56,20 @@ public:
             updateCursorLocation();
         }
     };
-    T *contextControl(const juce::MidiMessageMetadata &metadata) {
+    juce::File contextControl(const juce::MidiMessageMetadata &metadata) {
         juce::MidiMessage message = metadata.getMessage();
         Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(message);
         
-        T *ret = nullptr;
+        juce::File ff;
         if (!fileBrowser.isEnabled()) {
             std::cout<<"File browser is not enabled!\n";
-            return nullptr;
+            return ff;
         }
         
         if (cmd == Helpers::ContextualCommands::Encoder) {
             Helpers::Encoders enc = Helpers::getEncoderType(message);
             if (enc == Helpers::Encoders::NOTASSIGNED) {
-                return nullptr;
+                return ff;
             }
             switch (enc) {
                 case Helpers::Encoders::CW1:
@@ -86,13 +86,13 @@ public:
         else {
             switch (cmd) {
                 case Helpers::ContextualCommands::Add:
-                    ret = action();
+                    ff = fileBrowser.getFileAtIndex();
                     break;
                 default:
                     break;
             }
         }
-        return ret;
+        return ff;
     };
     
     juce::File getFileAtIndex(){
@@ -109,6 +109,10 @@ public:
     
     T *doAction(){
         return action();
+    };
+    
+    void updateFileBrowser(){
+        fileBrowser.updateFileBrowser();
     };
     
 private:

@@ -27,22 +27,20 @@ public:
     void resized() override;
     void setEdit (te::Edit *edit);
     void contextControl(const juce::MidiMessageMetadata &metadata) override;
-    void displaySplashScreen();
     void setAllComponents(bool state);
-    void setStartFunction(std::function<void()> func);
-    void toggleFirstStartToFalse();
     void setLoadEditFunction(std::function<void(std::string)> func);
     void setSaveEditFunction(std::function<void(std::string)> func);
+    void setExitFunction(std::function<void()> func);
     void actionListenerCallback (const juce::String &message) override;
+    void updateCursorLocation();
     
 private:
     te::Edit *edit;
-    bool firstStart = true;
-    std::function<void()> onStartUpFunction;
     
     // File components/functions
     std::function<void(std::string)> loadFromFileLambda;
     std::function<void(std::string)> saveToFileLambda;
+    std::function<void()> exitAfterLoadingEditLambda;
     void loadEditFromFile();
     void saveEditToFile();
     std::string filename = "";
@@ -51,8 +49,9 @@ private:
     
     // button sizes
     juce::TextButton loadEdit {"load edit from file"};
-    juce::TextButton loadWav  {"load .wav from file"};
-    juce::TextButton start {"Start!"};
+    juce::TextButton saveEdit {"save edit to file"};
+    juce::TextButton exit     {"exit settings"};
+    juce::TextButton Export   {"Export as .wav"};
     const int bsize = 100;
     const int half  = bsize/2;
     
@@ -66,13 +65,12 @@ private:
     const int carretImageHeight = 25;
     juce::Image carret;
     juce::Colour cursorColor = juce::Colours::red;
-    void updateCursorLocation();
     void drawCarret();
     
     // FileBrowserHandler
     FileBrowserHandler<juce::File> fileBrowserHandler;
     const std::string aPath    = APATH;
-    const std::string editPath = aPath + "/edits";
+    const std::string editPath = aPath + std::string(EDIT_PATH);
     
 };
 #endif

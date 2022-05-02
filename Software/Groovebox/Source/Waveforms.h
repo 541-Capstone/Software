@@ -14,6 +14,7 @@
 #include <iostream>
 #include <JuceHeader.h>
 #include "WaveformManager.h"
+#include "TrackManager.h"
 #include <stdio.h>
 #ifdef __MACH__
 #include <unistd.h>
@@ -33,19 +34,26 @@ public:
     void setEdit (te::Edit *edit);
     void setColorRandomizer(bool set);
     void actionListenerCallback (const juce::String &message) override;
+    void scrollAmount(int ss);
+    void setTrackManager(std::shared_ptr<TrackManager>);
 private:
     WaveformManager ***waveformManagers = nullptr;
     const int cursor_width = 5;
     const double timeScale = 2.0f;
     const int numClipsPerTrack = 25;
-    const int numTracks = 10;
+    const int numTracks = 5;
     const int heightPerTrack = 64;
     te::Edit *edit;
+    std::shared_ptr<TrackManager> trackManager;
+    juce::Array<te::AudioTrack*> returnValidAudioTracks();
     bool randomIsEnabled = false;
     void clean();
     void setup();
+    void quickClean();
     void drawWaveform (te::Clip *clip, int i, int k);
     void drawLine (te::Clip *clip, int i, int k);
     juce::Colour randomColor();
+    int scrollAmt = 0;
+    
 };
 #endif

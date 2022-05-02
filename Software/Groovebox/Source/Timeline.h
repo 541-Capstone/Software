@@ -24,6 +24,7 @@
 #include "Cursors.h"
 #include "Scrollable.h"
 #include "ContextComponent.h"
+#include "FileBrowserHandler.h"
 
 class Timeline : public juce::ActionBroadcaster, 
     public juce::ActionListener, 
@@ -63,6 +64,11 @@ public:
     /* This assumes that the type of message is CONTEXTUAL and is for TIMELINE */
     void contextControl(const juce::MidiMessageMetadata &metadata) override;
     Waveforms *getWaveformPtr();
+    void fileBrowserState(bool state);
+    void setupTimelineSave(std::function<void()> func);
+
+
+    void redrawWaveform();
 
 // private member variables go here
 private:
@@ -81,6 +87,9 @@ private:
     juce::TextButton addTrackBtn{ "Add Track" };
     juce::TextButton leftBtn{ "<<<" };
     juce::TextButton rightBtn{ ">>>" };
+    juce::TextButton save{ "save" };
+    
+    juce::TextButton addSelClip {"Add selected clip"};
     
     /* Function vector */
     std::vector<std::function<void() > > funcs;
@@ -111,6 +120,8 @@ private:
     /* For waveforms */
     juce::Rectangle<int> waveform_window = juce::Rectangle<int>();
     
+    std::function <void()> onLoad;
+    
     /* For waveform views */
     Waveforms waveforms;
     Cursors cursors;
@@ -127,8 +138,18 @@ private:
     const int scrollAmt               = 10;
     
     void setupWaveformDisplay();
-    void redrawWaveform();
+    int waveformScroll = 0;
     
+    /* File browser Variables */
+    const int scrollAmount = 1;
+    int cursorLocation     = 0;
+    int cursorHeight       = 0;
+    const int cursorWidth  = 10;
+    juce::Rectangle<int> cursor;
+    juce::Colour cursorColor = juce::Colours::red;
+    FileBrowserHandler<juce::File> fileBrowserHandler;
+    juce::File dir;
+    bool usingFileBrowser = false;
 };
 
 #endif

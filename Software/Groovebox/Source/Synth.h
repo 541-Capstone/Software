@@ -25,7 +25,7 @@ public:
     Synth();
     ~Synth() override;
 
-    void paint (juce::Graphics&);
+    void paint (juce::Graphics&) override;
     void paintSynthLoaded(juce::Graphics&);
     void paintNoSynthLoaded(juce::Graphics&);
     void paintSelectionDialogue(juce::Graphics&);

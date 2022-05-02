@@ -18,11 +18,18 @@ Timeline::Timeline() {
     
     funcs.clear();
     
+    // Add the filebrowserHandler code. Set the directory
+    addAndMakeVisible(fileBrowserHandler);
+    const std::string pp = (AUDIO_FILES_APATH);
+    juce::File fbhDir(pp);
+    assert (fbhDir.isDirectory());
+    fileBrowserHandler.setDirectory(fbhDir);
+    
     //waveform_window.setBounds(100, 100, 512, 64);
     waveform_window.setBounds(150, 100, 650, 256);
     
     /* set that buttons are included in timelineObjects */
-    timelineObjects.inclBtns = true;
+    timelineObjects.inclBtns = false;
     timelineObjects.inclLbls = true;
     
     /* push buttons onto timelineObjects button vector */
@@ -33,6 +40,7 @@ Timeline::Timeline() {
     timelineObjects.btns.push_back(&leftBtn);
     timelineObjects.btns.push_back(&rightBtn);
     timelineObjects.btns.push_back(&addClip);
+    timelineObjects.btns.push_back(&save);
     
     /* push labels onto timelineObjects label vector */
     timelineObjects.lbls.push_back(&statusLbl);
@@ -50,6 +58,23 @@ Timeline::Timeline() {
         addAndMakeVisible(*lbl);
     }
     
+    addAndMakeVisible(addSelClip);
+    addSelClip.onClick = [&]()->void {
+        // make sure that filebrowser is enabled
+        if (usingFileBrowser) {
+            juce::File ff = fileBrowserHandler.getFileAtIndex();
+            auto track = trackManager->getActiveTrack();
+            Helpers::insertClipFromJuceFile(track->getTrack(), &edit->getTransport(), ff);
+            
+            // After adding clip, revert state
+            fileBrowserState(false);
+            setAllComponents(true);
+            redrawWaveform();
+        }
+    };
+    // We default to not showing filebrowser
+    fileBrowserState(false);
+    
     
 }
 
@@ -63,38 +88,49 @@ viewObjects* Timeline::getObjects() {
 
 void Timeline::setTrackManager(std::shared_ptr<TrackManager> trackManager) {
     this->trackManager = trackManager;
+    waveforms.setTrackManager(trackManager);
 }
 
 void Timeline::resized() {
     int buttonHeight = 100, buttonWidth = 100, i = 0;
     juce::Rectangle<int> buttonRect = this->getBounds();
-    juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
+    juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 100);
+    textRect = textRect.removeFromLeft(200);
+    //juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
 
-    juce::FlexBox buttonBox{ juce::FlexBox::Direction::row,
-                             juce::FlexBox::Wrap::noWrap,
+    juce::FlexBox buttonBox{ juce::FlexBox::Direction::column,
+                             juce::FlexBox::Wrap::wrap  ,
                              juce::FlexBox::AlignContent::flexStart,
                              juce::FlexBox::AlignItems::flexStart,
-                             juce::FlexBox::JustifyContent::center };
+                             juce::FlexBox::JustifyContent::flexStart };
 
     juce::FlexBox textBox{ juce::FlexBox::Direction::column,
                            juce::FlexBox::Wrap::noWrap,
                            juce::FlexBox::AlignContent::flexStart,
                            juce::FlexBox::AlignItems::flexStart,
-                           juce::FlexBox::JustifyContent::flexEnd
+                           juce::FlexBox::JustifyContent::flexStart
     };
     
     
-    for (juce::Button *btn : timelineObjects.btns) {
+    /*for (juce::Button *btn : timelineObjects.btns) {
         buttonBox.items.add (juce::FlexItem (buttonWidth, buttonHeight, *btn));
         i++;
-    }
+    }*/
 
-    textBox.items.add(juce::FlexItem(150, 10, statusLbl));
+    //textBox.items.add(juce::FlexItem(150, 10, statusLbl));
+    statusLbl.setJustificationType(juce::Justification::horizontallyCentred);
+    statusLbl.setFont(juce::Font(52.0f));
+    //trackCountLbl.setJustificationType(juce::Justification::centred);
+    trackCountLbl.setFont(juce::Font(36.0f));
     textBox.items.add(juce::FlexItem(textRect.getWidth(), textRect.getHeight(), trackCountLbl));
+    buttonBox.items.add(juce::FlexItem(buttonRect.getWidth(), buttonRect.getHeight(), statusLbl));
 
     buttonBox.performLayout(buttonRect);
-    textRect.setY(100);
+    textRect.setY(50);
     textBox.performLayout(textRect);
+    
+    fileBrowserHandler.setBounds(this->getBounds());
+    addSelClip.setBounds(this->getWidth()/2-50, this->getHeight()-100, 100, 100);
 }
 
 void Timeline::paint(juce::Graphics &g) {
@@ -107,12 +143,12 @@ void Timeline::paint(juce::Graphics &g) {
     
     // You can add your drawing code here!
     statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
-    trackCountLbl.setText((juce::String)trackManager->getNumTracks(), juce::NotificationType::dontSendNotification);
+    //trackCountLbl.setText((juce::String)trackManager->getNumTracks(), juce::NotificationType::dontSendNotification);
     juce::Array<std::shared_ptr<TrackManager::TrackWrapper>> trackList = trackManager->getAudioTrackList();
     juce::String trackNames = "";
     
     /* only iter when the there are tracks in audiotracklist */
-    trackNames += "Track List: \n";
+    //trackNames += "Track List: \n";
     if (trackList.size () > 0){
         for (auto track : trackList) {
             
@@ -121,7 +157,7 @@ void Timeline::paint(juce::Graphics &g) {
             }
              
             trackNames += track->getName();
-            trackNames += '\n';
+            trackNames += "\n\n";
         }
     }
     trackCountLbl.setText(trackNames, juce::NotificationType::dontSendNotification);
@@ -133,7 +169,7 @@ void Timeline::setEdit(te::Edit *edit) {
 }
 
 void Timeline::setupWaveformDisplay(){
-    waveforms.setColorRandomizer(true);
+    waveforms.setColorRandomizer(false);
     
     waveforms.setBounds(waveform_window);
     cursors.setBounds(waveform_window);
@@ -179,13 +215,24 @@ void Timeline::record(){
 void Timeline::nextTrack(){
     if (funcs.size() < 4) return;
     funcs[3]();
+    int num = te::getAudioTracks(*edit).size();
+    if (waveformScroll + 1 == num-1 && num > 5) {
+        waveformScroll++;
+        waveforms.scrollAmount(1);
+    }
     redrawWaveform();
 }
 
 void Timeline::prevTrack(){
     if (funcs.size() < 5) return;
     funcs[4]();
+    if (waveformScroll > 0) {
+        waveformScroll--;
+        waveforms.scrollAmount(-1);
+    }
     redrawWaveform();
+    
+    
 }
 
 void Timeline::addAudioTrack(){
@@ -196,7 +243,11 @@ void Timeline::addAudioTrack(){
 
 void Timeline::addClipToTrack(){
     if (funcs.size() < 7) return;
-    funcs[6]();
+    //funcs[6]();
+    usingFileBrowser = true;
+    setAllComponents(false);
+    fileBrowserState(true);
+    
     redrawWaveform();
 }
 
@@ -276,14 +327,48 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
     
     Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(message);
     
+    // We utilize the file browser context control
+    // instead
+    if (usingFileBrowser) {
+        if (cmd == Helpers::ContextualCommands::Encoder) {
+            Helpers::Encoders enc = Helpers::getEncoderType(message);
+            switch (enc) {
+                case Helpers::Encoders::CW1:
+                    fileBrowserHandler.scrollUp();
+                    break;
+                case Helpers::Encoders::CCW1:
+                    fileBrowserHandler.scrollDown();
+                default:
+                    break;
+            }
+        }
+        else if (cmd == Helpers::ContextualCommands::Add) {
+            assert(fileBrowserHandler.isVisible());
+            juce::File file = fileBrowserHandler.contextControl(metadata);
+            if (file.exists()) {
+                // We add to active track
+                auto track = trackManager->getActiveTrack();
+                Helpers::insertClipFromJuceFile(track->getTrack(), &edit->getTransport(), file);
+                
+                // We re-enable all other components
+                setAllComponents(true);
+                fileBrowserState(false);
+                redrawWaveform();
+            } else return;
+        }
+    }
+    
+    // We utilize timeline controls.
     if (cmd == Helpers::ContextualCommands::Encoder) {
         Helpers::Encoders enc = Helpers::getEncoderType(message);
         switch (enc) {
             case Helpers::Encoders::CW1:
-                
+                waveforms.scrollAmount(1);
+                redrawWaveform();
                 break;
             case Helpers::Encoders::CCW1:
-                
+                waveforms.scrollAmount(-1);
+                redrawWaveform();
                 break;
             default:
                 break;
@@ -298,13 +383,17 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
                 
                 break;
             case Helpers::ContextualCommands::Save:
-                
+                /* we go to settings */
+                onLoad();
                 break;
             case Helpers::ContextualCommands::Load:
                 
                 break;
             case Helpers::ContextualCommands::Add:
-                
+                // We stop displaying elements,
+                // and display the file browser comp.
+                this->setAllComponents(false);
+                fileBrowserState(true);
                 break;
             case Helpers::ContextualCommands::Delete:
                 
@@ -318,4 +407,18 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
 
 Waveforms *Timeline::getWaveformPtr(){
     return &waveforms;
+}
+
+void Timeline::fileBrowserState(bool state){
+    usingFileBrowser = state;
+    fileBrowserHandler.setAllComponent(state);
+    fileBrowserHandler.setVisible(state);
+    fileBrowserHandler.setEnabled(state);
+    addSelClip.setVisible(state);
+    addSelClip.setEnabled(state);
+}
+
+void Timeline::setupTimelineSave(std::function<void ()> func){
+    onLoad = func;
+    save.onClick = onLoad;
 }

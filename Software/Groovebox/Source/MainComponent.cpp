@@ -29,10 +29,10 @@ MainComponent::MainComponent(){
     
     // call fileManager
     fileManager.setEdit(edit.get());
-    Helpers::insertClipFromFile(tracktion_engine::getAudioTracks(*edit)[0], &edit->getTransport(), TESTAUDIOPATH);
+    //Helpers::insertClipFromFile(tracktion_engine::getAudioTracks(*edit)[0], &edit->getTransport(), TESTAUDIOPATH);
 
     // Initialize TrackManager
-    trackManager = std::make_shared<TrackManager>(edit);
+    trackManager = std::make_unique<TrackManager>(edit);
 
     // set current track to zero (testing purposes for now)
     trackManager->createTrack();
@@ -51,6 +51,7 @@ MainComponent::MainComponent(){
     addAndMakeVisible(timeline);
     timeline.setEdit(edit.get());
     timeline.setMainComponentPtr(this);
+    setupTimeline();
     
     // Setup settings
     setting.setBounds(this->getBounds());
@@ -59,7 +60,7 @@ MainComponent::MainComponent(){
 
     //Setup synth
     engine.getPluginManager().createBuiltInType<Wavetable>();
-    if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
+    /*if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
     {
         auto fx = dynamic_cast<te::DelayPlugin*> (edit->getPluginCache().createNewPlugin(te::DelayPlugin::xmlTypeName, {}).get());
         if (auto t = trackManager->getActiveTrack()) {
@@ -67,7 +68,7 @@ MainComponent::MainComponent(){
             t->getTrack()->pluginList.insertPlugin(*fx, 1, nullptr);
             t->hasSynth = true;
         }
-    }
+    }*/
     synthWindow.loadTrack(*(trackManager->getTrackWrapper()));
     synthWindow.setBounds(this->getBounds());
     addAndMakeVisible(synthWindow);
@@ -95,11 +96,11 @@ MainComponent::MainComponent(){
     setting.setVisible(true);
     setting.setAllComponents(true);
     
-    setting.displaySplashScreen();
     currentComponent = &setting;
     
     trackManager->setActiveTrack(0);
     
+    setupExample();
 }
 
 MainComponent::~MainComponent(){
@@ -248,11 +249,20 @@ void MainComponent::setMaxTracks(int n){
 }
 
 void MainComponent::loadEdit(std::string filename){
-    const juce::String editFilePath = editPath + filename;
+    const juce::String editFilePath = filename;
     const juce::File editFile (editFilePath);
+
+    auto& dm = engine.getDeviceManager().deviceManager;
+
+    auto deviceManagerSetup = dm.getAudioDeviceSetup();
+    deviceManagerSetup.sampleRate = 44100;
+    dm.setAudioDeviceSetup(deviceManagerSetup, true);
+    //dm.initialise(2, 2, 0, true, juce::String(), &deviceManagerSetup);
+    LOG((juce::String)engine.getDeviceManager().getSampleRate());
     
     // get the edit if it exists
     if (editFile.existsAsFile()) {
+        DBG("load edit called");
         edit = std::move(te::loadEditFromFile(engine, editFile));
     }
     // else create a new, empty edit if it doesn't exist
@@ -260,6 +270,19 @@ void MainComponent::loadEdit(std::string filename){
         edit = std::move(te::createEmptyEdit(engine, editFile));
     }
     edit->playInStopEnabled = true;
+
+    //Set the sample rate to 44.1kHz
+    /*auto deviceManagerSetup = edit->engine.getDeviceManager().deviceManager.getAudioDeviceSetup();
+    deviceManagerSetup.sampleRate = 44100;
+    edit->engine.getDeviceManager().deviceManager.setAudioDeviceSetup(deviceManagerSetup, true);
+    LOG((juce::String)edit->engine.getDeviceManager().getSampleRate());*/
+    
+    /* we want the timeline and
+       setting edits to point to correct location */
+    timeline.setEdit(edit.get());
+    trackManager = std::make_unique<TrackManager>(edit);
+    timeline.setTrackManager(trackManager);
+    setting.setEdit(edit.get());
 }
 
 /**
@@ -296,6 +319,17 @@ void MainComponent::play(){
     if (PState == PlayStates::Pause) {
         PState = PlayStates::Play;
         LOG("Playing\n");
+        if (PStyle == PlayStyle::Mult) {
+            auto tracks = te::getAudioTracks(*edit.get());
+            for (auto track: tracks)
+                track->setSolo(false);
+        }
+        else if (PStyle == PlayStyle::Solo){
+            LOG("Playing solo");
+            auto trackWrapper = trackManager->getActiveTrack();
+            auto track = trackWrapper->getTrack();
+            track->setSolo(true);
+        }
         edit->getTransport().play(false);
         isPlaying = true;
     }
@@ -358,6 +392,7 @@ void MainComponent::addClipToTrack() {
 void MainComponent::disableAllStates(){
     /* add states here to disable! */
     timeline.setAllComponents(false);
+    timeline.fileBrowserState(false);
     timeline.setVisible(false);
     timeline.setEnabled(false);
     
@@ -372,40 +407,9 @@ void MainComponent::disableAllStates(){
 
 /* This assumes that the type of messaegs are of type UNIVERSAL */
 void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata) {
-    /* get the controller Value */
-    const int controllerValue = metadata.getMessage().getControllerValue();
-    
-    //Helpers::ContextualCommands cmd = Helpers::getContextualCmdType(metadata.getMessage());
     
     /* get the message */
     const juce::MidiMessage message = metadata.getMessage();
-    
-    const int controllerNumber = metadata.getMessage().getControllerNumber();
-    
-    /* TODO: */
-    /* remove later*/
-    /*======================================*/
-    if (controllerNumber == 1) pause();
-    else if (controllerNumber == 2) play();
-    else if (controllerNumber == 3) disableAllStates();
-    else if (controllerNumber == 4) {
-        timeline.setAllComponents(true);
-        timeline.setEnabled(true);
-        timeline.setVisible(true);
-    }
-    return;
-    /*======================================*/
-    
-    /*---------------------*/
-    /* Functions     Value */
-    /* Record            1 */
-    /* Mute              2 */
-    /* Solo              3 */
-    /* Timeline          4 */
-    /* Synth             5 */
-    /* Settings          6 */
-    /* Plugins           7 */
-    /*---------------------*/
     
     /* utilize helper function */
     Helpers::UniversalCommands cmd = Helpers::getUniversalCmdType(message);
@@ -421,7 +425,7 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             record();
             break;
         case Helpers::UniversalCommands::Solo:
-            
+            solo();
             break;
         case Helpers::UniversalCommands::Timeline:
             disableAllStates();
@@ -432,6 +436,8 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             break;
         case Helpers::UniversalCommands::Synth:
             disableAllStates();
+            synthWindow.setVisible(true);
+            synthWindow.setEnabled(true);
             break;
         case Helpers::UniversalCommands::Settings:
             disableAllStates();
@@ -459,18 +465,6 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
 }
 
 void MainComponent::setupSetting(){
-    /* change how this function works to change how
-       splash screen functions */
-    std::function<void()> onStartup = [&](void)->void{
-        setting.toggleFirstStartToFalse();
-        WState = WindowStates::Settings;
-        disableAllStates();
-        setting.setAllComponents(true);
-        setting.setVisible(true);
-        setting.setEnabled(true);
-    };
-    setting.setStartFunction(onStartup);
-    
     std::function<void(std::string)> giveLoad = [&](std::string filename)->void{
         loadEdit(filename);
     };
@@ -482,7 +476,25 @@ void MainComponent::setupSetting(){
     };
     setting.setSaveEditFunction(giveSave);
     
+    std::function<void()> giveExit = [&]()->void{
+        WState = WindowStates::TrackView;
+        disableAllStates();
+        timeline.setAllComponents(true);
+        timeline.setVisible(true);
+        timeline.setEnabled(true);
+    };
+    setting.setExitFunction(giveExit);
     
+}
+
+void MainComponent::setupTimeline(){
+    std::function<void()> changeState = [&]()->void {
+        disableAllStates();
+        setting.setAllComponents(true);
+        setting.setVisible(true);
+        setting.setEnabled(true);
+    };
+    timeline.setupTimelineSave(changeState);
 }
 
 void MainComponent::saveEdit(std::string filename){
@@ -496,8 +508,8 @@ void MainComponent::saveEdit(std::string filename){
     filenameWithPath = filenameWithPath + "/edits/" + filename + ".edit";
     
     // Set the current working directory
-    juce::File cwd(APATH);
-    cwd.setAsCurrentWorkingDirectory();
+    //juce::File cwd(APATH);x
+    //cwd.setAsCurrentWorkingDirectory();
     
     
     // Get the savefile and create it
@@ -510,4 +522,71 @@ void MainComponent::saveEdit(std::string filename){
     tracktion_engine::Edit *e = edit.get();
     tracktion_engine::EditFileOperations edo(*e);
     edo.writeToFile(savefile, false);
+}
+
+void MainComponent::solo(){
+    if (PState == PlayStates::Pause) {
+        switch (PStyle) {
+            case PlayStyle::Solo:
+                PStyle = PlayStyle::Mult;
+                LOG("Changed to multi-track\n");
+                break;
+            case PlayStyle::Mult:
+                PStyle = PlayStyle::Solo;
+                LOG("Changed to solo\n");
+                break;
+            default:
+                break;
+        }
+    }
+    else {
+        LOG("Must be in pause to change\n");
+    }
+}
+
+
+void MainComponent::setupExample() {
+    te::TransportControl& transport = edit->getTransport();
+    auto at = trackManager->getActiveTrack().get()->getTrack();
+    transport.setCurrentPosition(10.5);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "test-track-2.wav");
+
+    trackManager->setActiveTrack(1);
+    at = trackManager->getActiveTrack().get()->getTrack();
+    transport.setCurrentPosition(5.25);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "lemons-for-scale.wav");
+    transport.setCurrentPosition(30.25);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "lemons-for-scale.wav");
+
+    trackManager->createTrack();
+    trackManager->setActiveTrack(2);
+    at = trackManager->getActiveTrack().get()->getTrack();
+    transport.setCurrentPosition(6.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_17.wav");
+    transport.setCurrentPosition(11.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_17.wav");
+    transport.setCurrentPosition(16.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_17.wav");
+    transport.setCurrentPosition(75.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_4.wav");
+    transport.setCurrentPosition(79.5);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_17.wav");
+    transport.setCurrentPosition(83.7);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_4.wav");
+
+    trackManager->createTrack();
+    trackManager->setActiveTrack(3);
+    at = trackManager->getActiveTrack().get()->getTrack();
+    transport.setCurrentPosition(50.0);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "test-track-2.wav");
+    transport.setCurrentPosition(43.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_13.wav");
+    transport.setCurrentPosition(38.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_4.wav");
+
+    transport.setCurrentPosition(33.65);
+
+
+    timeline.redrawWaveform();
+    //transport.play(false);
 }

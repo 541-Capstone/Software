@@ -26,10 +26,14 @@
 
 #ifdef __MACH__
     #define APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox"
+	#define AUDIO_FILES_PATH "/wavs/"
+	#define EDIT_PATH "/edits"
 #endif
 
 #ifdef _WIN64
     #define APATH "C:\\Users\\Dima\\Dev\\EECS542\\Software\\Software\\Groovebox"
+	#define AUDIO_FILES_APATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\"
+    #define EDIT_PATH "\\edits"
 #endif
 
 #define UNIVERSAL_CC_CHANNEL  16
@@ -70,7 +74,8 @@ namespace Helpers
 {
 	void insertClipFromFile(te::AudioTrack* track, te::TransportControl* transport, juce::String filePath);
     void insertClipToTrack(te::AudioTrack* track, te::TransportControl *transport, juce::String filePath);
-void insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file);
+    void insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file);
+    void renderEditToFile(te::Edit *edit);
 
 	//===========================================================================
 	/* 

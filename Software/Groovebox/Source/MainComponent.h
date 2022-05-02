@@ -101,11 +101,17 @@ private:
     enum class PlayStates {
         Play,
         Pause,
-        Record
+        Record,
+    };
+    
+    enum class PlayStyle : int {
+        Solo = 0,
+        Mult
     };
     
     /* This is the state of the playing */
     PlayStates PState = PlayStates::Pause;
+    PlayStyle  PStyle = PlayStyle::Mult;
     
     //=================================================================
     /**
@@ -232,12 +238,18 @@ private:
     // adds a clip to an existing audio track
     void addClipToTrack();
     
+    // Solo, play just the active track
+    void solo();
+    
     /* do something with universal controls */
     void universalControls(const juce::MidiMessageMetadata &metadata);
     
     ContextComponent *currentComponent = nullptr;
     
     void setupSetting();
+    void setupTimeline();
+
+    void setupExample();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

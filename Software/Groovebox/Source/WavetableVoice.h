@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 #include "WavetableSound.h"
 #include "Utilities.h"
-
+namespace te = tracktion_engine;
 class WavetableVoice : public juce::SynthesiserVoice {
 public:
     //Container for all voice parameters

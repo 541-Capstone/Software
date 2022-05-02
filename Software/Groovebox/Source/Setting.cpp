@@ -18,29 +18,22 @@ Setting::Setting(){
        will be removed later, but
        usefull for testing */
     addAndMakeVisible(loadEdit);
-    addAndMakeVisible(loadWav);
+    addAndMakeVisible(saveEdit);
+    addAndMakeVisible(exit);
+    addAndMakeVisible(Export);
     
-    /* set size of buttons */
-    start.setBounds(this->getWidth()/2-half, this->getHeight()/2-half, bsize, bsize);
-    addAndMakeVisible(start);
-    
-    
-    std::function<void()> testFunctionScrollUp = [&]()->void{
-        //browser.scrollUp(scrollAmount);
-        fileBrowserHandler.scrollUp();
-        
-        //updateCursorLocation();
+    std::function<void()> testFunctionLoad = [&]()->void{
         loadEditFromFile();
     };
     
-    std::function<void()> testFunctionScrollDown = [&]()->void{
-        //browser.scrollDown(scrollAmount);
-        //fileBrowserHandler.scrollDown();
-        
-        //updateCursorLocation();
-        //fileBrowserHandler.doAction();
+    std::function<void()> testFunctionSave = [&]()->void{
         saveEditToFile();
         
+    };
+    
+    std::function<void()> testFunctionExport = [&]()->void{
+        if (edit == nullptr) return;
+        Helpers::renderEditToFile(edit);
     };
     
     std::function<juce::File*()> testLoadFunction = [&]()->juce::File*{
@@ -52,8 +45,9 @@ Setting::Setting(){
     
     fileBrowserHandler.setAction(testLoadFunction);
     
-    loadEdit.onClick = testFunctionScrollUp;
-    loadWav.onClick = testFunctionScrollDown;
+    loadEdit.onClick = testFunctionLoad;
+    saveEdit.onClick = testFunctionSave;
+    Export.onClick   = testFunctionExport;
     
     /* hide all buttons */
     setAllComponents(false);
@@ -61,16 +55,13 @@ Setting::Setting(){
     //addAndMakeVisible(browser);
     addAndMakeVisible(fileBrowserHandler);
     
-    //TODO: We may need to change directories later
-    //browser.setDirectory(juce::File::getCurrentWorkingDirectory());
-    //browser.startThread(3);
-    //fileBrowserHandler.setDirectory(juce::File::getCurrentWorkingDirectory());
     std::cout<<"edit path: "<<editPath<<'\n';
     juce::File dir(editPath);
     if (dir.isDirectory()) std::cout<<"\nHello, World!\n";
     fileBrowserHandler.setDirectory(dir);
     
     //browser.addActionListener(this);
+    //updateCursorLocation();
 }
 
 Setting::~Setting(){
@@ -78,10 +69,8 @@ Setting::~Setting(){
 }
 
 void Setting::paint(juce::Graphics &g){
-    if (!firstStart) {
-        g.setColour(cursorColor);
-        g.fillRect(cursor);
-    }
+    g.setColour(cursorColor);
+    g.fillRect(cursor);
 }
 
 void Setting::resized(){
@@ -91,7 +80,11 @@ void Setting::resized(){
     
     loadEdit.setBounds(this->getWidth()/2-bsize, this->getHeight()-bsize, bsize, bsize);
     
-    loadWav.setBounds(this->getWidth()/2, this->getHeight()-bsize, bsize, bsize);
+    saveEdit.setBounds(this->getWidth()/2, this->getHeight()-bsize, bsize, bsize);
+    
+    exit.setBounds(this->getWidth()/2-bsize*2, this->getHeight()-bsize, bsize, bsize);
+    
+    Export.setBounds(this->getWidth()/2+bsize, this->getHeight()-bsize, bsize, bsize);
 }
 
 void Setting::setEdit(te::Edit *edit) {
@@ -154,59 +147,57 @@ void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
     }
 }
 
-void Setting::displaySplashScreen(){
-    setAllComponents(false);
-    addAndMakeVisible(start);
-    start.setEnabled(true);
-    start.setVisible(true);
-    start.setBounds(this->getWidth()/2-50, this->getHeight()/2-50, 100, 100);
-    start.onClick = onStartUpFunction;
-}
-
 void Setting::setAllComponents(bool state){
     loadEdit.setEnabled(state);
     loadEdit.setVisible(state);
-    loadWav.setEnabled(state);
-    loadWav.setVisible(state);
+    saveEdit.setEnabled(state);
+    saveEdit.setVisible(state);
+    exit.setVisible(state);
+    exit.setEnabled(state);
     browser.setAllComponents(state);
     browser.setEnabled(state);
     browser.setVisible(state);
-    
     fileBrowserHandler.setEnabled(state);
     fileBrowserHandler.setVisible(state);
     fileBrowserHandler.setAllComponent(state);
-}
-
-void Setting::setStartFunction(std::function<void ()> func) {
-    onStartUpFunction = func;
-}
-
-void Setting::toggleFirstStartToFalse(){
-    firstStart = false;
-    start.setEnabled(false);
-    start.setVisible(false);
+    Export.setVisible(state);
+    Export.setEnabled(state);
 }
 
 void Setting::loadEditFromFile(){
+    /* get the filename */
+    juce::File fileToLoadFrom = fileBrowserHandler.getFileAtIndex();
+    const std::string filenameFromFile = fileToLoadFrom.getFullPathName().toStdString();
+    
+    DBG("Save to "+filenameFromFile+"\n");
+    
     /* check if valid file name (not "") */
-    if (filename == "" || filename == " ") {
+    if (filenameFromFile == "" || filenameFromFile == " ") {
         std::cout<<"Filename not set!\n";
         return;
     }
     
-    /* now, check if file exists */
-    
-    
     /* load into edit with function defined in MainComponent */
-    loadFromFileLambda(filename);
+    loadFromFileLambda(filenameFromFile);
     
+    /* now, exit the settings */
+    exitAfterLoadingEditLambda();
 }
 
 void Setting::saveEditToFile(){
-    
+    /* get the time */
+    juce::Time saveFileTimename(juce::Time::getCurrentTime());
     
     /* save edit with function defined in MainComponent */
-    saveToFileLambda(filename);
+    /* update the filename */
+    juce::String saveFilename = saveFileTimename.toString(true, true);
+    saveFilename += "-edit";
+    const std::string ss = saveFilename.toStdString();
+    saveToFileLambda(ss);
+    
+    /* now, since we modified the folder
+       we should update the file browser */
+    fileBrowserHandler.updateFileBrowser();
 }
 
 void Setting::setLoadEditFunction(std::function<void (std::string)> func){
@@ -247,4 +238,9 @@ void Setting::drawCarret(){
             
         }
     }
+}
+
+void Setting::setExitFunction(std::function<void ()> func){
+    exitAfterLoadingEditLambda = func;
+    exit.onClick = func;
 }

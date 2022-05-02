@@ -31,7 +31,7 @@ public:
     void setBackgroundColor (juce::Colour color);
     void setForegroundColor (juce::Colour color);
     void isMIDI (bool isMidi);
-    
+    bool used;
 private:
     juce::AudioFormatManager formatManager;
     juce::URL currentAudioFile;
