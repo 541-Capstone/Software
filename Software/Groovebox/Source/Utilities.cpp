@@ -72,6 +72,10 @@ void Helpers::insertClipToTrack(te::AudioTrack *track, te::TransportControl *tra
 
 void Helpers::insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file){
     juce::String filePath = file.getFullPathName();
+    /* prevent from adding non-existant clips
+       and empty clips */
+    if(!file.exists()) return;
+    if(file.getSize()==0) return;
     insertClipToTrack(track, transport, filePath);
 }
 
