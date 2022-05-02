@@ -23,8 +23,8 @@ public:
     void setEdit(te::Edit *edit);
     void defineCursorByRect(juce::Rectangle<int> window);
 private:
-    const int cursor_width = 2;
-    const double timeScale = 1.0f;
+    const int cursor_width = 1;
+    const double timeScale = 4.0f;
     juce::Colour cursor_color = juce::Colours::white;
     te::Edit *edit;
 };
