@@ -20,7 +20,7 @@ Timeline::Timeline() {
     
     // Add the filebrowserHandler code. Set the directory
     addAndMakeVisible(fileBrowserHandler);
-    const std::string pp = std::string(APATH) + WAVSPATH;
+    const std::string pp = (AUDIO_FILES_APATH);
     juce::File fbhDir(pp);
     assert (fbhDir.isDirectory());
     fileBrowserHandler.setDirectory(fbhDir);
@@ -29,7 +29,7 @@ Timeline::Timeline() {
     waveform_window.setBounds(150, 100, 650, 256);
     
     /* set that buttons are included in timelineObjects */
-    timelineObjects.inclBtns = true;
+    timelineObjects.inclBtns = false;
     timelineObjects.inclLbls = true;
     
     /* push buttons onto timelineObjects button vector */
@@ -94,32 +94,39 @@ void Timeline::setTrackManager(std::shared_ptr<TrackManager> trackManager) {
 void Timeline::resized() {
     int buttonHeight = 100, buttonWidth = 100, i = 0;
     juce::Rectangle<int> buttonRect = this->getBounds();
-    juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
+    juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 100);
+    textRect = textRect.removeFromLeft(200);
+    //juce::Rectangle<int> textRect = buttonRect.removeFromBottom(buttonRect.getHeight() - 150);
 
-    juce::FlexBox buttonBox{ juce::FlexBox::Direction::row,
-                             juce::FlexBox::Wrap::noWrap,
+    juce::FlexBox buttonBox{ juce::FlexBox::Direction::column,
+                             juce::FlexBox::Wrap::wrap  ,
                              juce::FlexBox::AlignContent::flexStart,
                              juce::FlexBox::AlignItems::flexStart,
-                             juce::FlexBox::JustifyContent::center };
+                             juce::FlexBox::JustifyContent::flexStart };
 
     juce::FlexBox textBox{ juce::FlexBox::Direction::column,
                            juce::FlexBox::Wrap::noWrap,
                            juce::FlexBox::AlignContent::flexStart,
                            juce::FlexBox::AlignItems::flexStart,
-                           juce::FlexBox::JustifyContent::flexEnd
+                           juce::FlexBox::JustifyContent::flexStart
     };
     
     
-    for (juce::Button *btn : timelineObjects.btns) {
+    /*for (juce::Button *btn : timelineObjects.btns) {
         buttonBox.items.add (juce::FlexItem (buttonWidth, buttonHeight, *btn));
         i++;
-    }
+    }*/
 
-    textBox.items.add(juce::FlexItem(150, 10, statusLbl));
+    //textBox.items.add(juce::FlexItem(150, 10, statusLbl));
+    statusLbl.setJustificationType(juce::Justification::horizontallyCentred);
+    statusLbl.setFont(juce::Font(52.0f));
+    //trackCountLbl.setJustificationType(juce::Justification::centred);
+    trackCountLbl.setFont(juce::Font(36.0f));
     textBox.items.add(juce::FlexItem(textRect.getWidth(), textRect.getHeight(), trackCountLbl));
+    buttonBox.items.add(juce::FlexItem(buttonRect.getWidth(), buttonRect.getHeight(), statusLbl));
 
     buttonBox.performLayout(buttonRect);
-    textRect.setY(100);
+    textRect.setY(50);
     textBox.performLayout(textRect);
     
     fileBrowserHandler.setBounds(this->getBounds());
@@ -136,12 +143,12 @@ void Timeline::paint(juce::Graphics &g) {
     
     // You can add your drawing code here!
     statusLbl.setText((juce::String) transport->getCurrentPosition(), juce::NotificationType::dontSendNotification);
-    trackCountLbl.setText((juce::String)trackManager->getNumTracks(), juce::NotificationType::dontSendNotification);
+    //trackCountLbl.setText((juce::String)trackManager->getNumTracks(), juce::NotificationType::dontSendNotification);
     juce::Array<std::shared_ptr<TrackManager::TrackWrapper>> trackList = trackManager->getAudioTrackList();
     juce::String trackNames = "";
     
     /* only iter when the there are tracks in audiotracklist */
-    trackNames += "Track List: \n";
+    //trackNames += "Track List: \n";
     if (trackList.size () > 0){
         for (auto track : trackList) {
             
@@ -150,7 +157,7 @@ void Timeline::paint(juce::Graphics &g) {
             }
              
             trackNames += track->getName();
-            trackNames += '\n';
+            trackNames += "\n\n";
         }
     }
     trackCountLbl.setText(trackNames, juce::NotificationType::dontSendNotification);

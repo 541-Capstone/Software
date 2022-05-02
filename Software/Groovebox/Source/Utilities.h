@@ -29,6 +29,8 @@
     #define EDITPATH "/edit/"
     #define WAVSPATH "/wavs/"
     #define EXPORTPATH "/exports/"
+	#define AUDIO_FILES_PATH "/wavs/"
+	#define EDIT_PATH "/edits"
 #endif
 
 #ifdef _WIN64
@@ -36,6 +38,8 @@
     #define EDITPATH "\edit\"
     #define WAVSPATH "\wavs\"
     #define EXPORTPATH "\exports\"
+	#define AUDIO_FILES_APATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\"
+    #define EDIT_PATH "\\edits"
 #endif
 
 #define UNIVERSAL_CC_CHANNEL  16
