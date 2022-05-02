@@ -363,11 +363,11 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
         Helpers::Encoders enc = Helpers::getEncoderType(message);
         switch (enc) {
             case Helpers::Encoders::CW1:
-                waveforms.scrollAmount(1);
+                nextTrack();
                 redrawWaveform();
                 break;
             case Helpers::Encoders::CCW1:
-                waveforms.scrollAmount(-1);
+                prevTrack();
                 redrawWaveform();
                 break;
             default:
