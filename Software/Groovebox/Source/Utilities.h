@@ -26,10 +26,14 @@
 
 #ifdef __MACH__
     #define APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox"
+	#define AUDIO_FILES_PATH "/wavs/"
+	#define EDIT_PATH "/edits"
 #endif
 
 #ifdef _WIN64
     #define APATH "C:\\Users\\Dima\\Dev\\EECS542\\Software\\Software\\Groovebox"
+	#define AUDIO_FILES_APATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\"
+    #define EDIT_PATH "\\edits"
 #endif
 
 #define UNIVERSAL_CC_CHANNEL  16

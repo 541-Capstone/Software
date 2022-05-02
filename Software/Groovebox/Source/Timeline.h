@@ -67,6 +67,9 @@ public:
     void fileBrowserState(bool state);
     void setupTimelineSave(std::function<void()> func);
 
+
+    void redrawWaveform();
+
 // private member variables go here
 private:
     
@@ -135,7 +138,6 @@ private:
     const int scrollAmt               = 10;
     
     void setupWaveformDisplay();
-    void redrawWaveform();
     int waveformScroll = 0;
     
     /* File browser Variables */

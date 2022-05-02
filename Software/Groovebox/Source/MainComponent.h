@@ -248,6 +248,8 @@ private:
     
     void setupSetting();
     void setupTimeline();
+
+    void setupExample();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

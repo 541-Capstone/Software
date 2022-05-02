@@ -22,7 +22,7 @@ MainComponent::MainComponent(){
     loadEdit("");
 
     //Set sample rate 
-    sampleRate = (int)edit->getTransport().engine.getDeviceManager().getSampleRate();
+    sampleRate = (int)edit->engine.getDeviceManager().getSampleRate();
 
     //Initialize previousSampleNumber
     inputPrevSampleNumber = 0;
@@ -60,7 +60,7 @@ MainComponent::MainComponent(){
 
     //Setup synth
     engine.getPluginManager().createBuiltInType<Wavetable>();
-    if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
+    /*if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
     {
         auto fx = dynamic_cast<te::DelayPlugin*> (edit->getPluginCache().createNewPlugin(te::DelayPlugin::xmlTypeName, {}).get());
         if (auto t = trackManager->getActiveTrack()) {
@@ -68,7 +68,7 @@ MainComponent::MainComponent(){
             t->getTrack()->pluginList.insertPlugin(*fx, 1, nullptr);
             t->hasSynth = true;
         }
-    }
+    }*/
     synthWindow.loadTrack(*(trackManager->getTrackWrapper()));
     synthWindow.setBounds(this->getBounds());
     addAndMakeVisible(synthWindow);
@@ -100,6 +100,7 @@ MainComponent::MainComponent(){
     
     trackManager->setActiveTrack(0);
     
+    setupExample();
 }
 
 MainComponent::~MainComponent(){
@@ -250,6 +251,14 @@ void MainComponent::setMaxTracks(int n){
 void MainComponent::loadEdit(std::string filename){
     const juce::String editFilePath = filename;
     const juce::File editFile (editFilePath);
+
+    auto& dm = engine.getDeviceManager().deviceManager;
+
+    auto deviceManagerSetup = dm.getAudioDeviceSetup();
+    deviceManagerSetup.sampleRate = 44100;
+    dm.setAudioDeviceSetup(deviceManagerSetup, true);
+    //dm.initialise(2, 2, 0, true, juce::String(), &deviceManagerSetup);
+    LOG((juce::String)engine.getDeviceManager().getSampleRate());
     
     // get the edit if it exists
     if (editFile.existsAsFile()) {
@@ -261,6 +270,12 @@ void MainComponent::loadEdit(std::string filename){
         edit = std::move(te::createEmptyEdit(engine, editFile));
     }
     edit->playInStopEnabled = true;
+
+    //Set the sample rate to 44.1kHz
+    /*auto deviceManagerSetup = edit->engine.getDeviceManager().deviceManager.getAudioDeviceSetup();
+    deviceManagerSetup.sampleRate = 44100;
+    edit->engine.getDeviceManager().deviceManager.setAudioDeviceSetup(deviceManagerSetup, true);
+    LOG((juce::String)edit->engine.getDeviceManager().getSampleRate());*/
     
     /* we want the timeline and
        setting edits to point to correct location */
@@ -527,4 +542,51 @@ void MainComponent::solo(){
     else {
         LOG("Must be in pause to change\n");
     }
+}
+
+
+void MainComponent::setupExample() {
+    te::TransportControl& transport = edit->getTransport();
+    auto at = trackManager->getActiveTrack().get()->getTrack();
+    transport.setCurrentPosition(10.5);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "test-track-2.wav");
+
+    trackManager->setActiveTrack(1);
+    at = trackManager->getActiveTrack().get()->getTrack();
+    transport.setCurrentPosition(5.25);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "lemons-for-scale.wav");
+    transport.setCurrentPosition(30.25);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "lemons-for-scale.wav");
+
+    trackManager->createTrack();
+    trackManager->setActiveTrack(2);
+    at = trackManager->getActiveTrack().get()->getTrack();
+    transport.setCurrentPosition(6.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_17.wav");
+    transport.setCurrentPosition(11.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_17.wav");
+    transport.setCurrentPosition(16.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_17.wav");
+    transport.setCurrentPosition(75.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_4.wav");
+    transport.setCurrentPosition(79.5);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_17.wav");
+    transport.setCurrentPosition(83.7);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_4.wav");
+
+    trackManager->createTrack();
+    trackManager->setActiveTrack(3);
+    at = trackManager->getActiveTrack().get()->getTrack();
+    transport.setCurrentPosition(50.0);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "test-track-2.wav");
+    transport.setCurrentPosition(43.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_13.wav");
+    transport.setCurrentPosition(38.3);
+    Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_4.wav");
+
+    transport.setCurrentPosition(33.65);
+
+
+    timeline.redrawWaveform();
+    //transport.play(false);
 }
