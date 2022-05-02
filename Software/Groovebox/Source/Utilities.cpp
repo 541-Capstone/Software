@@ -80,6 +80,7 @@ void Helpers::insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl
 }
 
 void Helpers::renderEditToFile(te::Edit *edit){
+    if (edit->getLength() <= 0.0) return;
     /* create and name file */
     juce::Time saveFileTimename(juce::Time::getCurrentTime());
     juce::String saveFilename = saveFileTimename.toString(true, true);
