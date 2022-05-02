@@ -119,5 +119,10 @@ void Delay::readFromBuffer(juce::AudioBuffer<float>& buffer, juce::AudioBuffer<f
 	}
 }
 
+void Delay::contextControl(const juce::MidiMessageMetadata &metadata){
+    
+}
 
-
+IPlugin::Parameter Delay::getParameterValue(int index){
+    return {};
+}

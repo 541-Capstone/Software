@@ -29,15 +29,16 @@
     #define EDITPATH "/edit/"
     #define WAVSPATH "/wavs/"
     #define EXPORTPATH "/exports/"
-	#define AUDIO_FILES_PATH "/wavs/"
-	#define EDIT_PATH "/edits"
+    #define AUDIO_FILES_APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox/wavs/"
+	#define EDIT_PATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox/edits/"
+
 #endif
 
 #ifdef _WIN64
     #define APATH "C:\\Users\\Dima\\Dev\\EECS542\\Software\\Software\\Groovebox"
-    #define EDITPATH "\edit\"
-    #define WAVSPATH "\wavs\"
-    #define EXPORTPATH "\exports\"
+    #define EDITPATH "\\edit\\"
+    #define WAVSPATH "\\wavs\\"
+    #define EXPORTPATH "\\exports\\"
 	#define AUDIO_FILES_APATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\"
     #define EDIT_PATH "\\edits"
 #endif
