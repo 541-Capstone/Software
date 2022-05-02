@@ -30,7 +30,7 @@
     #define WAVSPATH "/wavs/"
     #define EXPORTPATH "/exports/"
     #define AUDIO_FILES_APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox/wavs/"
-	#define EDIT_PATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox/edits/"
+	#define EDIT_PATH "/edits/"
 
 #endif
 
