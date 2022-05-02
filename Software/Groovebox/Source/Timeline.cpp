@@ -387,7 +387,7 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
                 onLoad();
                 break;
             case Helpers::ContextualCommands::Load:
-                
+                onLoad();
                 break;
             case Helpers::ContextualCommands::Add:
                 // We stop displaying elements,
