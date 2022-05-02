@@ -14,32 +14,28 @@
 #include "FileManager.h"
 #include "IPlugin.h"
 
-#if __MACH__
-#define LOG(x) std::cout<<x
-#define TESTAUDIOPATH "~/Documents/test2.m4a"
-#endif
-
-#if _WIN64
-#define TESTAUDIOPATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\lemons-improved.wav"
-#define LOG(x) DBG(x)
-#endif
-
 #ifdef __MACH__
     #define APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox"
 	#define AUDIO_FILES_APATH "/wavs/"
 	#define EDIT_PATH "/edits"
+	#define LOG(x) std::cout<<x
+	#define TESTAUDIOPATH "~/Documents/test2.m4a"
 #endif
 
 #ifdef _WIN64
     #define APATH "C:\\Users\\Dima\\Dev\\EECS542\\Software\\Software\\Groovebox"
 	#define AUDIO_FILES_APATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\"
     #define EDIT_PATH "\\edits"
+	#define TESTAUDIOPATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\lemons-improved.wav"
+	#define LOG(x) DBG(x)
 #endif
 
 #ifdef _M_ARM64
 	#define APATH "~/Software/Software/Groovebox"
 	#define AUDIO_FILES_APATH "~/clips/"
 	#define EDIT_PATH "~/edits"
+	#define LOG(x) std::cout<<x
+	#define TESTAUDIOPATH "~/Clips/lemons-improved.wav"
 #endif
 
 #define UNIVERSAL_CC_CHANNEL  16
