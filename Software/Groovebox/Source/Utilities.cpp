@@ -84,7 +84,7 @@ void Helpers::renderEditToFile(te::Edit *edit){
     juce::Time saveFileTimename(juce::Time::getCurrentTime());
     juce::String saveFilename = saveFileTimename.toString(true, true);
     juce::String filenameWithPath = APATH;
-    filenameWithPath = filenameWithPath + "/exports/" + saveFilename + ".wav";
+    filenameWithPath = filenameWithPath + EXPORTPATH + saveFilename + ".wav";
     juce::File file(filenameWithPath);
     
     /* check to see if file exists */

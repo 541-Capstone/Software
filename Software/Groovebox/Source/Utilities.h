@@ -26,10 +26,16 @@
 
 #ifdef __MACH__
     #define APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox"
+    #define EDITPATH "/edit/"
+    #define WAVSPATH "/wavs/"
+    #define EXPORTPATH "/exports/"
 #endif
 
 #ifdef _WIN64
     #define APATH "C:\\Users\\Dima\\Dev\\EECS542\\Software\\Software\\Groovebox"
+    #define EDITPATH "\edit\"
+    #define WAVSPATH "\wavs\"
+    #define EXPORTPATH "\exports\"
 #endif
 
 #define UNIVERSAL_CC_CHANNEL  16

@@ -84,6 +84,9 @@ void Waveforms::showEdit() {
     if (numAudioTracks > numTracks) numAudioTracks = numTracks;
     if (numAudioTracks <= 0) return;
     this->setBounds(this->getX(), this->getY(), this->getWidth(), heightPerTrack * numAudioTracks);
+    int activeTrackIndex = 0;
+    if (trackManager != nullptr) activeTrackIndex = trackManager->getActiveTrackIndex();
+    if (activeTrackIndex >= 5) activeTrackIndex = 4;
     for (int i = start_val; i < numAudioTracks; ++i) {
         auto clips = audioTracks[i]->getClips();
         int numClips = clips.size();
@@ -92,6 +95,8 @@ void Waveforms::showEdit() {
             for (int k = 0; k < numClips; ++k) {
                 auto clip = clips[k];
                 waveformManagers[i][k]->used = true;
+                if (i == activeTrackIndex) utilize_alt_color = true;
+                else utilize_alt_color = false;
                 if (clip->isMidi()) drawLine(clip, i, k);
                 else drawWaveform(clip, i, k);
             }
@@ -129,8 +134,14 @@ void Waveforms::drawWaveform (te::Clip *clip, int i, int k) {
         waveformManagers[i][k]->setBackgroundColor(randomColor());
     }
     else {
-        waveformManagers[i][k]->setForegroundColor(juce::Colours::lightblue);
-        waveformManagers[i][k]->setBackgroundColor(juce::Colours::darkblue);
+        if(utilize_alt_color) {
+            waveformManagers[i][k]->setForegroundColor(juce::Colours::white);
+            waveformManagers[i][k]->setBackgroundColor(juce::Colours::lightblue);
+        }
+        else {
+            waveformManagers[i][k]->setForegroundColor(juce::Colours::lightblue);
+            waveformManagers[i][k]->setBackgroundColor(juce::Colours::darkblue);
+        }
     }
     waveformManagers[i][k]->showAudioResource(url);
 }
@@ -146,8 +157,14 @@ void Waveforms::drawLine(te::Clip *clip, int i, int k) {
         waveformManagers[i][k]->setBackgroundColor(randomColor());
     }
     else {
-        waveformManagers[i][k]->setForegroundColor(juce::Colours::lightblue);
-        waveformManagers[i][k]->setBackgroundColor(juce::Colours::darkblue);
+        if(utilize_alt_color) {
+            waveformManagers[i][k]->setForegroundColor(juce::Colours::white);
+            waveformManagers[i][k]->setBackgroundColor(juce::Colours::lightblue);
+        }
+        else {
+            waveformManagers[i][k]->setForegroundColor(juce::Colours::lightblue);
+            waveformManagers[i][k]->setBackgroundColor(juce::Colours::darkblue);
+        }
     }
     waveformManagers[i][k]->showAudioResource();
 }

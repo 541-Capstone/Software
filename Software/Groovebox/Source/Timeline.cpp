@@ -20,7 +20,7 @@ Timeline::Timeline() {
     
     // Add the filebrowserHandler code. Set the directory
     addAndMakeVisible(fileBrowserHandler);
-    const std::string pp = std::string(APATH) + "/wavs/";
+    const std::string pp = std::string(APATH) + WAVSPATH;
     juce::File fbhDir(pp);
     assert (fbhDir.isDirectory());
     fileBrowserHandler.setDirectory(fbhDir);
