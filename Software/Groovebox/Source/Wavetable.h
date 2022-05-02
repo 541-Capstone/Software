@@ -22,9 +22,7 @@
 class Wavetable : public juce::Component,
     public te::Plugin,
     public IPlugin
-    //public juce::AudioProcessor
 {
-    //using VTS = juce::AudioProcessorValueTreeState;
 public:
     static const char* getPluginName();
     inline static const char* xmlTypeName = "Wavetable";

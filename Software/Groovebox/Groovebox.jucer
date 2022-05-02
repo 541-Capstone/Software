@@ -14,6 +14,10 @@
             file="Source/FileBrowserHandler.h"/>
     </GROUP>
     <GROUP id="{16B81334-D32E-8B3B-630D-3407478ED327}" name="Plugins">
+      <GROUP id="{47EA031F-4D0A-7AF9-0E43-DE80C79FA9CA}" name="Delay">
+        <FILE id="nIu0YV" name="Delay.cpp" compile="1" resource="0" file="Source/Delay.cpp"/>
+        <FILE id="Q53k0p" name="Delay.h" compile="0" resource="0" file="Source/Delay.h"/>
+      </GROUP>
       <GROUP id="{33D574E0-7D0C-6A5F-6739-86BE38FEF494}" name="Wavetable">
         <FILE id="s3dfo6" name="Wavetable.cpp" compile="1" resource="0" file="Source/Wavetable.cpp"/>
         <FILE id="tJxUo2" name="Wavetable.h" compile="0" resource="0" file="Source/Wavetable.h"/>

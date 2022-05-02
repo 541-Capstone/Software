@@ -22,7 +22,7 @@ MainComponent::MainComponent(){
     loadEdit("");
 
     //Set sample rate 
-    sampleRate = (int)edit->getTransport().engine.getDeviceManager().getSampleRate();
+    sampleRate = (int)edit->engine.getDeviceManager().getSampleRate();
 
     //Initialize previousSampleNumber
     inputPrevSampleNumber = 0;
