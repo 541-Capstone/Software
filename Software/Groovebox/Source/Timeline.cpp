@@ -240,7 +240,7 @@ void Timeline::addClipToTrack(){
     usingFileBrowser = true;
     setAllComponents(false);
     fileBrowserState(true);
-    
+    fileBrowserHandler.updateFileBrowser();
     redrawWaveform();
 }
 
@@ -385,8 +385,7 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
             case Helpers::ContextualCommands::Add:
                 // We stop displaying elements,
                 // and display the file browser comp.
-                this->setAllComponents(false);
-                fileBrowserState(true);
+                addClipToTrack();
                 break;
             case Helpers::ContextualCommands::Delete:
                 

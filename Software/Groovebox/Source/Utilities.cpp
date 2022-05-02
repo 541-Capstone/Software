@@ -68,7 +68,6 @@ void Helpers::insertClipToTrack(te::AudioTrack *track, te::TransportControl *tra
         clip->setStart(start, true, true);
     }
 
-
 }
 
 void Helpers::insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file){
@@ -94,7 +93,9 @@ void Helpers::renderEditToFile(te::Edit *edit){
     for (int i = 0; i < te::getAllTracks(*edit).size(); ++i)
         tracksTodo.setBit(i, true);
     te::EditTimeRange range = {0.0, edit->getLength()};
-    te::Renderer::renderToFile("Render", file, *edit, range, tracksTodo, true, {}, false);
+    bool s = te::Renderer::renderToFile("Render", file, *edit, range, tracksTodo, true, {}, false);
+    if (s) DBG("Export successful.\n");
+    else DBG("Export failed!\n");
     
 }
 

@@ -140,6 +140,9 @@ void Setting::contextControl(const juce::MidiMessageMetadata &metadata) {
                 /* save */
                 saveEditToFile();
                 break;
+            case Helpers::ContextualCommands::Add:
+                /* export */
+                Helpers::renderEditToFile(edit);
             default:
                 /* do nothing */
                 break;
