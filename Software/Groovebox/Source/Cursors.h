@@ -24,7 +24,7 @@ public:
     void defineCursorByRect(juce::Rectangle<int> window);
 private:
     const int cursor_width = 2;
-    const double timeScale = 2.0f;
+    const double timeScale = 1.0f;
     juce::Colour cursor_color = juce::Colours::white;
     te::Edit *edit;
 };
