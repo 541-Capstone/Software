@@ -111,6 +111,8 @@ namespace Helpers
 	enum class UniversalCommands { Play=0, Pause, Record, Mute, Solo, Timeline, Synth, Settings, Fx, Metronome, OctaveUp, OctaveDown };
 
 	UniversalCommands getUniversalCmdType(const juce::MidiMessage &message);
+
+    juce::String getFormattedDate();
 	//===========================================================================
 	/*
 	* The possible types of plugins as we care about them

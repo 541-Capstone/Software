@@ -188,12 +188,10 @@ void Setting::loadEditFromFile(){
 }
 
 void Setting::saveEditToFile(){
-    /* get the time */
-    juce::Time saveFileTimename(juce::Time::getCurrentTime());
     
     /* save edit with function defined in MainComponent */
     /* update the filename */
-    juce::String saveFilename = saveFileTimename.toISO8601(true);
+    juce::String saveFilename = Helpers::getFormattedDate();
     saveFilename += "-edit";
     const std::string ss = saveFilename.toStdString();
     saveToFileLambda(ss);
