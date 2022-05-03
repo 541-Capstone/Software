@@ -14,7 +14,7 @@
 #include <iostream>
 #include <JuceHeader.h>
 #include "Utilities.h"
-namespace te = tracktion_engine;
+
 class FileBrowser : public juce::Component, public juce::ActionListener, private juce::FileBrowserListener, public juce::ActionBroadcaster {
 public:
     FileBrowser();

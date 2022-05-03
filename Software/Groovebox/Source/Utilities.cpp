@@ -68,28 +68,39 @@ void Helpers::insertClipToTrack(te::AudioTrack *track, te::TransportControl *tra
         clip->setStart(start, true, true);
     }
 
-
 }
 
 void Helpers::insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file){
     juce::String filePath = file.getFullPathName();
+    /* prevent from adding non-existant clips
+       and empty clips */
+    if(!file.exists()) return;
+    if(file.getSize()==0) return;
     insertClipToTrack(track, transport, filePath);
 }
 
 void Helpers::renderEditToFile(te::Edit *edit){
+    if (edit->getLength() <= 0.0) return;
+    /* create and name file */
     juce::Time saveFileTimename(juce::Time::getCurrentTime());
-    juce::String saveFilename = saveFileTimename.toString(true, true) + ".wav";
+    juce::String saveFilename = saveFileTimename.toString(true, true);
     juce::String filenameWithPath = APATH;
-    filenameWithPath = filenameWithPath + "/exports/" + saveFilename;
+    filenameWithPath = filenameWithPath + EXPORTPATH + saveFilename + ".wav";
     juce::File file(filenameWithPath);
+    
+    /* check to see if file exists */
     if (file.exists()) return;
     auto res = file.create();
-    const juce::String taskDescription = "Export to "+file.getFullPathName();
-    std::cout<<taskDescription<<'\n';
+    const juce::String td = "Export to "+file.getFullPathName();
+    std::cout<<td<<'\n';
+    
     juce::BigInteger tracksTodo {0};
     for (int i = 0; i < te::getAllTracks(*edit).size(); ++i)
-        tracksTodo.setBit(i);
-    te::Renderer::renderToFile(taskDescription, file, *edit, {0.0, edit->getLength()}, tracksTodo);
+        tracksTodo.setBit(i, true);
+    te::EditTimeRange range = {0.0, edit->getLength()};
+    bool s = te::Renderer::renderToFile("Render", file, *edit, range, tracksTodo, true, {}, false);
+    if (s) DBG("Export successful.\n");
+    else DBG("Export failed!\n");
     
 }
 

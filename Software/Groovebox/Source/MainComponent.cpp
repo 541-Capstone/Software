@@ -504,7 +504,7 @@ void MainComponent::saveEdit(std::string filename){
     }
     
     juce::String filenameWithPath = APATH;
-    filenameWithPath = filenameWithPath + "/edits/" + filename + ".edit";
+    filenameWithPath = filenameWithPath + EDITPATH + filename + ".edit";
     
     // Set the current working directory
     //juce::File cwd(APATH);x

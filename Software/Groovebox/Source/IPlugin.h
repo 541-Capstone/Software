@@ -10,5 +10,6 @@ public:
 	};
 	virtual void contextControl(const juce::MidiMessageMetadata& metadata) = 0;
 	virtual Parameter getParameterValue(const int index) = 0;
+    virtual ~IPlugin() = default;
 private:
 };

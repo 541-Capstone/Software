@@ -16,7 +16,7 @@ FileBrowser::FileBrowser(){
     dir = juce::File::getSpecialLocation(juce::File::userDesktopDirectory);
     directoryList.setDirectory(dir, true, true);
     fileTreeComp.setTitle("Files");
-    fileTreeComp.setColour(juce::FileTreeComponent::backgroundColourId, juce::Colours::wheat);
+    fileTreeComp.setColour(juce::FileTreeComponent::backgroundColourId, juce::Colours::darkgrey);
     fileTreeComp.addListener(this);
     getNumberofItems();
 }

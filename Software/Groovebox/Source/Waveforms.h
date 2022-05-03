@@ -54,6 +54,6 @@ private:
     void drawLine (te::Clip *clip, int i, int k);
     juce::Colour randomColor();
     int scrollAmt = 0;
-    
+    bool utilize_alt_color = false;
 };
 #endif
