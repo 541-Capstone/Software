@@ -93,14 +93,15 @@ void Synth::contextControl(const juce::MidiMessageMetadata& metadata) {
         * 6: Delete
         =======================*/
         switch (message.getControllerValue()) {
-        case 1: cut(); return;
-        case 2: paste(); return;
-        case 3: save(); return;
-        case 4: load(); return;
-        case 5: add(); return;
-        case 6: del(); return;
-        default: return;
+            case 1: cut(); break;
+            case 2: paste(); break;
+            case 3: save(); break;
+            case 4: load(); break;
+            case 5: add(); break;
+            case 6: del(); break;
+            default: break;
         }
+        return;
     }
     activeSynth->contextControl(metadata);
 }

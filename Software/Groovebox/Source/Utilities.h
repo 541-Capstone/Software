@@ -110,7 +110,7 @@ namespace Helpers
 
 	ContextualCommands getContextualCmdType(const juce::MidiMessage &message);
 
-	enum class UniversalCommands { Play=0, Pause, Record, Mute, Solo, Timeline, Synth, Settings, Fx, Metronome, OctaveUp, OctaveDown };
+	enum class UniversalCommands { Play=0, Pause, Record, Mute, Solo, Timeline, Synth, Settings, Fx, Metronome};
 
 	UniversalCommands getUniversalCmdType(const juce::MidiMessage &message);
 	//===========================================================================

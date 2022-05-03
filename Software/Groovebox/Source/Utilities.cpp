@@ -182,9 +182,9 @@ Helpers::UniversalCommands Helpers::getUniversalCmdType(const juce::MidiMessage 
         case 8:
             return Helpers::UniversalCommands::Metronome;
         case 9:
-            return Helpers::UniversalCommands::OctaveUp;
+            return Helpers::UniversalCommands::Play;
         case 10:
-            return Helpers::UniversalCommands::OctaveDown;
+            return Helpers::UniversalCommands::Pause;
         default:
             return Helpers::UniversalCommands::Pause;
     }

@@ -426,6 +426,9 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
         case Helpers::UniversalCommands::Solo:
             solo();
             break;
+        case Helpers::UniversalCommands::Mute:
+            mute();
+            break;
         case Helpers::UniversalCommands::Timeline:
             disableAllStates();
             timeline.setEnabled(true);
@@ -450,12 +453,6 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             break;
         case Helpers::UniversalCommands::Metronome:
             disableAllStates();
-            break;
-        case Helpers::UniversalCommands::OctaveUp:
-            
-            break;
-        case Helpers::UniversalCommands::OctaveDown:
-            
             break;
         default:
             LOG("\nInvalid Universal Command!\n");
@@ -528,7 +525,7 @@ void MainComponent::solo(){
         switch (PStyle) {
             case PlayStyle::Solo:
                 PStyle = PlayStyle::Mult;
-                LOG("Changed to multi-track\n");
+                LOG("Un-solo'd\n");
                 break;
             case PlayStyle::Mult:
                 PStyle = PlayStyle::Solo;
@@ -537,6 +534,16 @@ void MainComponent::solo(){
             default:
                 break;
         }
+    }
+    else {
+        LOG("Must be in pause to change\n");
+    }
+}
+
+void MainComponent::mute() {
+    if (PState == PlayStates::Pause) {
+        auto track = trackManager->getActiveTrack()->getTrack();
+        track->setMute(!track->isMuted(false));
     }
     else {
         LOG("Must be in pause to change\n");
@@ -585,7 +592,7 @@ void MainComponent::setupExample() {
 
     transport.setCurrentPosition(33.65);
 
-    trackManager->setActiveTrack(0);
+    trackManager->setActiveTrack(1);
     timeline.redrawWaveform();
     //transport.play(false);
 }

@@ -364,11 +364,11 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
         switch (enc) {
             case Helpers::Encoders::CW1:
                 nextTrack();
-                redrawWaveform();
+                //redrawWaveform();
                 break;
             case Helpers::Encoders::CCW1:
                 prevTrack();
-                redrawWaveform();
+                //redrawWaveform();
                 break;
             default:
                 break;

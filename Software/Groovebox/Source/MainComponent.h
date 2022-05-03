@@ -240,6 +240,9 @@ private:
     
     // Solo, play just the active track
     void solo();
+
+    //Mute the current track
+    void mute();
     
     /* do something with universal controls */
     void universalControls(const juce::MidiMessageMetadata &metadata);
