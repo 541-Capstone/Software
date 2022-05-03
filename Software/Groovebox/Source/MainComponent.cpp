@@ -60,15 +60,15 @@ MainComponent::MainComponent(){
 
     //Setup synth
     engine.getPluginManager().createBuiltInType<Wavetable>();
-    /*if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
+    if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
     {
-        auto fx = dynamic_cast<te::DelayPlugin*> (edit->getPluginCache().createNewPlugin(te::DelayPlugin::xmlTypeName, {}).get());
+        auto fx = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get());
         if (auto t = trackManager->getActiveTrack()) {
             t->getTrack()->pluginList.insertPlugin(*synth, 0, nullptr);
             t->getTrack()->pluginList.insertPlugin(*fx, 1, nullptr);
             t->hasSynth = true;
         }
-    }*/
+    }
     synthWindow.loadTrack(*(trackManager->getTrackWrapper()));
     synthWindow.setBounds(this->getBounds());
     addAndMakeVisible(synthWindow);
@@ -137,7 +137,6 @@ void MainComponent::resized() {
 /* button listener */
 void MainComponent::buttonClicked(juce::Button *button){
     /* check to see for timeline button */
-    LOG("Button Pressed\n");
     if (WState == WindowStates::TrackView) {
         timeline.onClick(button);
     }
@@ -586,7 +585,7 @@ void MainComponent::setupExample() {
 
     transport.setCurrentPosition(33.65);
 
-
+    trackManager->setActiveTrack(0);
     timeline.redrawWaveform();
     //transport.play(false);
 }
