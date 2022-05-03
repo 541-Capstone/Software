@@ -41,6 +41,7 @@
 	#define APATH "~/Software/Software/Groovebox"
 	#define AUDIO_FILES_APATH "~/clips/"
 	#define EDIT_PATH "~/edits"
+	#define EXPORTPATH "/exports/"
 	#define LOG(x) std::cout<<x
 	#define TESTAUDIOPATH "~/Clips/lemons-improved.wav"
 #endif
