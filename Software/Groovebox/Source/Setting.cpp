@@ -193,7 +193,7 @@ void Setting::saveEditToFile(){
     
     /* save edit with function defined in MainComponent */
     /* update the filename */
-    juce::String saveFilename = saveFileTimename.toString(true, true);
+    juce::String saveFilename = saveFileTimename.toISO8601(true);
     saveFilename += "-edit";
     const std::string ss = saveFilename.toStdString();
     saveToFileLambda(ss);

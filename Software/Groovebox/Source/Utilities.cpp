@@ -83,7 +83,7 @@ void Helpers::renderEditToFile(te::Edit *edit){
     if (edit->getLength() <= 0.0) return;
     /* create and name file */
     juce::Time saveFileTimename(juce::Time::getCurrentTime());
-    juce::String saveFilename = saveFileTimename.toString(true, true);
+    juce::String saveFilename = saveFileTimename.toISO8601(true);
     juce::String filenameWithPath = APATH;
     filenameWithPath = filenameWithPath + EXPORTPATH + saveFilename + ".wav";
     juce::File file(filenameWithPath);
