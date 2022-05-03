@@ -21,6 +21,8 @@
     #define EXPORTPATH "/exports/"
     #define AUDIO_FILES_APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox/wavs/"
 	#define EDIT_PATH "/edits/"
+    #define TESTAUDIOPATH "~/Documents/test.wav"
+    #define LOG(x) DBG(x)
 #endif
 
 #ifdef _WIN64
