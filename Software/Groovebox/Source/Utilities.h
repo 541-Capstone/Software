@@ -20,7 +20,6 @@
     #define WAVSPATH "/wavs/"
     #define EXPORTPATH "/exports/"
     #define AUDIO_FILES_APATH "~/Documents/GitHub/GrooveBox/Software/Software/Software/Groovebox/wavs/"
-	#define EDIT_PATH "/edits/"
     #define TESTAUDIOPATH "~/Documents/test.wav"
     #define LOG(x) DBG(x)
 #endif
@@ -31,7 +30,6 @@
     #define WAVSPATH "\\wavs\\"
     #define EXPORTPATH "\\exports\\"
 	#define AUDIO_FILES_APATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\"
-    #define EDIT_PATH "\\edits"
 	#define TESTAUDIOPATH "C:\\Users\\Dima\\Dev\\EECS542\\Clips\\lemons-improved.wav"
 	#define LOG(x) DBG(x)
 #endif
@@ -39,11 +37,12 @@
 #ifndef _WIN64
 #ifndef __MACH__
 	#define APATH "~/Software/Software/Groovebox"
+	#define EDITPATH "~/edits/"
+	#define WAVSPATH "~/clips/"
+	#define EXPORTPATH "~/exports/"
 	#define AUDIO_FILES_APATH "~/clips/"
-	#define EDIT_PATH "~/edits"
-	#define EXPORTPATH "/exports/"
+	#define TESTAUDIOPATH "~/clips/lemons-improved.wav"
 	#define LOG(x) std::cout<<x
-	#define TESTAUDIOPATH "~/Clips/lemons-improved.wav"
 #endif
 #endif
 

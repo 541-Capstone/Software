@@ -70,7 +70,7 @@ private:
     // FileBrowserHandler
     FileBrowserHandler<juce::File> fileBrowserHandler;
     const std::string aPath    = APATH;
-    const std::string editPath = aPath + std::string(EDIT_PATH);
+    const std::string editPath = aPath + std::string(EDITPATH);
     
 };
 #endif
