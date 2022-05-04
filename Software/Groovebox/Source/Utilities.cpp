@@ -102,6 +102,29 @@ void Helpers::renderEditToFile(te::Edit *edit){
     
 }
 
+juce::String Helpers::renderEditToFileWithFilename(te::Edit *edit){
+    if (edit->getLength() <= 0.0) return "";
+    juce::String saveFilename = Helpers::getFormattedDate();
+    juce::String filenameWithPath = APATH;
+    filenameWithPath = filenameWithPath + EXPORTPATH + saveFilename + ".wav";
+    juce::File file(filenameWithPath);
+    
+    /* check to see if file exists */
+    if (file.exists()) return "";
+    auto res = file.create();
+    const juce::String td = "Export to "+file.getFullPathName();
+    std::cout<<td<<'\n';
+    
+    juce::BigInteger tracksTodo {0};
+    for (int i = 0; i < te::getAllTracks(*edit).size(); ++i)
+        tracksTodo.setBit(i, true);
+    te::EditTimeRange range = {0.0, edit->getLength()};
+    bool s = te::Renderer::renderToFile("Render", file, *edit, range, tracksTodo, true, {}, false);
+    if (s) DBG("Export successful.\n");
+    else DBG("Export failed!\n");
+    return saveFilename;
+}
+
 Helpers::MessageType Helpers::getMidiMessageType(const juce::MidiMessage& msg) {
     if (msg.isNoteOnOrOff()) {
         return Helpers::MessageType::Note;

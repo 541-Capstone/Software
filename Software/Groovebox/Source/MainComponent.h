@@ -19,6 +19,7 @@
 #include "Wavetable.h"
 #include "Delay.h"
 #include "Synth.h"
+#include "TestBench.h"
 #include "Effects.h"
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
@@ -66,7 +67,7 @@ private:
     juce::Colour defaultColor = juce::Colours::violet;
     
     // This sets the screen size
-    const int scale = 2;
+    const int scale = 1;
     const int window[2] = {1600 / scale, 900 / scale};
     
     //-------------------------------------------------------------

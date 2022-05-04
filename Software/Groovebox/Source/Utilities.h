@@ -46,6 +46,9 @@
 #endif
 #endif
 
+// Run the test bench component
+#define RUN_TEST_BENCH 1
+
 #define UNIVERSAL_CC_CHANNEL  16
 #define CONTEXTUAL_CC_CHANNEL 17
 #define NOTE_CHANNEL          1
@@ -86,6 +89,7 @@ namespace Helpers
     void insertClipToTrack(te::AudioTrack* track, te::TransportControl *transport, juce::String filePath);
     void insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file);
     void renderEditToFile(te::Edit *edit);
+    juce::String renderEditToFileWithFilename(te::Edit *edit);
 
 	//===========================================================================
 	/* 

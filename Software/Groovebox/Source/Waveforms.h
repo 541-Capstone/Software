@@ -40,9 +40,10 @@ private:
     WaveformManager ***waveformManagers = nullptr;
     const int cursor_width = 5;
     const double timeScale = 4.0f;
+    const int height_scale = 2;
     const int numClipsPerTrack = 25;
     const int numTracks = 5;
-    const int heightPerTrack = 64;
+    const int heightPerTrack = 64 * height_scale;
     te::Edit *edit;
     std::shared_ptr<TrackManager> trackManager;
     juce::Array<te::AudioTrack*> returnValidAudioTracks();

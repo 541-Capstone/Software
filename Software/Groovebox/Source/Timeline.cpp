@@ -307,6 +307,7 @@ void Timeline::setAllComponents(bool state){
 }
 
 void Timeline::redrawWaveform(){
+    waveforms.setBounds(100*scale_factor,100*scale_factor, 600*scale_factor, 256*scale_factor);
     waveforms.showEdit();
     cursors.defineCursorByRect(waveforms.getBounds());
     scrollable.defineScrollByRect(waveforms.getBounds());
