@@ -105,9 +105,10 @@ MainComponent::MainComponent(){
     trackManager->setActiveTrack(0);
     
     setupExample();
-    
+#if RUN_TEST_BENCH
     TestBench tb;
     tb.runtests();
+#endif
 }
 
 MainComponent::~MainComponent(){
