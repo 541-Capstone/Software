@@ -37,6 +37,7 @@ public:
     // Custom functions
     //==============================================
     WavetableVoice(VoiceParams p);
+    void refreshOscillators();
 
 private:
     te::Oscillator osc;

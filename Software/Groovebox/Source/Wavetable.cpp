@@ -37,7 +37,7 @@ Wavetable::Wavetable(te::PluginCreationInfo info) : te::Plugin(info)
     contextParams.push_back({ "Unused", func[6]});
     contextParams.push_back({ "Unused", func[7]});
 
-    numVoices = 5;
+    numVoices = 6;
 }
 
 Wavetable::~Wavetable()
@@ -269,6 +269,11 @@ void Wavetable::changeWave(bool next) {
                     break;
                 }
             }
+        }
+    }
+    for (int i = 0; i < synth.getNumVoices(); i++) {
+        if (auto voice = dynamic_cast<WavetableVoice*>(synth.getVoice(i))) {
+            voice->refreshOscillators();
         }
     }
 }

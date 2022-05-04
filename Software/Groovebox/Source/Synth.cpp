@@ -30,7 +30,6 @@ Synth::Synth()
 
 Synth::~Synth()
 {
-    btns.clear();
 }
 
 void Synth::setTrackManager(std::shared_ptr<TrackManager> tm) {

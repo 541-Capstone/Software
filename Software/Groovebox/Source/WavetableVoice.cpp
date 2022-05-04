@@ -70,7 +70,7 @@ void WavetableVoice::prepareToPlay(double sampleRate, int samplesPerBlock) {
     ampAdsr.setSampleRate(sampleRate);
     ampAdsr.setParameters(ampParams);
 
-    osc.setWave(te::Oscillator::Waves::square);
+    osc.setWave(waveShape);
 
     isPrepared = true;
 
@@ -110,4 +110,8 @@ void WavetableVoice::pitchWheelMoved(int newPitchWheelValue) {
 
 void WavetableVoice::updateParams(int numSamples) {
     ampAdsr.setParameters(ampParams);
+}
+
+void WavetableVoice::refreshOscillators() {
+    osc.setWave(waveShape);
 }
