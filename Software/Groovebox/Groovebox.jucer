@@ -110,7 +110,7 @@
             file="Source/MainComponent.cpp"/>
     </GROUP>
   </MAINGROUP>
-  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_JACK="1"/>
   <EXPORTFORMATS>
     <CODEBLOCKS_LINUX targetFolder="Builds/CodeBlocksLinux">
       <CONFIGURATIONS>
