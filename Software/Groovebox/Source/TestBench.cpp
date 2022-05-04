@@ -73,6 +73,17 @@ void TestBench::runtests(){
     assert(te::getAudioTracks(*edit).size() == 2);
     DBG("05-Loaded edit.\n");
     
+    /* export edit */
+    juce::String renderedEdit = Helpers::renderEditToFileWithFilename(edit.get());
+    juce::File rrE(renderedEdit);
+    if(edit->getLength() <= 0.0) {
+        DBG("Warning: Cannot render empty edit.\n");
+    }
+    else {
+        assert(rrE.existsAsFile());
+    }
+    DBG("06-Rendered edit.\n");
+    
     DBG("Finished all tests.\n");
 }
 

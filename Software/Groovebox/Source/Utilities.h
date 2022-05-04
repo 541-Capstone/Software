@@ -86,6 +86,7 @@ namespace Helpers
     void insertClipToTrack(te::AudioTrack* track, te::TransportControl *transport, juce::String filePath);
     void insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl *transport, juce::File file);
     void renderEditToFile(te::Edit *edit);
+    juce::String renderEditToFileWithFilename(te::Edit *edit);
 
 	//===========================================================================
 	/* 
