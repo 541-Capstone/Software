@@ -134,6 +134,7 @@ private:
     
     /* the scroll scale is used for fine-tuning the
        rate of scrolling */
+    const int scale_factor            = 2;
     const int scrollScale             = 5;
     const int scrollAmt               = 10;
     

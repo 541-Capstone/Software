@@ -65,7 +65,7 @@ private:
     juce::Colour defaultColor = juce::Colours::violet;
     
     // This sets the screen size
-    const int scale = 2;
+    const int scale = 1;
     const int window[2] = {1600 / scale, 900 / scale};
     
     //-------------------------------------------------------------
