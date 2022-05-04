@@ -60,7 +60,7 @@ MainComponent::MainComponent(){
 
     //Setup synth
     engine.getPluginManager().createBuiltInType<Wavetable>();
-    if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
+    /*if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
     {
         auto fx = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get());
         if (auto t = trackManager->getActiveTrack()) {
@@ -68,7 +68,7 @@ MainComponent::MainComponent(){
             t->getTrack()->pluginList.insertPlugin(*fx, 1, nullptr);
             t->hasSynth = true;
         }
-    }
+    }*/
     synthWindow.loadTrack(*(trackManager->getTrackWrapper()));
     synthWindow.setBounds(this->getBounds());
     addAndMakeVisible(synthWindow);
@@ -591,8 +591,8 @@ void MainComponent::setupExample() {
     Helpers::insertClipToTrack(at, &transport, juce::String(AUDIO_FILES_APATH) + "MF2_120_Drums_4.wav");
 
     transport.setCurrentPosition(33.65);
-
-    trackManager->setActiveTrack(1);
+ 
+    trackManager->setActiveTrack(0);
     timeline.redrawWaveform();
     //transport.play(false);
 }

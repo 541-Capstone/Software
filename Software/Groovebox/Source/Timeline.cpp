@@ -230,9 +230,7 @@ void Timeline::prevTrack(){
         waveformScroll--;
         waveforms.scrollAmount(-1);
     }
-    redrawWaveform();
-    
-    
+    redrawWaveform();    
 }
 
 void Timeline::addAudioTrack(){

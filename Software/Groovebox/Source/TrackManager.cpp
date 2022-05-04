@@ -63,12 +63,16 @@ void TrackManager::setActiveTrack(int index) {
 
     // Add the midi input devices to the new track
     auto& deviceManager = edit->engine.getDeviceManager();
-    auto track = getActiveTrack()->getTrack();
-    for(int i = 0; i < deviceManager.getNumInputDevices(); i++)
+    const auto& track = getActiveTrack()->getTrack();
+    for (int i = 0; i < deviceManager.getNumInputDevices(); i++)
         if (auto dev = deviceManager.getMidiInDevice(i))
-            for (auto instance : edit->getAllInputDevices())
-                if (&instance->getInputDevice() == dev)
+            for (auto instance : edit->getAllInputDevices()) {
+                    instance->clearFromTracks();
                     instance->setTargetTrack(*track, 0, true);
+                    instance->setRecordingEnabled(*track, true);
+                }
+
+    edit->restartPlayback();
 }
 
 std::shared_ptr<TrackManager::TrackWrapper> TrackManager::getTrackWrapper() {

@@ -26,6 +26,7 @@ void MidiService::enableAllDevices() {
     }
 }
 
+
 void MidiService::handleIncomingMidiMessage(juce::MidiInput* source, const juce::MidiMessage& message) {
     postMessageToList(message, source->getName());
 }

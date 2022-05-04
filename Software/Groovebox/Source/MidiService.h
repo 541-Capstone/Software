@@ -26,6 +26,8 @@ public:
 
 	void setMidiBuffer(std::shared_ptr<juce::MidiBuffer> buffer);
 
+	void setDevicesToTrack(const te::AudioTrack& track);
+
 private:
 
 	//===============================================================================================
