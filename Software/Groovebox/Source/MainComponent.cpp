@@ -488,6 +488,7 @@ void MainComponent::setupSetting(){
         timeline.setAllComponents(true);
         timeline.setVisible(true);
         timeline.setEnabled(true);
+        timeline.redrawWaveform();
     };
     setting.setExitFunction(giveExit);
     
