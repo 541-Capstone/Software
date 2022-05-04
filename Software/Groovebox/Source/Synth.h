@@ -50,8 +50,6 @@ private:
     std::shared_ptr<TrackManager> trackManager;
     std::shared_ptr<te::Edit> edit;
     IPlugin* activeSynth;
-    std::vector<juce::Rectangle<int>> paramCells;
-    std::vector<juce::Label*> lbls;
     juce::Label adsrLbl{ "adsrLbl", "ADSR Label" };
     juce::Rectangle<int> textBox;
     bool synthLoadedOnTrack, addingSynth;

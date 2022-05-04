@@ -20,10 +20,10 @@ Synth::Synth()
     addingSynth = false;
     edit = nullptr;
     trackManager = nullptr;
-    for (int i = 0; i < 8; i++) {
+    /*for (int i = 0; i < 8; i++) {
         lbls.push_back(new juce::Label( "Param" + (juce::String)i, "Param" ));
         addAndMakeVisible(*lbls[i]);
-    }
+    }*/
     addAndMakeVisible(adsrLbl);
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
@@ -31,7 +31,7 @@ Synth::Synth()
 
 Synth::~Synth()
 {
-    lbls.clear();
+    //lbls.clear();
 }
 
 void Synth::setTrackManager(std::shared_ptr<TrackManager> tm) {
@@ -59,19 +59,24 @@ void Synth::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (32.0f);
-    
+    juce::Rectangle<int> localBounds = getLocalBounds();
+    juce::Rectangle<int> paramRect = getLocalBounds().removeFromTop(localBounds.getHeight() * 0.8);
+    juce::Rectangle<int> paramRectLower = paramRect.removeFromBottom(paramRect.getHeight() * 0.5);
+
+    int cellWidth = getLocalBounds().getWidth() / 4;
     if (synthLoadedOnTrack) {
         for (int i = 0; i < 8; i++) {
-            //juce::Rectangle<int> cellRect = paramCells[i];
+            auto& rectToUse = (i < 4) ? paramRect : paramRectLower;
+            juce::Rectangle<int> cellRect = rectToUse.removeFromLeft(cellWidth);
             auto param = activeSynth->getParameterValue(i);
-            juce::String paramStr = param.name + "\n" + (juce::String)param.value;
-            //g.drawText(paramStr, cellRect, juce::Justification::centred, true);
-            lbls[i]->setText(paramStr, juce::dontSendNotification);
+            juce::String paramStr = param.name + ":\n" + (juce::String)param.value;
+            g.drawText(paramStr, cellRect, juce::Justification::centred, true);
         }
-        g.drawText("Synth", textBox, juce::Justification::centred, false);   // draw some placeholder text
+        /*g.drawText("Synth", localBounds,
+            juce::Justification::horizontallyCentred, false);*/
     }
     else {
-        g.drawText("No Synth loaded, press 'Add' to load", textBox,
+        g.drawText("No Synth loaded, press 'Add' to load", localBounds,
             juce::Justification::horizontallyCentred, false);   // draw some placeholder text
     }
 
@@ -87,7 +92,7 @@ void Synth::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    paramCells.clear();
+    /*paramCells.clear();
     juce::Rectangle<int> localBounds = getLocalBounds();
     juce::Rectangle<int> paramRect = getLocalBounds().removeFromTop(localBounds.getHeight() * 0.8);
     juce::Rectangle<int> paramRectCopy = juce::Rectangle<int>(paramRect);
@@ -118,7 +123,7 @@ void Synth::resized()
     }
 
     paramBoxUpper.performLayout(paramRectUpper);
-    paramBoxLower.performLayout(paramRectLower);
+    paramBoxLower.performLayout(paramRectLower);*/
 }
 
 void Synth::contextControl(const juce::MidiMessageMetadata& metadata) {
