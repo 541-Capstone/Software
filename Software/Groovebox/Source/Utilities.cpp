@@ -81,9 +81,7 @@ void Helpers::insertClipFromJuceFile(te::AudioTrack *track, te::TransportControl
 
 void Helpers::renderEditToFile(te::Edit *edit){
     if (edit->getLength() <= 0.0) return;
-    /* create and name file */
-    juce::Time saveFileTimename(juce::Time::getCurrentTime());
-    juce::String saveFilename = saveFileTimename.toISO8601(true);
+    juce::String saveFilename = Helpers::getFormattedDate();
     juce::String filenameWithPath = APATH;
     filenameWithPath = filenameWithPath + EXPORTPATH + saveFilename + ".wav";
     juce::File file(filenameWithPath);
@@ -211,4 +209,13 @@ juce::String Helpers::getMidiMessageDescription(const juce::MidiMessage& m){
     }
 
     return juce::String::toHexString(m.getRawData(), m.getRawDataSize());
+}
+
+juce::String Helpers::getFormattedDate(){
+    juce::Time t(juce::Time::getCurrentTime());
+    juce::String mm = t.getMonthName(true);
+    int dd   = t.getDayOfMonth();
+    int yyyy = t.getYear();
+    int ss   = t.getSeconds();
+    return mm+"-"+juce::String(dd)+"-"+juce::String(yyyy)+"-"+juce::String(ss);
 }

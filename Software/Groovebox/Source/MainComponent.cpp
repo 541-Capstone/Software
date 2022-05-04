@@ -503,13 +503,6 @@ void MainComponent::saveEdit(std::string filename){
     juce::String filenameWithPath = APATH;
     filenameWithPath = filenameWithPath + EDITPATH + filename + ".edit";
     
-    // Set the current working directory
-    //juce::File cwd(APATH);x
-    //cwd.setAsCurrentWorkingDirectory();
-    
-    
-    // Get the savefile and create it
-    // Overwrite if not created
     juce::File savefile(filenameWithPath);
     auto res = savefile.create();
     
