@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<EDIT appVersion="Unknown" projectID="0/38bd090" creationTime="1651632926664"
+      lastSignificantChange="1808cfeb411" modifiedBy="Dima">
+  <TRANSPORT endToEnd="1" position="33.65"/>
+  <MACROPARAMETERS id="1001"/>
+  <TEMPOSEQUENCE>
+    <TEMPO startBeat="0.0" bpm="120.0" curve="1.0"/>
+    <TIMESIG numerator="4" denominator="4" startBeat="0.0"/>
+  </TEMPOSEQUENCE>
+  <PITCHSEQUENCE>
+    <PITCH startBeat="0.0" pitch="60"/>
+  </PITCHSEQUENCE>
+  <VIDEO/>
+  <AUTOMAPXML/>
+  <CLICKTRACK level="0.6000000238418579"/>
+  <ID3VORBISMETADATA trackNumber="1" date="2022"/>
+  <MASTERVOLUME>
+    <PLUGIN type="volume" volume="0.6376281380653381" id="1002" enabled="1">
+      <MACROPARAMETERS id="1003"/>
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+  </MASTERVOLUME>
+  <RACKS/>
+  <MASTERPLUGINS/>
+  <AUXBUSNAMES/>
+  <INPUTDEVICES>
+    <INPUTDEVICE name="CircuitPython Audio">
+      <INPUTDEVICEDESTINATION targetTrack="1006" targetIndex="0" armed="1"/>
+    </INPUTDEVICE>
+    <INPUTDEVICE name="Input 1">
+      <INPUTDEVICEDESTINATION targetTrack="1006" targetIndex="0" armed="1"/>
+    </INPUTDEVICE>
+    <INPUTDEVICE name="Input 2">
+      <INPUTDEVICEDESTINATION targetTrack="1006" targetIndex="0" armed="1"/>
+    </INPUTDEVICE>
+  </INPUTDEVICES>
+  <TRACKCOMPS/>
+  <ARADOCUMENT/>
+  <CONTROLLERMAPPINGS/>
+  <ARRANGERTRACK name="Arranger" id="1012">
+    <MACROPARAMETERS id="1013"/>
+    <MODIFIERS/>
+  </ARRANGERTRACK>
+  <TEMPOTRACK name="Global" id="1014">
+    <MACROPARAMETERS id="1015"/>
+    <MODIFIERS/>
+  </TEMPOTRACK>
+  <MARKERTRACK id="1004" name="Marker">
+    <MACROPARAMETERS id="1005"/>
+    <MODIFIERS/>
+  </MARKERTRACK>
+  <CHORDTRACK name="Chord" id="1016">
+    <MACROPARAMETERS id="1017"/>
+    <MODIFIERS/>
+  </CHORDTRACK>
+  <MASTERTRACK name="Master" id="1018">
+    <MACROPARAMETERS id="1019"/>
+    <MODIFIERS/>
+  </MASTERTRACK>
+  <TRACK id="1006" midiVProp="0.28125" midiVOffset="0.359375" mute="1">
+    <MACROPARAMETERS id="1007"/>
+    <MODIFIERS/>
+    <AUDIOCLIP name="test-track-2" start="10.5" length="82.77004535147393" offset="0.0"
+               id="1027" source="C:\Users\Dima\Dev\EECS542\Clips\test-track-2.wav"
+               sync="0" elastiqueMode="0" pan="0.0" colour="ffff0000" autoPitch="0"
+               autoTempo="0">
+      <LOOPINFO rootNote="-1" numBeats="165.5400907029479" oneShot="0" denominator="4"
+                numerator="4" bpm="0.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <PLUGIN type="volume" id="1008" enabled="1" remapOnTempoChange="1">
+      <MACROPARAMETERS id="1009"/>
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1010" enabled="1">
+      <MACROPARAMETERS id="1011"/>
+    </PLUGIN>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+  </TRACK>
+  <TRACK id="1020" midiVProp="0.28125" midiVOffset="0.359375">
+    <MACROPARAMETERS id="1021"/>
+    <MODIFIERS/>
+    <AUDIOCLIP name="lemons-for-scale" start="5.25" length="23.34498866213152"
+               offset="0.0" id="1029" source="C:\Users\Dima\Dev\EECS542\Clips\lemons-for-scale.wav"
+               sync="0" elastiqueMode="0" pan="0.0" colour="ffffaa00" autoPitch="0"
+               autoTempo="0">
+      <LOOPINFO rootNote="-1" numBeats="46.68997732426304" oneShot="0" denominator="4"
+                numerator="4" bpm="0.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <AUDIOCLIP name="lemons-for-scale" start="30.25" length="23.34498866213152"
+               offset="0.0" id="1031" source="C:\Users\Dima\Dev\EECS542\Clips\lemons-for-scale.wav"
+               sync="0" elastiqueMode="0" pan="0.0" colour="ffffaa00" autoPitch="0"
+               autoTempo="0">
+      <LOOPINFO rootNote="-1" numBeats="46.68997732426304" oneShot="0" denominator="4"
+                numerator="4" bpm="0.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <PLUGIN type="volume" id="1022" enabled="1" remapOnTempoChange="1">
+      <MACROPARAMETERS id="1023"/>
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1024" enabled="1">
+      <MACROPARAMETERS id="1025"/>
+    </PLUGIN>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+  </TRACK>
+  <TRACK id="1032" midiVProp="0.28125" midiVOffset="0.359375">
+    <MACROPARAMETERS id="1033"/>
+    <MODIFIERS/>
+    <AUDIOCLIP name="MF2_120_Drums_17" start="6.3" length="4.000000000000001"
+               offset="0.0" id="1039" source="C:\Users\Dima\Dev\EECS542\Clips\MF2_120_Drums_17.wav"
+               autoTempo="0" stretchMode="1" elastiqueMode="0" sync="0" pan="0.0"
+               colour="ffaaff00" autoPitch="0">
+      <LOOPINFO rootNote="-1" numBeats="8.0" oneShot="0" denominator="4" numerator="4"
+                bpm="120.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <AUDIOCLIP name="MF2_120_Drums_17" start="11.3" length="4.0" offset="0.0"
+               id="1041" source="C:\Users\Dima\Dev\EECS542\Clips\MF2_120_Drums_17.wav"
+               autoTempo="0" stretchMode="1" elastiqueMode="0" sync="0" pan="0.0"
+               colour="ffaaff00" autoPitch="0">
+      <LOOPINFO rootNote="-1" numBeats="8.0" oneShot="0" denominator="4" numerator="4"
+                bpm="120.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <AUDIOCLIP name="MF2_120_Drums_17" start="16.3" length="4.0" offset="0.0"
+               id="1043" source="C:\Users\Dima\Dev\EECS542\Clips\MF2_120_Drums_17.wav"
+               autoTempo="0" stretchMode="1" elastiqueMode="0" sync="0" pan="0.0"
+               colour="ffaaff00" autoPitch="0">
+      <LOOPINFO rootNote="-1" numBeats="8.0" oneShot="0" denominator="4" numerator="4"
+                bpm="120.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <AUDIOCLIP name="MF2_120_Drums_4" start="75.3" length="4.0" offset="0.0"
+               id="1045" source="C:\Users\Dima\Dev\EECS542\Clips\MF2_120_Drums_4.wav"
+               autoTempo="0" stretchMode="1" elastiqueMode="0" sync="0" pan="0.0"
+               colour="ffaaff00" autoPitch="0">
+      <LOOPINFO rootNote="-1" numBeats="8.0" oneShot="0" denominator="4" numerator="4"
+                bpm="120.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <AUDIOCLIP name="MF2_120_Drums_17" start="79.5" length="4.0" offset="0.0"
+               id="1047" source="C:\Users\Dima\Dev\EECS542\Clips\MF2_120_Drums_17.wav"
+               autoTempo="0" stretchMode="1" elastiqueMode="0" sync="0" pan="0.0"
+               colour="ffaaff00" autoPitch="0">
+      <LOOPINFO rootNote="-1" numBeats="8.0" oneShot="0" denominator="4" numerator="4"
+                bpm="120.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <AUDIOCLIP name="MF2_120_Drums_4" start="83.7" length="4.0" offset="0.0"
+               id="1049" source="C:\Users\Dima\Dev\EECS542\Clips\MF2_120_Drums_4.wav"
+               autoTempo="0" stretchMode="1" elastiqueMode="0" sync="0" pan="0.0"
+               colour="ffaaff00" autoPitch="0">
+      <LOOPINFO rootNote="-1" numBeats="8.0" oneShot="0" denominator="4" numerator="4"
+                bpm="120.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <PLUGIN type="volume" id="1034" enabled="1" remapOnTempoChange="1">
+      <MACROPARAMETERS id="1035"/>
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1036" enabled="1">
+      <MACROPARAMETERS id="1037"/>
+    </PLUGIN>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+  </TRACK>
+  <TRACK id="1050" midiVProp="0.28125" midiVOffset="0.359375">
+    <MACROPARAMETERS id="1051"/>
+    <MODIFIERS/>
+    <AUDIOCLIP name="MF2_120_Drums_4" start="38.3" length="4.0" offset="0.0"
+               id="1061" source="C:\Users\Dima\Dev\EECS542\Clips\MF2_120_Drums_4.wav"
+               autoTempo="0" stretchMode="1" elastiqueMode="0" sync="0" pan="0.0"
+               colour="ff00ff00" autoPitch="0">
+      <LOOPINFO rootNote="-1" numBeats="8.0" oneShot="0" denominator="4" numerator="4"
+                bpm="120.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <AUDIOCLIP name="MF2_120_Drums_13" start="43.3" length="2.0" offset="0.0"
+               id="1059" source="C:\Users\Dima\Dev\EECS542\Clips\MF2_120_Drums_13.wav"
+               autoTempo="0" stretchMode="1" elastiqueMode="0" sync="0" pan="0.0"
+               colour="ff00ff00" autoPitch="0">
+      <LOOPINFO rootNote="-1" numBeats="4.0" oneShot="0" denominator="4" numerator="4"
+                bpm="120.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <AUDIOCLIP name="test-track-2" start="50.0" length="82.77004535147393" offset="0.0"
+               id="1057" source="C:\Users\Dima\Dev\EECS542\Clips\test-track-2.wav"
+               sync="0" elastiqueMode="0" pan="0.0" colour="ff00ff00" autoPitch="0"
+               autoTempo="0">
+      <LOOPINFO rootNote="-1" numBeats="165.5400907029479" oneShot="0" denominator="4"
+                numerator="4" bpm="0.0" inMarker="0" outMarker="-1"/>
+    </AUDIOCLIP>
+    <PLUGIN type="volume" id="1052" enabled="1" remapOnTempoChange="1">
+      <MACROPARAMETERS id="1053"/>
+      <MODIFIERASSIGNMENTS/>
+    </PLUGIN>
+    <PLUGIN type="level" id="1054" enabled="1">
+      <MACROPARAMETERS id="1055"/>
+    </PLUGIN>
+    <OUTPUTDEVICES>
+      <DEVICE name="(default audio output)"/>
+    </OUTPUTDEVICES>
+  </TRACK>
+</EDIT>

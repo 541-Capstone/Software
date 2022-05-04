@@ -69,6 +69,10 @@ MainComponent::MainComponent(){
             t->hasSynth = true;
         }
     }*/
+    synthWindow.setTrackManager(trackManager);
+    synthWindow.setEdit(edit);
+
+    LOG("Audio device: " + engine.getDeviceManager().deviceManager.getCurrentAudioDevice()->getName());
     synthWindow.loadTrack(*(trackManager->getTrackWrapper()));
     synthWindow.setBounds(this->getBounds());
     addAndMakeVisible(synthWindow);
@@ -440,6 +444,7 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             disableAllStates();
             synthWindow.setVisible(true);
             synthWindow.setEnabled(true);
+            currentComponent = &synthWindow;
             break;
         case Helpers::UniversalCommands::Settings:
             disableAllStates();

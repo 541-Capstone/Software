@@ -42,10 +42,17 @@ public:
     void add();
     void del();
 
+    void setTrackManager(std::shared_ptr<TrackManager>);
+    void setEdit(std::shared_ptr<te::Edit> edit);
+
 private:
 
+    std::shared_ptr<TrackManager> trackManager;
+    std::shared_ptr<te::Edit> edit;
     IPlugin* activeSynth;
     std::vector<juce::Rectangle<int>> paramCells;
+    std::vector<std::shared_ptr<juce::TextButton>> btns;
+    juce::Rectangle<int> textBox;
     bool synthLoadedOnTrack, addingSynth;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Synth)
 };

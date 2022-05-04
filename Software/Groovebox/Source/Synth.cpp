@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "Synth.h"
+#include "Wavetable.h"
 
 //==============================================================================
 Synth::Synth()
@@ -17,12 +18,26 @@ Synth::Synth()
     synthLoadedOnTrack = false;
     activeSynth = nullptr;
     addingSynth = false;
+    edit = nullptr;
+    trackManager = nullptr;
+    for (int i = 0; i < 8; i++) {
+        btns.push_back(std::make_shared<juce::TextButton>("Param"));
+        addAndMakeVisible(btns[i].get());
+    }
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 }
 
 Synth::~Synth()
 {
+    btns.clear();
+}
+
+void Synth::setTrackManager(std::shared_ptr<TrackManager> tm) {
+    trackManager = tm;
+}
+void Synth::setEdit(std::shared_ptr<te::Edit> e) {
+    edit = e;
 }
 
 void Synth::paint (juce::Graphics& g)
@@ -42,29 +57,25 @@ void Synth::paint (juce::Graphics& g)
     
 
     g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    int cellWidth = getLocalBounds().getWidth() / 4;
-    juce::Rectangle<int> localBounds = getLocalBounds();
-    juce::Rectangle<int> paramRect = localBounds.removeFromTop(localBounds.getHeight() * 0.75);
-    g.drawText ("Synth", localBounds,
-                juce::Justification::centred, true);   // draw some placeholder text
-    if (synthLoadedOnTrack) {
-        for (int i = 0; i < 4; i++) {
-            juce::Rectangle<int> cellRect = paramRect.removeFromLeft(cellWidth);
-            auto param = activeSynth->getParameterValue(i);
-            juce::String paramStr = param.name + ":\n" + (juce::String)param.value;
-            g.drawText(paramStr, cellRect, juce::Justification::centred, true);
-        }
-    }
+    g.setFont (32.0f);
     
-}
+    if (synthLoadedOnTrack) {
+        for (int i = 0; i < 8; i++) {
+            //juce::Rectangle<int> cellRect = paramCells[i];
+            auto param = activeSynth->getParameterValue(i);
+            juce::String paramStr = param.name + "\n" + (juce::String)param.value;
+            //g.drawText(paramStr, cellRect, juce::Justification::centred, true);
+            btns[i].get()->setButtonText(paramStr);
+        }
+        g.drawText("Synth", textBox, juce::Justification::centred, false);   // draw some placeholder text
+    }
+    else {
+        g.drawText("No Synth loaded, press 'Add' to load", textBox,
+            juce::Justification::horizontallyCentred, false);   // draw some placeholder text
+    }
 
-void Synth::paintSynthLoaded(juce::Graphics&) {
-
-}
-
-void Synth::paintNoSynthLoaded(juce::Graphics&) {
-
+    
+    
 }
 
 void Synth::paintSelectionDialogue(juce::Graphics&) {
@@ -75,9 +86,38 @@ void Synth::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    int cellWidth = getLocalBounds().getWidth();
+    paramCells.clear();
     juce::Rectangle<int> localBounds = getLocalBounds();
-    juce::Rectangle<int> paramRect = localBounds.removeFromTop(localBounds.getHeight() * 0.25);
+    juce::Rectangle<int> paramRect = getLocalBounds().removeFromTop(localBounds.getHeight() * 0.8);
+    juce::Rectangle<int> paramRectCopy = juce::Rectangle<int>(paramRect);
+    textBox = juce::Rectangle(localBounds);
+
+    int cellWidth = getLocalBounds().getWidth() / 4;
+    juce::Rectangle<int> paramRectUpper = localBounds.removeFromTop(paramRect.getHeight() * 0.5);
+    juce::Rectangle<int> paramRectLower = localBounds.removeFromTop(paramRect.getHeight());
+
+    juce::FlexBox paramBoxUpper{ juce::FlexBox::Direction::row,
+                             juce::FlexBox::Wrap::wrap  ,
+                             juce::FlexBox::AlignContent::flexStart,
+                             juce::FlexBox::AlignItems::flexStart,
+                             juce::FlexBox::JustifyContent::spaceBetween };
+    juce::FlexBox paramBoxLower{ juce::FlexBox::Direction::row,
+                             juce::FlexBox::Wrap::wrap  ,
+                             juce::FlexBox::AlignContent::flexStart,
+                             juce::FlexBox::AlignItems::flexStart,
+                             juce::FlexBox::JustifyContent::spaceBetween };
+
+
+    
+
+    for (int i = 0; i < 8; i++) {
+        auto boxToUse = (i < 4) ? paramBoxLower : paramBoxUpper;
+        boxToUse.items.add(juce::FlexItem(*btns[i]).withMinHeight(50.0f).withMinWidth(50.0f).withFlex(1));
+
+    }
+
+    paramBoxUpper.performLayout(paramRectUpper);
+    paramBoxLower.performLayout(paramRectLower);
 }
 
 void Synth::contextControl(const juce::MidiMessageMetadata& metadata) {
@@ -125,5 +165,29 @@ void Synth::cut() {}
 void Synth::paste() {}
 void Synth::save() {}
 void Synth::load() {}
-void Synth::add() {}
-void Synth::del() {}
+void Synth::add() {
+    if (activeSynth == nullptr) {
+        if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
+        {
+            if (auto t = trackManager->getActiveTrack()) {
+                t->getTrack()->pluginList.insertPlugin(*synth, 0, nullptr);
+                if (IPlugin* s = dynamic_cast<IPlugin*>(synth)) {
+                    activeSynth = s;
+                    t->hasSynth = true;
+                    synthLoadedOnTrack = true;
+                }
+                
+            }
+        }
+    }
+}
+void Synth::del() {
+    auto track = trackManager->getActiveTrack();
+    if (track->hasSynth) {
+        auto plugins = track->getTrack()->pluginList.getPlugins();
+        plugins[0]->removeFromParent();
+        track->hasSynth = false;
+        activeSynth = nullptr;
+        synthLoadedOnTrack = false;
+    }
+}
