@@ -130,5 +130,7 @@ namespace Helpers
 	juce::MidiBuffer* midiMessageArrayToMidiBuffer(const te::MidiMessageArray&);
 
 	juce::String getMidiMessageDescription(const juce::MidiMessage&);
+
+	void toggleRecording(te::TransportControl&);
 }
 

@@ -363,6 +363,12 @@ void MainComponent::pause(){
 
 void MainComponent::record(){
     LOG ("Recording\n");
+    auto& transport = edit->getTransport();
+    bool wasRecording = transport.isRecording();
+    Helpers::toggleRecording(transport);
+    if (wasRecording) {
+        te::EditFileOperations(*edit).save(true, true, false);
+    }
 }
 
 void MainComponent::createAudioTrack() {

@@ -363,10 +363,10 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
         Helpers::Encoders enc = Helpers::getEncoderType(message);
         switch (enc) {
             case Helpers::Encoders::CW1:
-                nextTrack();
+                prevTrack();
                 break;
             case Helpers::Encoders::CCW1:
-                prevTrack();
+                nextTrack();
                 break;
             case Helpers::Encoders::CW2:
                 movePlayhead(3.0);

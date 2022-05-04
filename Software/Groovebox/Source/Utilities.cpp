@@ -235,3 +235,10 @@ juce::String Helpers::getFormattedDate(){
     int ss   = t.getSeconds();
     return mm+"-"+juce::String(dd)+"-"+juce::String(yyyy)+"-"+juce::String(ss);
 }
+
+void Helpers::toggleRecording(te::TransportControl& transport) {
+    if (transport.isRecording())
+        transport.stop(false, false);
+    else
+        transport.record(false);
+}
