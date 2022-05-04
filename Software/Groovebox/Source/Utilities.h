@@ -103,6 +103,8 @@ namespace Helpers
     enum class Encoders {
         CW1, CCW1, CW2, CCW2,
         CW3, CCW3, CW4, CCW4,
+        CW5, CCW5, CW6, CCW6,
+        CW7, CCW7, CW8, CCW8,
         NOTASSIGNED
     };
 

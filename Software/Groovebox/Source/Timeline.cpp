@@ -316,10 +316,7 @@ void Timeline::actionListenerCallback (const juce::String &message) {
     
 }
 
-void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
-    
-    printf("\nTimeline says Hello!\n");
-    
+void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {    
     /* get the MidiMessage from metadata */
     const juce::MidiMessage message = metadata.getMessage();
     
@@ -354,6 +351,11 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
                 redrawWaveform();
             } else return;
         }
+        else if (cmd == Helpers::ContextualCommands::Delete) {
+            setAllComponents(true);
+            fileBrowserState(false);
+            redrawWaveform();
+        }
     }
     
     // We utilize timeline controls.
@@ -362,11 +364,21 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
         switch (enc) {
             case Helpers::Encoders::CW1:
                 nextTrack();
-                //redrawWaveform();
                 break;
             case Helpers::Encoders::CCW1:
                 prevTrack();
-                //redrawWaveform();
+                break;
+            case Helpers::Encoders::CW2:
+                movePlayhead(3.0);
+                break;
+            case Helpers::Encoders::CCW2:
+                movePlayhead(-3.0);
+                break;
+            case Helpers::Encoders::CW6:
+                movePlayhead(0.5);
+                break;
+            case Helpers::Encoders::CCW6:
+                movePlayhead(-0.5);
                 break;
             default:
                 break;
@@ -393,7 +405,7 @@ void Timeline::contextControl(const juce::MidiMessageMetadata &metadata) {
                 addClipToTrack();
                 break;
             case Helpers::ContextualCommands::Delete:
-                
+                removeClipFromTrack(transport->getCurrentPosition());
                 break;
             default:
                 break;
@@ -418,4 +430,30 @@ void Timeline::fileBrowserState(bool state){
 void Timeline::setupTimelineSave(std::function<void ()> func){
     onLoad = func;
     save.onClick = onLoad;
+}
+
+void Timeline::movePlayhead(double shift) {
+    double currentPos = transport->getCurrentPosition();
+    if (currentPos + shift < 0.0) {
+        transport->setCurrentPosition(0.0);
+    }
+    else {
+        transport->setCurrentPosition(currentPos + shift);
+    }
+}
+
+void Timeline::removeClipFromTrack(double position) {
+    auto clips = trackManager->getActiveTrack()->track->getClips();
+ 
+    for (auto clip : clips) {
+        double invalid_start = clip->getPosition().getStart();
+        double clip_length = clip->getPosition().getLength();
+        double invalid_end = invalid_start + clip_length;
+        if (position >= invalid_start && position <= invalid_end) {
+            //Remove the track here
+            clip->removeFromParentTrack();
+            redrawWaveform();
+            return;
+        }
+    }
 }

@@ -35,8 +35,8 @@ void Helpers::insertClipFromFile(te::AudioTrack* track, te::TransportControl* tr
 
 void Helpers::insertClipToTrack(te::AudioTrack *track, te::TransportControl *transport, juce::String filePath) {
     juce::File file(filePath);
-    LOG("File path: " + filePath +
-        "\nFile Type: " + typeid(file).name());
+    /*LOG("File path: " + filePath +
+        "\nFile Type: " + typeid(file).name());*/
     te::AudioFile audioFile{ track->edit.engine, file };
     const double audioFileSampleRate {audioFile.getSampleRate()};
     const double sampleRate { transport->engine.getDeviceManager().getSampleRate() };
@@ -134,6 +134,22 @@ Helpers::Encoders Helpers::getEncoderType(const juce::MidiMessage &message) {
             return Helpers::Encoders::CW4;
         case ENC_4_CCW:
             return Helpers::Encoders::CCW4;
+        case ENC_5_CW:
+            return Helpers::Encoders::CW5;
+        case ENC_5_CCW:
+            return Helpers::Encoders::CCW5;
+        case ENC_6_CW:
+            return Helpers::Encoders::CW6;
+        case ENC_6_CCW:
+            return Helpers::Encoders::CCW6;
+        case ENC_7_CW:
+            return Helpers::Encoders::CW7;
+        case ENC_7_CCW:
+            return Helpers::Encoders::CCW7;
+        case ENC_8_CW:
+            return Helpers::Encoders::CW8;
+        case ENC_8_CCW:
+            return Helpers::Encoders::CCW8;
         default:
             return Helpers::Encoders::NOTASSIGNED;
     }
