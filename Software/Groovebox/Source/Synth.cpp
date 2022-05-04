@@ -21,15 +21,17 @@ Synth::Synth()
     edit = nullptr;
     trackManager = nullptr;
     for (int i = 0; i < 8; i++) {
-        btns.push_back(std::make_shared<juce::TextButton>("Param"));
-        addAndMakeVisible(btns[i].get());
+        lbls.push_back(new juce::Label( "Param" + (juce::String)i, "Param" ));
+        addAndMakeVisible(*lbls[i]);
     }
+    addAndMakeVisible(adsrLbl);
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 }
 
 Synth::~Synth()
 {
+    lbls.clear();
 }
 
 void Synth::setTrackManager(std::shared_ptr<TrackManager> tm) {
@@ -64,7 +66,7 @@ void Synth::paint (juce::Graphics& g)
             auto param = activeSynth->getParameterValue(i);
             juce::String paramStr = param.name + "\n" + (juce::String)param.value;
             //g.drawText(paramStr, cellRect, juce::Justification::centred, true);
-            btns[i].get()->setButtonText(paramStr);
+            lbls[i]->setText(paramStr, juce::dontSendNotification);
         }
         g.drawText("Synth", textBox, juce::Justification::centred, false);   // draw some placeholder text
     }
@@ -111,7 +113,7 @@ void Synth::resized()
 
     for (int i = 0; i < 8; i++) {
         auto boxToUse = (i < 4) ? paramBoxLower : paramBoxUpper;
-        boxToUse.items.add(juce::FlexItem(*btns[i]).withMinHeight(50.0f).withMinWidth(50.0f).withFlex(1));
+        boxToUse.items.add(juce::FlexItem(*lbls[i]).withMinHeight(50.0f).withMinWidth(50.0f).withFlex(1));
 
     }
 
