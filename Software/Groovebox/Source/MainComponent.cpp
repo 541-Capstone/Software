@@ -472,6 +472,7 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
 void MainComponent::setupSetting(){
     std::function<void(std::string)> giveLoad = [&](std::string filename)->void{
         loadEdit(filename);
+        timeline.redrawWaveform();
     };
     setting.setLoadEditFunction(giveLoad);
     

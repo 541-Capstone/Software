@@ -55,6 +55,7 @@
 		C8403764D5C1BA4CE728C922 /* CoreMIDI.framework */ = {isa = PBXBuildFile; fileRef = FB8544B89C265E7E83B6C229; };
 		D187BAE110BB55C345841457 /* include_juce_events.mm */ = {isa = PBXBuildFile; fileRef = 6A50641C380956146A1DDAEE; };
 		D5D79A52C745546F90D3C2D8 /* AudioVisualizer.cpp */ = {isa = PBXBuildFile; fileRef = 9C9E88DC6EE82ECCFA7D924F; };
+		D85A19EC14FFEF634D6DDFA7 /* Icon.icns */ = {isa = PBXBuildFile; fileRef = 974A1345AC523201F329E08A; };
 		DAFE13FA24E5B9B39476889F /* include_juce_dsp.mm */ = {isa = PBXBuildFile; fileRef = 9457D956EA36BC3054E0311E; };
 		DB66F532BD6640BECA9910BB /* RecentFilesMenuTemplate.nib */ = {isa = PBXBuildFile; fileRef = 83EFC58F83E9D7125A3C36E8; };
 		DC23DEF87272C5AC7547CF59 /* FileBrowserHandler.cpp */ = {isa = PBXBuildFile; fileRef = 53C8E06589CF1C89C48D38F0; };
@@ -125,6 +126,7 @@
 		930D213030009C1868A7591F /* juce_osc */ /* juce_osc */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_osc; path = /Users/petertso/JUCE/modules/juce_osc; sourceTree = "<absolute>"; };
 		9457D956EA36BC3054E0311E /* include_juce_dsp.mm */ /* include_juce_dsp.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_dsp.mm; path = ../../JuceLibraryCode/include_juce_dsp.mm; sourceTree = SOURCE_ROOT; };
 		955CD6E069FDDB6A98636E03 /* juce_core */ /* juce_core */ = {isa = PBXFileReference; lastKnownFileType = folder; name = juce_core; path = /Users/petertso/JUCE/modules/juce_core; sourceTree = "<absolute>"; };
+		974A1345AC523201F329E08A /* Icon.icns */ /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = file.icns; name = Icon.icns; path = Icon.icns; sourceTree = SOURCE_ROOT; };
 		9BE02E3D2882C0CA9DD49EFF /* FileBrowser.cpp */ /* FileBrowser.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileBrowser.cpp; path = ../../Source/FileBrowser.cpp; sourceTree = SOURCE_ROOT; };
 		9C35CABD254A82331336413E /* App */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Groovebox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C9E88DC6EE82ECCFA7D924F /* AudioVisualizer.cpp */ /* AudioVisualizer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AudioVisualizer.cpp; path = ../../Source/AudioVisualizer.cpp; sourceTree = SOURCE_ROOT; };
@@ -420,6 +422,7 @@
 			children = (
 				C83AE2023811519EA83EC27F,
 				83EFC58F83E9D7125A3C36E8,
+				974A1345AC523201F329E08A,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -571,6 +574,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB66F532BD6640BECA9910BB,
+				D85A19EC14FFEF634D6DDFA7,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

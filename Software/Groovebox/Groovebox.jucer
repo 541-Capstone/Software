@@ -200,7 +200,7 @@
         <MODULEPATH id="tracktion_graph" path="..\..\..\..\TracktionEngine\tracktion_engine\modules\juce\modules"/>
       </MODULEPATHS>
     </VS2022>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
+    <XCODE_MAC targetFolder="Builds/MacOSX" bigIcon="G53CeL">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="Groovebox"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="Groovebox"/>
