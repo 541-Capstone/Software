@@ -240,5 +240,8 @@ void Helpers::toggleRecording(te::TransportControl& transport) {
     if (transport.isRecording())
         transport.stop(false, false);
     else
+        if (transport.isPlaying()) {
+            transport.stop(false, false);
+        }
         transport.record(false);
 }

@@ -10,7 +10,6 @@ MainComponent::MainComponent(){
     
     // set edit to nullptr for the time being
     edit = nullptr;
-    isPlaying = false;
     
     // start the timer. The frequency of the timer is also its ID
     startTimer(frameInterval, frameInterval);
@@ -164,7 +163,7 @@ void MainComponent::releaseResources(){
 
 void MainComponent::timerCallback(int timerId) {
     if (timerId == 0)
-        timeCount += isPlaying ? ((double)frameInterval * 0.001) : 0;
+        timeCount += edit->getTransport().isPlaying() ? ((double)frameInterval * 0.001) : 0;
     //std::cout<<timeCount<<'\n';
     repaint();
 }
@@ -334,7 +333,6 @@ void MainComponent::play(){
             track->setSolo(true);
         }
         edit->getTransport().play(false);
-        isPlaying = true;
     }
     else {
         LOG("Already playing\n");
@@ -343,7 +341,6 @@ void MainComponent::play(){
 
 void MainComponent::pause(){
     if (edit == nullptr) {LOG("Missing edit!\n"); return; }
-    isPlaying = false;
     if (PState == PlayStates::Play) {
         LOG ("Pause 1\n");
         PState = PlayStates::Pause;
@@ -369,6 +366,7 @@ void MainComponent::record(){
     if (wasRecording) {
         te::EditFileOperations(*edit).save(true, true, false);
     }
+    timeline.redrawWaveform();
 }
 
 void MainComponent::createAudioTrack() {
