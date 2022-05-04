@@ -50,8 +50,7 @@ private:
     std::shared_ptr<TrackManager> trackManager;
     std::shared_ptr<te::Edit> edit;
     IPlugin* activeSynth;
-    std::vector<juce::Rectangle<int>> paramCells;
-    std::vector<std::shared_ptr<juce::TextButton>> btns;
+    juce::Label adsrLbl{ "adsrLbl", "ADSR Label" };
     juce::Rectangle<int> textBox;
     bool synthLoadedOnTrack, addingSynth;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Synth)
