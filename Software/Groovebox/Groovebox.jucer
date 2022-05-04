@@ -74,6 +74,10 @@
       <FILE id="Jdqkr6" name="TrackManager.h" compile="0" resource="0" file="Source/TrackManager.h"/>
     </GROUP>
     <GROUP id="{5323C0E3-87CC-405B-D6B9-AD58964F1DEF}" name="State">
+      <GROUP id="{3524BB62-9AA0-9E9A-EED3-0A662351694C}" name="Effects">
+        <FILE id="iAfbfr" name="Effects.cpp" compile="1" resource="0" file="Source/Effects.cpp"/>
+        <FILE id="ea8ao3" name="Effects.h" compile="0" resource="0" file="Source/Effects.h"/>
+      </GROUP>
       <GROUP id="{73FA9BDD-BA58-5A30-22F5-5CB646727861}" name="Synth">
         <FILE id="lchleA" name="Synth.cpp" compile="1" resource="0" file="Source/Synth.cpp"/>
         <FILE id="hnYQxI" name="Synth.h" compile="0" resource="0" file="Source/Synth.h"/>
@@ -106,7 +110,7 @@
             file="Source/MainComponent.cpp"/>
     </GROUP>
   </MAINGROUP>
-  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_JACK="1"/>
   <EXPORTFORMATS>
     <CODEBLOCKS_LINUX targetFolder="Builds/CodeBlocksLinux">
       <CONFIGURATIONS>

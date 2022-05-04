@@ -35,6 +35,7 @@ profile
 **/LinuxMakefile/build
 **/VisualStudio[0-9]*/Win32
 **/VisualStudio[0-9]*/x64
+**/VisualStudio[0-9]*/_Track*
 **/Builds/x64
 **/.vs
 **/CodeBlocks/bin

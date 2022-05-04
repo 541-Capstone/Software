@@ -10,7 +10,6 @@ MainComponent::MainComponent(){
     
     // set edit to nullptr for the time being
     edit = nullptr;
-    isPlaying = false;
     
     // start the timer. The frequency of the timer is also its ID
     startTimer(frameInterval, frameInterval);
@@ -60,6 +59,7 @@ MainComponent::MainComponent(){
 
     //Setup synth
     engine.getPluginManager().createBuiltInType<Wavetable>();
+    engine.getPluginManager().createBuiltInType<Delay>();
     /*if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
     {
         auto fx = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get());
@@ -76,6 +76,13 @@ MainComponent::MainComponent(){
     synthWindow.loadTrack(*(trackManager->getTrackWrapper()));
     synthWindow.setBounds(this->getBounds());
     addAndMakeVisible(synthWindow);
+
+    //Set up effects view
+    effects.setTrackManager(trackManager);
+    effects.setEdit(edit);
+    effects.loadTrack(*(trackManager->getTrackWrapper()));
+    effects.setBounds(this->getBounds());
+    addAndMakeVisible(effects);
     
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
@@ -132,6 +139,10 @@ void MainComponent::paint(juce::Graphics &g){
         synthWindow.setVisible(true);
         synthWindow.setEnabled(true);
     }
+    if (WState == WindowStates::Effects) {
+        effects.setVisible(true);
+        effects.setEnabled(true);
+    }
 
 }
 
@@ -168,7 +179,7 @@ void MainComponent::releaseResources(){
 
 void MainComponent::timerCallback(int timerId) {
     if (timerId == 0)
-        timeCount += isPlaying ? ((double)frameInterval * 0.001) : 0;
+        timeCount += edit->getTransport().isPlaying() ? ((double)frameInterval * 0.001) : 0;
     //std::cout<<timeCount<<'\n';
     repaint();
 }
@@ -338,7 +349,6 @@ void MainComponent::play(){
             track->setSolo(true);
         }
         edit->getTransport().play(false);
-        isPlaying = true;
     }
     else {
         LOG("Already playing\n");
@@ -347,7 +357,6 @@ void MainComponent::play(){
 
 void MainComponent::pause(){
     if (edit == nullptr) {LOG("Missing edit!\n"); return; }
-    isPlaying = false;
     if (PState == PlayStates::Play) {
         LOG ("Pause 1\n");
         PState = PlayStates::Pause;
@@ -367,6 +376,17 @@ void MainComponent::pause(){
 
 void MainComponent::record(){
     LOG ("Recording\n");
+    auto& transport = edit->getTransport();
+    bool wasRecording = transport.isRecording();
+    Helpers::toggleRecording(transport);
+    if (wasRecording) {
+        PState = PlayStates::Pause;
+        te::EditFileOperations(*edit).save(true, true, false);
+    }
+    else {
+        PState = PlayStates::Record;
+    }
+    timeline.redrawWaveform();
 }
 
 void MainComponent::createAudioTrack() {
@@ -410,6 +430,9 @@ void MainComponent::disableAllStates(){
     //synthWindow.setAllComponents(false);
     synthWindow.setVisible(false);
     synthWindow.setEnabled(false);
+
+    effects.setVisible(false);
+    effects.setEnabled(false);
 }
 
 /* This assumes that the type of messaegs are of type UNIVERSAL */
@@ -459,6 +482,9 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             break;
         case Helpers::UniversalCommands::Fx:
             disableAllStates();
+            effects.setVisible(true);
+            effects.setEnabled(true);
+            currentComponent = &effects;
             break;
         case Helpers::UniversalCommands::Metronome:
             disableAllStates();

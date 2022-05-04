@@ -113,6 +113,8 @@ private:
     void nextTrack();
     void prevTrack();
     void addClipToTrack();
+    void movePlayhead(double seconds);
+    void removeClipFromTrack(double position);
 
     /* this is the absolute path of Groovebox */
     const std::string apath = APATH;

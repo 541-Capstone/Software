@@ -17,8 +17,10 @@
 #include "MidiService.h"
 #include "Setting.h"
 #include "Wavetable.h"
+#include "Delay.h"
 #include "Synth.h"
 #include "TestBench.h"
+#include "Effects.h"
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
  reside within their own source code/header file
@@ -171,6 +173,7 @@ private:
     Timeline timeline;
     Setting setting;
     Synth synthWindow;
+    Effects effects;
 
     FileManager fileManager;
     tracktion_engine::SelectionManager selectionmanager {engine};

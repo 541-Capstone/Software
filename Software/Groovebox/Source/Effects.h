@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    Synth.h
-    Created: 19 Apr 2022 10:54:12pm
+    Effects.h
+    Created: 4 May 2022 3:37:11am
     Author:  Dima
 
   ==============================================================================
@@ -15,17 +15,18 @@
 #include "Utilities.h"
 #include "ContextComponent.h"
 #include "TrackManager.h"
+#include "Delay.h"
 
 //==============================================================================
 /*
 */
-class Synth  : public ContextComponent
+class Effects : public ContextComponent
 {
 public:
-    Synth();
-    ~Synth() override;
+    Effects();
+    ~Effects() override;
 
-    void paint (juce::Graphics&) override;
+    void paint(juce::Graphics&) override;
     void resized() override;
 
     void contextControl(const juce::MidiMessageMetadata& metadata) override;
@@ -46,10 +47,10 @@ private:
 
     std::shared_ptr<TrackManager> trackManager;
     std::shared_ptr<te::Edit> edit;
-    IPlugin* activeSynth;
+    IPlugin* activeEffect;
     juce::Label adsrLbl{ "adsrLbl", "ADSR Label" };
     juce::Rectangle<int> textBox;
-    bool synthLoadedOnTrack;
+    bool effectLoadedOnTrack;
 
     //Painting components
     juce::Rectangle<int> localBounds;
@@ -58,5 +59,5 @@ private:
     juce::Rectangle<int> cells[8];
 
     int cellWidth;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Synth)
+    //JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Effect)
 };
