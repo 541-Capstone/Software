@@ -18,6 +18,7 @@
 #include "Setting.h"
 #include "Wavetable.h"
 #include "Synth.h"
+#include "TestBench.h"
 /* The universal state should reside in the MainComponent.
  All other states and/or windows (such as plugins, etc...) should
  reside within their own source code/header file
