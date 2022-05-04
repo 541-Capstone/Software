@@ -20,7 +20,6 @@
 //==============================================================================
 /*
 */
-namespace te = tracktion_engine;
 class Wavetable : public juce::Component,
     public te::Plugin,
     public IPlugin

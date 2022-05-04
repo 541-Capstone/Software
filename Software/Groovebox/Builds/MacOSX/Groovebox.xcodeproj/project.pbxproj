@@ -48,6 +48,7 @@
 		A7FFE8F187599734BF973815 /* App */ = {isa = PBXBuildFile; fileRef = 9C35CABD254A82331336413E; };
 		ACF993AB2F90E98D00E68D9A /* include_juce_gui_extra.mm */ = {isa = PBXBuildFile; fileRef = 236D4F5785FC2574D6AD3005; };
 		B3FB06867C0174F1162CDA6F /* WaveformManager.cpp */ = {isa = PBXBuildFile; fileRef = AEA9328AF7493C3BE4F1A71A; };
+		C33676777083D6C4E129D150 /* Effects.cpp */ = {isa = PBXBuildFile; fileRef = 15E604E5089E17FF84EB1070; };
 		C5642CDFD878E327DF34E535 /* Synth.cpp */ = {isa = PBXBuildFile; fileRef = D87A25329B6662234A3DC3C8; };
 		C6AE449AACF149D8B0C752F4 /* include_tracktion_engine_model_1.cpp */ = {isa = PBXBuildFile; fileRef = FC05C90807717B102496561E; };
 		C8136820F13FA174D6C608E1 /* Scrollable.cpp */ = {isa = PBXBuildFile; fileRef = BE551F521318EEA3C24E4137; };
@@ -75,6 +76,7 @@
 		12115F4F2E81686FF5A1101C /* include_tracktion_engine_timestretch.cpp */ /* include_tracktion_engine_timestretch.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = include_tracktion_engine_timestretch.cpp; path = ../../JuceLibraryCode/include_tracktion_engine_timestretch.cpp; sourceTree = SOURCE_ROOT; };
 		14983E5AC9FAA639E134C9CD /* IOKit.framework */ /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		14B60F95942ABB28CC14DC29 /* Carbon.framework */ /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		15E604E5089E17FF84EB1070 /* Effects.cpp */ /* Effects.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Effects.cpp; path = ../../Source/Effects.cpp; sourceTree = SOURCE_ROOT; };
 		1607E117244BCA6EA6CD9872 /* Utilities.h */ /* Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = ../../Source/Utilities.h; sourceTree = SOURCE_ROOT; };
 		16BB9B62D833CA01D15387CF /* BinaryData.h */ /* BinaryData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BinaryData.h; path = ../../JuceLibraryCode/BinaryData.h; sourceTree = SOURCE_ROOT; };
 		1AD7BE0F21467F545CAAF5B3 /* Timeline.h */ /* Timeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Timeline.h; path = ../../Source/Timeline.h; sourceTree = SOURCE_ROOT; };
@@ -97,6 +99,7 @@
 		47DEBC0272570C50C06D7C8D /* IPlugin.h */ /* IPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IPlugin.h; path = ../../Source/IPlugin.h; sourceTree = SOURCE_ROOT; };
 		49C480F5ABD51E46A49373CA /* TrackManager.h */ /* TrackManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TrackManager.h; path = ../../Source/TrackManager.h; sourceTree = SOURCE_ROOT; };
 		4B08297577F73B722114082F /* include_juce_graphics.mm */ /* include_juce_graphics.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_graphics.mm; path = ../../JuceLibraryCode/include_juce_graphics.mm; sourceTree = SOURCE_ROOT; };
+		4E20427A733319ADA701171A /* Effects.h */ /* Effects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Effects.h; path = ../../Source/Effects.h; sourceTree = SOURCE_ROOT; };
 		50E12C9F9605FE12D04F7374 /* include_juce_audio_formats.mm */ /* include_juce_audio_formats.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = include_juce_audio_formats.mm; path = ../../JuceLibraryCode/include_juce_audio_formats.mm; sourceTree = SOURCE_ROOT; };
 		53C8E06589CF1C89C48D38F0 /* FileBrowserHandler.cpp */ /* FileBrowserHandler.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileBrowserHandler.cpp; path = ../../Source/FileBrowserHandler.cpp; sourceTree = SOURCE_ROOT; };
 		57BAB41BAE9BAD778002D890 /* TrackManager.cpp */ /* TrackManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TrackManager.cpp; path = ../../Source/TrackManager.cpp; sourceTree = SOURCE_ROOT; };
@@ -365,6 +368,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A9A9A674A08426E986D22532 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				15E604E5089E17FF84EB1070,
+				4E20427A733319ADA701171A,
+			);
+			name = Effects;
+			sourceTree = "<group>";
+		};
 		BE02C7C1073E4033D6E658B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -448,6 +460,7 @@
 		D9EADA0902B6F19D1F2B0EBE /* State */ = {
 			isa = PBXGroup;
 			children = (
+				A9A9A674A08426E986D22532,
 				E2F387FB60164B5D2648FD78,
 				E0029FBD762D2A83FE6B1A0B,
 				18B83C0630984A4409172A44,
@@ -584,6 +597,7 @@
 				92B4C55B13E6B5B2A3B4D98F,
 				FE183310CC46049E53725660,
 				F7346E507904896D058A85FA,
+				C33676777083D6C4E129D150,
 				C5642CDFD878E327DF34E535,
 				657F98D4A7665D4FE6276FF4,
 				558ECD024411331E81C5F7B5,

@@ -155,6 +155,7 @@
     <ClCompile Include="..\..\Source\Utilities.cpp"/>
     <ClCompile Include="..\..\Source\FileManager.cpp"/>
     <ClCompile Include="..\..\Source\TrackManager.cpp"/>
+    <ClCompile Include="..\..\Source\Effects.cpp"/>
     <ClCompile Include="..\..\Source\Synth.cpp"/>
     <ClCompile Include="..\..\Source\Setting.cpp"/>
     <ClCompile Include="..\..\Source\Timeline.cpp"/>
@@ -4163,6 +4164,7 @@
     <ClInclude Include="..\..\Source\Utilities.h"/>
     <ClInclude Include="..\..\Source\FileManager.h"/>
     <ClInclude Include="..\..\Source\TrackManager.h"/>
+    <ClInclude Include="..\..\Source\Effects.h"/>
     <ClInclude Include="..\..\Source\Synth.h"/>
     <ClInclude Include="..\..\Source\Setting.h"/>
     <ClInclude Include="..\..\Source\Timeline.h"/>

@@ -14,8 +14,8 @@
 #include "Utilities.h"
 #include "IPlugin.h"
 
-class Delay : te::Plugin,
-    IPlugin {
+class Delay : public te::Plugin,
+    public IPlugin {
 public:
     Delay(te::PluginCreationInfo info);
     ~Delay() override;
@@ -39,6 +39,8 @@ public:
     // Maps contextual control messages to wavetable functions
     void contextControl(const juce::MidiMessageMetadata& metadata) override;
     IPlugin::Parameter getParameterValue(int index) override;
+
+
 
 private:
     int sampleRate;

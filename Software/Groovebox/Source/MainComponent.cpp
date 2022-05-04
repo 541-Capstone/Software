@@ -59,6 +59,7 @@ MainComponent::MainComponent(){
 
     //Setup synth
     engine.getPluginManager().createBuiltInType<Wavetable>();
+    engine.getPluginManager().createBuiltInType<Delay>();
     /*if (auto synth = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get()))
     {
         auto fx = dynamic_cast<Wavetable*> (edit->getPluginCache().createNewPlugin(Wavetable::xmlTypeName, {}).get());
@@ -75,6 +76,13 @@ MainComponent::MainComponent(){
     synthWindow.loadTrack(*(trackManager->getTrackWrapper()));
     synthWindow.setBounds(this->getBounds());
     addAndMakeVisible(synthWindow);
+
+    //Set up effects view
+    effects.setTrackManager(trackManager);
+    effects.setEdit(edit);
+    effects.loadTrack(*(trackManager->getTrackWrapper()));
+    effects.setBounds(this->getBounds());
+    addAndMakeVisible(effects);
     
     // Setup MIDI
     inputMidiBuffer = std::make_shared<juce::MidiBuffer>();
@@ -126,6 +134,10 @@ void MainComponent::paint(juce::Graphics &g){
     if (WState == WindowStates::Synthesizer) {
         synthWindow.setVisible(true);
         synthWindow.setEnabled(true);
+    }
+    if (WState == WindowStates::Effects) {
+        effects.setVisible(true);
+        effects.setEnabled(true);
     }
 
 }
@@ -364,7 +376,11 @@ void MainComponent::record(){
     bool wasRecording = transport.isRecording();
     Helpers::toggleRecording(transport);
     if (wasRecording) {
+        PState = PlayStates::Pause;
         te::EditFileOperations(*edit).save(true, true, false);
+    }
+    else {
+        PState = PlayStates::Record;
     }
     timeline.redrawWaveform();
 }
@@ -410,6 +426,9 @@ void MainComponent::disableAllStates(){
     //synthWindow.setAllComponents(false);
     synthWindow.setVisible(false);
     synthWindow.setEnabled(false);
+
+    effects.setVisible(false);
+    effects.setEnabled(false);
 }
 
 /* This assumes that the type of messaegs are of type UNIVERSAL */
@@ -459,6 +478,9 @@ void MainComponent::universalControls(const juce::MidiMessageMetadata &metadata)
             break;
         case Helpers::UniversalCommands::Fx:
             disableAllStates();
+            effects.setVisible(true);
+            effects.setEnabled(true);
+            currentComponent = &effects;
             break;
         case Helpers::UniversalCommands::Metronome:
             disableAllStates();

@@ -16,10 +16,9 @@
 Synth::Synth()
 {
     synthLoadedOnTrack = false;
-    activeSynth = nullptr;
-    addingSynth = false;
     edit = nullptr;
     trackManager = nullptr;
+    activeSynth = nullptr;
     /*for (int i = 0; i < 8; i++) {
         lbls.push_back(new juce::Label( "Param" + (juce::String)i, "Param" ));
         addAndMakeVisible(*lbls[i]);
@@ -31,7 +30,6 @@ Synth::Synth()
 
 Synth::~Synth()
 {
-    //lbls.clear();
 }
 
 void Synth::setTrackManager(std::shared_ptr<TrackManager> tm) {
@@ -59,18 +57,12 @@ void Synth::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (32.0f);
-    juce::Rectangle<int> localBounds = getLocalBounds();
-    juce::Rectangle<int> paramRect = getLocalBounds().removeFromTop(localBounds.getHeight() * 0.8);
-    juce::Rectangle<int> paramRectLower = paramRect.removeFromBottom(paramRect.getHeight() * 0.5);
-
-    int cellWidth = getLocalBounds().getWidth() / 4;
+    
     if (synthLoadedOnTrack) {
         for (int i = 0; i < 8; i++) {
-            auto& rectToUse = (i < 4) ? paramRect : paramRectLower;
-            juce::Rectangle<int> cellRect = rectToUse.removeFromLeft(cellWidth);
             auto param = activeSynth->getParameterValue(i);
             juce::String paramStr = param.name + ":\n" + (juce::String)param.value;
-            g.drawText(paramStr, cellRect, juce::Justification::centred, true);
+            g.drawText(paramStr, cells[i], juce::Justification::centred, true);
         }
         /*g.drawText("Synth", localBounds,
             juce::Justification::horizontallyCentred, false);*/
@@ -84,46 +76,20 @@ void Synth::paint (juce::Graphics& g)
     
 }
 
-void Synth::paintSelectionDialogue(juce::Graphics&) {
-
-}
-
 void Synth::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    /*paramCells.clear();
-    juce::Rectangle<int> localBounds = getLocalBounds();
-    juce::Rectangle<int> paramRect = getLocalBounds().removeFromTop(localBounds.getHeight() * 0.8);
-    juce::Rectangle<int> paramRectCopy = juce::Rectangle<int>(paramRect);
-    textBox = juce::Rectangle(localBounds);
+    localBounds = getLocalBounds();
+    paramRect = getLocalBounds().removeFromTop(localBounds.getHeight() * 0.8);
+    paramRectLower = paramRect.removeFromBottom(paramRect.getHeight() * 0.5);
 
-    int cellWidth = getLocalBounds().getWidth() / 4;
-    juce::Rectangle<int> paramRectUpper = localBounds.removeFromTop(paramRect.getHeight() * 0.5);
-    juce::Rectangle<int> paramRectLower = localBounds.removeFromTop(paramRect.getHeight());
-
-    juce::FlexBox paramBoxUpper{ juce::FlexBox::Direction::row,
-                             juce::FlexBox::Wrap::wrap  ,
-                             juce::FlexBox::AlignContent::flexStart,
-                             juce::FlexBox::AlignItems::flexStart,
-                             juce::FlexBox::JustifyContent::spaceBetween };
-    juce::FlexBox paramBoxLower{ juce::FlexBox::Direction::row,
-                             juce::FlexBox::Wrap::wrap  ,
-                             juce::FlexBox::AlignContent::flexStart,
-                             juce::FlexBox::AlignItems::flexStart,
-                             juce::FlexBox::JustifyContent::spaceBetween };
-
-
-    
+    cellWidth = getLocalBounds().getWidth() / 4;
 
     for (int i = 0; i < 8; i++) {
-        auto boxToUse = (i < 4) ? paramBoxLower : paramBoxUpper;
-        boxToUse.items.add(juce::FlexItem(*lbls[i]).withMinHeight(50.0f).withMinWidth(50.0f).withFlex(1));
-
+        auto& rectToUse = (i < 4) ? paramRect : paramRectLower;
+        cells[i] = rectToUse.removeFromLeft(cellWidth);
     }
-
-    paramBoxUpper.performLayout(paramRectUpper);
-    paramBoxLower.performLayout(paramRectLower);*/
 }
 
 void Synth::contextControl(const juce::MidiMessageMetadata& metadata) {
@@ -163,8 +129,6 @@ void Synth::loadTrack(const TrackManager::TrackWrapper& tw) {
             activeSynth = nullptr;
         }
     }
-
-    
 }
 
 void Synth::cut() {}

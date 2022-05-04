@@ -29,6 +29,9 @@
     <Filter Include="Groovebox\TrackManager">
       <UniqueIdentifier>{6D5C4969-00E1-D743-6C03-ACF410F3B97F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Groovebox\State\Effects">
+      <UniqueIdentifier>{E459978E-8666-373C-8DC0-A906C7D11C56}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Groovebox\State\Synth">
       <UniqueIdentifier>{825C7B3B-6F89-212C-4BE0-2446BFD8503D}</UniqueIdentifier>
     </Filter>
@@ -1254,6 +1257,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\TrackManager.cpp">
       <Filter>Groovebox\TrackManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Effects.cpp">
+      <Filter>Groovebox\State\Effects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Synth.cpp">
       <Filter>Groovebox\State\Synth</Filter>
@@ -5480,6 +5486,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\TrackManager.h">
       <Filter>Groovebox\TrackManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Effects.h">
+      <Filter>Groovebox\State\Effects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Synth.h">
       <Filter>Groovebox\State\Synth</Filter>

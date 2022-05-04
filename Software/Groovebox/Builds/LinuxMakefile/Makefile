@@ -84,6 +84,7 @@ OBJECTS_APP := \
   $(JUCE_OBJDIR)/Utilities_707bb76b.o \
   $(JUCE_OBJDIR)/FileManager_9cd5b872.o \
   $(JUCE_OBJDIR)/TrackManager_37b32b6b.o \
+  $(JUCE_OBJDIR)/Effects_68667863.o \
   $(JUCE_OBJDIR)/Synth_d919089d.o \
   $(JUCE_OBJDIR)/Setting_fd0db6b1.o \
   $(JUCE_OBJDIR)/Timeline_dfee064a.o \
@@ -205,6 +206,11 @@ $(JUCE_OBJDIR)/FileManager_9cd5b872.o: ../../Source/FileManager.cpp
 $(JUCE_OBJDIR)/TrackManager_37b32b6b.o: ../../Source/TrackManager.cpp
 	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
 	@echo "Compiling TrackManager.cpp"
+	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
+
+$(JUCE_OBJDIR)/Effects_68667863.o: ../../Source/Effects.cpp
+	-$(V_AT)mkdir -p $(JUCE_OBJDIR)
+	@echo "Compiling Effects.cpp"
 	$(V_AT)$(CXX) $(JUCE_CXXFLAGS) $(JUCE_CPPFLAGS_APP) $(JUCE_CFLAGS_APP) -o "$@" -c "$<"
 
 $(JUCE_OBJDIR)/Synth_d919089d.o: ../../Source/Synth.cpp
